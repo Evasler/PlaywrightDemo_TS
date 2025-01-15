@@ -22,7 +22,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'list',
+  reporter: './src/reporters/ExecOrderReporter.ts',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -40,7 +40,20 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }
     },
-
+    {
+      name: 'executionOrderDependency',
+      testMatch: '**/executionOrder/dependencies/global.setup.ts',
+      teardown: 'executionOrderTeardown'
+    },
+    {
+      name: 'executionOrderTeardown',
+      testMatch: '**/executionOrder/dependencies/global.teardown.ts'
+    },
+    {
+      name: 'executionOrder',
+      testMatch: '**/executionOrder/core/**',
+      dependencies: ['executionOrderDependency']
+    }
     // {
     //   name: 'chromium',
     //   use: { ...devices['Desktop Chrome'] },

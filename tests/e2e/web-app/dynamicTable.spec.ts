@@ -1,6 +1,6 @@
 import test from "@playwright/test";
-import { TestUtils } from "../../src/utils/TestUtils";
-import { PageManager } from "../../src/managers/PageManager";
+import { TestUtils } from "../../../src/utils/TestUtils";
+import { PageManager } from "../../../src/managers/PageManager";
 
 test.describe.configure({ mode: "serial"})
 test(TestUtils.buildTestTitle(1, "Dynamic HTML Table populated by JavaScript"), async({page}) => {

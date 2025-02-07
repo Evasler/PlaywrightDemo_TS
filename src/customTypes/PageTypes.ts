@@ -1,0 +1,1 @@
+export type PageType = "BlankPage" | "HomePage" | "AjaxPage";

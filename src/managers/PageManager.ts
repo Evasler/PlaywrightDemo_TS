@@ -1,39 +1,34 @@
-import { expect, Page } from "@playwright/test";
-import { IndexPage } from "../pages/Index/IndexPage";
-import { randomUUID } from "crypto";
+import { TestManager } from "./TestManager";
+import { HomePage } from "../pages/Home/HomePage";
+import { BlankPage } from "../pages/Blank/BlankPage";
+import { AjaxDataPage } from "../pages/AjaxData/AjaxDataPage";
 
 export class PageManager {
 
-    private indexPage: IndexPage;
+    private _blankPage?: BlankPage;
+    private _homePage?: HomePage;
+    private _ajaxDataPage?: AjaxDataPage;
     
-    private constructor(private readonly page: Page, private readonly id: string) {}
+    constructor(private testManager: TestManager) { }
 
-    private static readonly pageManagerMap: Map<string,PageManager> = new Map<string,PageManager>();
-
-    static newInstance(page: Page) {
-        const id = randomUUID();
-        this.pageManagerMap.set(id, new PageManager(page, id));
-        return this.getInstance(id);
+    get blankPage() {
+        if (this._blankPage === undefined) {
+            this._blankPage = new BlankPage(this.testManager);
+        }
+        return this._blankPage;
     }
 
-    static getInstance(id: string) {
-        if (this.pageManagerMap.has(id))
-            return this.pageManagerMap.get(id)!;
-        throw new Error(`PageManager ${id} not found`);
+    get homePage() {
+        if (this._homePage === undefined) {
+            this._homePage = new HomePage(this.testManager);
+        }
+        return this._homePage;
     }
 
-    static deleteInstance(id: string) {
-        const result = this.pageManagerMap.delete(id);
-        expect(result).toBeTruthy();
-    }
-
-    static getLength() {
-        return this.pageManagerMap.size;
-    }
-
-    getIndexPage() {
-        if (this.indexPage === undefined)
-            this.indexPage = new IndexPage(this.page, this.id);
-        return this.indexPage;
+    get ajaxDataPage() {
+        if (this._ajaxDataPage === undefined) {
+            this._ajaxDataPage = new AjaxDataPage(this.testManager);
+        }
+        return this._ajaxDataPage;
     }
 }

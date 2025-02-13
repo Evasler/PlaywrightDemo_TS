@@ -1,13 +1,13 @@
 import { step } from "../../decorators/StepDecorator";
-import { StepSequenceManager } from "../../managers/StepSequenceManager";
-import { BrowserManager } from "../../managers/BrowserManager";
+import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
+import { BrowserHelper } from "../../helpers/BrowserHelper";
 import { BasePage } from "../Base/BasePage";
 import { HomePage } from "../Home/HomePage";
 
 export class BlankPage extends BasePage {
     
-    constructor(browserManager: BrowserManager, stepSequenceManager: StepSequenceManager) {
-        super("BlankPage", browserManager, stepSequenceManager);
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
+        super("BlankPage", browserHelper, stepSequenceHelper);
     }
 
     goToUiTestAutomationPlayground_SS(homePage: HomePage) {

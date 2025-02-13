@@ -1,19 +1,19 @@
 import { test as base } from "@playwright/test";
-import { BrowserManager } from "../managers/BrowserManager";
-import { PageManager } from "../managers/PageManager";
-import { StepSequenceManager } from "../managers/StepSequenceManager";
-import { TabPageTypeHelper } from "../managers/TabPageTypeHelper";
+import { BrowserHelper } from "../helpers/BrowserHelper";
+import { PageHelper } from "../helpers/PageHelper";
+import { StepSequenceHelper } from "../helpers/StepSequenceHelper";
+import { TabPageTypeHelper } from "../helpers/TabPageTypeHelper";
 
 type TestFixtures = {
-    pageManager: PageManager;
+    pageHelper: PageHelper;
 };
 
 export const test = base.extend<TestFixtures, {}>({
-    pageManager: [ async ({ page }, use) => {
+    pageHelper: [ async ({ page }, use) => {
         const tabPageTypeHelper = new TabPageTypeHelper();
-        const browserManager = new BrowserManager(page, tabPageTypeHelper);
-        const stepSequenceManager = new StepSequenceManager();
-        const pageManager = new PageManager(browserManager, stepSequenceManager);
-        await use(pageManager);
+        const browserHelper = new BrowserHelper(page, tabPageTypeHelper);
+        const stepSequenceHelper = new StepSequenceHelper();
+        const pageHelper = new PageHelper(browserHelper, stepSequenceHelper);
+        await use(pageHelper);
     }, { scope: "test" }]
 });

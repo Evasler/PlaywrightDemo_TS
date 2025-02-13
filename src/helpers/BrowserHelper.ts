@@ -2,7 +2,7 @@ import { expect, Page } from "@playwright/test";
 import { PageType } from "../customTypes/PageTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
 
-export class BrowserManager {
+export class BrowserHelper {
 
     constructor(private _workingTab: Page, readonly tabPageTypeHelper: TabPageTypeHelper) {
         this.tabPageTypeHelper.initializeContextPageTypes();

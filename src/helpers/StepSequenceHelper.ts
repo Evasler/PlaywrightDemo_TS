@@ -1,4 +1,4 @@
-export class StepSequenceManager {
+export class StepSequenceHelper {
     
     private _stepSequence: Promise<void> = Promise.resolve();
     

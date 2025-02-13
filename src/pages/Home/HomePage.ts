@@ -1,17 +1,17 @@
 import { BasePage } from "../Base/BasePage";
-import { BrowserManager } from "../../managers/BrowserManager";
+import { BrowserHelper } from "../../helpers/BrowserHelper";
 import { HomePageLocators } from "./HomeLocators";
 import { AjaxDataPage } from "../AjaxData/AjaxDataPage";
 import { step } from "../../decorators/StepDecorator";
-import { StepSequenceManager } from "../../managers/StepSequenceManager";
+import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 
 export class HomePage extends BasePage {
 
     private readonly homePageLocators: HomePageLocators;
 
-    constructor(browserManager: BrowserManager, stepSequenceManager: StepSequenceManager) {
-        super("HomePage", browserManager, stepSequenceManager);
-        this.homePageLocators = new HomePageLocators(browserManager);
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
+        super("HomePage", browserHelper, stepSequenceHelper);
+        this.homePageLocators = new HomePageLocators(browserHelper);
     }
 
     clickAjaxData_SS(ajaxDataPage: AjaxDataPage) {

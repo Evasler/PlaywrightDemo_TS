@@ -1,14 +1,8 @@
-import test from "@playwright/test";
+import { test } from "../../../src/fixtures/chainedPomFixtures";
 import { TestUtils } from "../../../src/utils/TestUtils";
-import { TestManager } from "../../../src/managers/TestManager";
-import { PageManager } from "../../../src/managers/PageManager";
 
 //More readable
-test(TestUtils.buildTestTitle(0, "Chained POM | StepSequenceBuilder"), async({page}) => {
-
-    const testManager = new TestManager(page);
-    const pageManager = new PageManager(testManager);
-
+test(TestUtils.buildTestTitle(0, "Chained POM | StepSequenceBuilder"), async({ pageManager }) => {
     await pageManager.blankPage
     .openNewTab_SS("currentContext", pageManager.blankPage)
     .goToUiTestAutomationPlayground_SS(pageManager.homePage)
@@ -20,11 +14,7 @@ test(TestUtils.buildTestTitle(0, "Chained POM | StepSequenceBuilder"), async({pa
 });
 
 //Better stack feedback
-test(TestUtils.buildTestTitle(1, "Chained POM | ThenChaining"), async({page}) => {
-
-    const testManager = new TestManager(page);
-    const pageManager = new PageManager(testManager);
-
+test(TestUtils.buildTestTitle(1, "Chained POM | ThenChaining"), async({ pageManager }) => {
     await pageManager.blankPage
     .openNewTab("currentContext", pageManager.blankPage)
     .then(res => res.goToUiTestAutomationPlayground(pageManager.homePage))

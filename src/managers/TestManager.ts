@@ -9,8 +9,11 @@ export class TestManager {
     
     private _stepSequence: Promise<void> = Promise.resolve();
 
-    constructor(private _workingPage: Page) { }
-
+    constructor(private _workingPage: Page) { 
+        this.initializeContextPageTypes();
+        this.initializeTabPageType(0, 0);
+    }
+    
     get workingPage() {
         return this._workingPage;
     }

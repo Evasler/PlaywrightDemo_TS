@@ -6,8 +6,6 @@ export const defaultTabPageType: PageType = "BlankPage";
 export class TestManager {
 
     private readonly _tabPageType: Array<Array<PageType>> = [];
-    
-    private _stepSequence: Promise<void> = Promise.resolve();
 
     constructor(private _workingPage: Page) { 
         this.initializeContextPageTypes();
@@ -16,10 +14,6 @@ export class TestManager {
     
     get workingPage() {
         return this._workingPage;
-    }
-
-    get stepSequence() {
-        return this._stepSequence;
     }
 
     updateWorkingPage(workingPage: Page) {
@@ -44,9 +38,5 @@ export class TestManager {
 
     updateTabPageType(contextIndex: number, tabIndex: number, pageType: PageType) {
         this._tabPageType[contextIndex][tabIndex] = pageType;
-    }
-
-    addStep(callback: any) {
-        this._stepSequence = this._stepSequence.then(callback);
     }
 }

@@ -1,4 +1,5 @@
 import { PageType } from "../../customTypes/PageTypes";
+import { StepSequenceManager } from "../../managers/StepSequenceManager";
 import { defaultTabPageType } from "../../managers/TestManager";
 import { TestManager } from "../../managers/TestManager";
 import { BaseBrowser } from "./BaseBrowser";
@@ -6,18 +7,18 @@ import test from "@playwright/test";
 
 export abstract class BasePage extends BaseBrowser {
 
-    constructor(private readonly pageType: PageType, testManager: TestManager) {
+    constructor(private readonly pageType: PageType, testManager: TestManager, private readonly stepSequenceManager: StepSequenceManager) {
         super(testManager);
     }
 
     protected addStep(title: string, callback: () => Promise<void>) {
-        this.testManager.addStep(async() => {
+        this.stepSequenceManager.addStep(async() => {
             await test.step(title, callback);
         });
     }
 
     execute() {
-        return this.testManager.stepSequence;
+        return this.stepSequenceManager.stepSequence;
     }
 
     openNewTab_SS<T extends BasePage>(targetContext: "newContext" | "currentContext", page: T): T {

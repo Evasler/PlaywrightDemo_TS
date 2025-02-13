@@ -11,7 +11,9 @@ export abstract class BasePage extends BaseBrowser {
     }
 
     protected addStep(title: string, callback: () => Promise<void>) {
-        this.testManager.addStep(callback);
+        this.testManager.addStep(async() => {
+            await test.step(title, callback);
+        });
     }
 
     execute() {
@@ -42,20 +44,24 @@ export abstract class BasePage extends BaseBrowser {
     }
 
     async openNewTab<T extends BasePage>(targetContext: "newContext" | "currentContext", page: T): Promise<T> {
-        await this.openNewTabBase(targetContext);
-        const targetIsNewContext = targetContext === "newContext";
-        const targetContextIndex = targetIsNewContext ? this.lastContextIndex : this.workingContextIndex;
-        const newTabIndex = this.lastTabIndex(targetContextIndex);
-        if (targetIsNewContext)
-            this.testManager.initializeContextPageTypes();
-        this.testManager.initializeTabPageType(targetContextIndex, newTabIndex);
-        await this.switchWorkingTabBase(targetContextIndex, newTabIndex, defaultTabPageType);
-        return page;
+        return await test.step("openNewTab", async() => {
+            await this.openNewTabBase(targetContext);
+            const targetIsNewContext = targetContext === "newContext";
+            const targetContextIndex = targetIsNewContext ? this.lastContextIndex : this.workingContextIndex;
+            const newTabIndex = this.lastTabIndex(targetContextIndex);
+            if (targetIsNewContext)
+                this.testManager.initializeContextPageTypes();
+            this.testManager.initializeTabPageType(targetContextIndex, newTabIndex);
+            await this.switchWorkingTabBase(targetContextIndex, newTabIndex, defaultTabPageType);
+            return page;
+        });
     }
     
     async switchWorkingTab<T extends BasePage>(contextIndex: number, pageIndex: number, page: T): Promise<T> {
-        console.log("switchWorkingTabAsync")
-        await this.switchWorkingTabBase(contextIndex, pageIndex, page.pageType);
-        return page;
+        return await test.step("switchWorkingTab", async() => {
+            console.log("switchWorkingTabAsync")
+            await this.switchWorkingTabBase(contextIndex, pageIndex, page.pageType);
+            return page;
+        });
     }
 }

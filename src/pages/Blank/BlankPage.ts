@@ -17,6 +17,7 @@ export class BlankPage extends BasePage {
         return homePage;
     }
 
+    @step()
     async goToUiTestAutomationPlayground(homePage: HomePage) {
         console.log("goToUiTestAutomationPlayground");
         await this.workingTab.goto("/");

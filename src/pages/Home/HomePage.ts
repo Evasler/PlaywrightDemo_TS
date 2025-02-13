@@ -21,6 +21,7 @@ export class HomePage extends BasePage {
         return ajaxDataPage;
     }
 
+    @step()
     async clickAjaxData(ajaxDataPage: AjaxDataPage): Promise<AjaxDataPage> {
         console.log("clickAjaxData")
         await this.homePageLocators.ajaxDataLink.click();

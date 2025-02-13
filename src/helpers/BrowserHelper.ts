@@ -82,13 +82,17 @@ export class BrowserHelper {
         this.tabPageTypeHelper.removeContextPageTypes(contextIndex);
     }
 
-    async closeBrowser() {
+    async closeAllContexts() {
         this.workingBrowser.contexts().forEach(async context => {
             context.pages().forEach(async (page) => await page.close());
             await expect(async () => expect(context.pages().length).toEqual(0)).toPass();
             await context.close();
         });
         await expect(async () => expect(this.workingBrowser.contexts().length).toEqual(0)).toPass();
+    }
+
+    async closeBrowser() {
+        await this.closeAllContexts();
         await this.workingBrowser.close();
     }
 }

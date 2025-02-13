@@ -1,8 +1,8 @@
 import { PageType } from "../../customTypes/PageTypes";
 import { StepSequenceManager } from "../../managers/StepSequenceManager";
-import { defaultTabPageType } from "../../managers/BrowserManager";
 import { BrowserManager } from "../../managers/BrowserManager";
 import test from "@playwright/test";
+import { defaultTabPageType } from "../../managers/TabPageTypeHelper";
 
 export abstract class BasePage {
 
@@ -28,8 +28,8 @@ export abstract class BasePage {
             const targetContextIndex = targetIsNewContext ? this.browserManager.lastContextIndex : this.browserManager.workingContextIndex;
             const newTabIndex = this.browserManager.lastTabIndex(targetContextIndex);
             if (targetIsNewContext)
-                this.browserManager.initializeContextPageTypes();
-            this.browserManager.initializeTabPageType(targetContextIndex, newTabIndex);
+                this.browserManager.tabPageTypeHelper.initializeContextPageTypes();
+            this.browserManager.tabPageTypeHelper.initializeTabPageType(targetContextIndex, newTabIndex);
             await this.browserManager.switchWorkingTab(targetContextIndex, newTabIndex, defaultTabPageType);
         });
         return page;
@@ -50,8 +50,8 @@ export abstract class BasePage {
             const targetContextIndex = targetIsNewContext ? this.browserManager.lastContextIndex : this.browserManager.workingContextIndex;
             const newTabIndex = this.browserManager.lastTabIndex(targetContextIndex);
             if (targetIsNewContext)
-                this.browserManager.initializeContextPageTypes();
-            this.browserManager.initializeTabPageType(targetContextIndex, newTabIndex);
+                this.browserManager.tabPageTypeHelper.initializeContextPageTypes();
+            this.browserManager.tabPageTypeHelper.initializeTabPageType(targetContextIndex, newTabIndex);
             await this.browserManager.switchWorkingTab(targetContextIndex, newTabIndex, defaultTabPageType);
             return page;
         });

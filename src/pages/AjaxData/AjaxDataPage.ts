@@ -1,10 +1,10 @@
 import { StepSequenceManager } from "../../managers/StepSequenceManager";
-import { TestManager } from "../../managers/TestManager";
+import { BrowserManager } from "../../managers/BrowserManager";
 import { BasePage } from "../Base/BasePage";
 
 export class AjaxDataPage extends BasePage {
 
-    constructor(testManager: TestManager, stepSequenceManager: StepSequenceManager) {
-        super("AjaxPage", testManager, stepSequenceManager);
+    constructor(browserManager: BrowserManager, stepSequenceManager: StepSequenceManager) {
+        super("AjaxPage", browserManager, stepSequenceManager);
     }
 }

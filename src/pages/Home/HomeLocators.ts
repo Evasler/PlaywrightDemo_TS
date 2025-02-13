@@ -1,10 +1,10 @@
-import { TestManager } from "../../managers/TestManager";
+import { BrowserManager } from "../../managers/BrowserManager";
 
 export class HomePageLocators {
 
-    constructor(private readonly testManager: TestManager) { }
+    constructor(private readonly browserManager: BrowserManager) { }
     private get page() {
-        return this.testManager.workingPage;
+        return this.browserManager.workingTab;
     }
 
     get ajaxDataLink() { return this.page.getByRole("link", {name: "AJAX Data", exact: true}) }

@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import { TestManager } from "../managers/TestManager";
+import { BrowserManager } from "../managers/BrowserManager";
 import { PageManager } from "../managers/PageManager";
 import { StepSequenceManager } from "../managers/StepSequenceManager";
 
@@ -9,9 +9,9 @@ type TestFixtures = {
 
 export const test = base.extend<TestFixtures, {}>({
     pageManager: [ async ({ page }, use) => {
-        const testManager = new TestManager(page);
+        const browserManager = new BrowserManager(page);
         const stepSequenceManager = new StepSequenceManager();
-        const pageManager = new PageManager(testManager, stepSequenceManager);
+        const pageManager = new PageManager(browserManager, stepSequenceManager);
         await use(pageManager);
     }, { scope: "test" }]
 });

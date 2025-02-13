@@ -3,13 +3,14 @@ import { TestManager } from "../../managers/TestManager";
 import { HomePageLocators } from "./HomeLocators";
 import { AjaxDataPage } from "../AjaxData/AjaxDataPage";
 import { step } from "../../decorators/StepDecorator";
+import { StepSequenceManager } from "../../managers/StepSequenceManager";
 
 export class HomePage extends BasePage {
 
     private readonly homePageLocators: HomePageLocators;
 
-    constructor(testManager: TestManager) {
-        super("HomePage", testManager);
+    constructor(testManager: TestManager, stepSequenceManager: StepSequenceManager) {
+        super("HomePage", testManager, stepSequenceManager);
         this.homePageLocators = new HomePageLocators(testManager);
     }
 

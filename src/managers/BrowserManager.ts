@@ -1,15 +1,12 @@
 import { expect, Page } from "@playwright/test";
 import { PageType } from "../customTypes/PageTypes";
-
-export const defaultTabPageType: PageType = "BlankPage";
+import { TabPageTypeHelper } from "./TabPageTypeHelper";
 
 export class BrowserManager {
 
-    private readonly _tabPageType: Array<Array<PageType>> = [];
-
-    constructor(private _workingTab: Page) { 
-        this.initializeContextPageTypes();
-        this.initializeTabPageType(0, 0);
+    constructor(private _workingTab: Page, readonly tabPageTypeHelper: TabPageTypeHelper) {
+        this.tabPageTypeHelper.initializeContextPageTypes();
+        this.tabPageTypeHelper.initializeTabPageType(0, 0);
     }
 
     get workingBrowser() {
@@ -62,7 +59,7 @@ export class BrowserManager {
         expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThan(this.workingBrowser.contexts()[contextIndex].pages().length);
         const alreadyWorkingOnTheTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
         expect(alreadyWorkingOnTheTab, `Already working on tab [${contextIndex},${tabIndex}]`).toBeFalsy();
-        const actualPageType = this.tabPageType(contextIndex, tabIndex);
+        const actualPageType = this.tabPageTypeHelper.tabPageType(contextIndex, tabIndex);
         expect(actualPageType).toBe(expectedPageType);
         this.updateWorkingTab(contextIndex, tabIndex);
     }
@@ -73,7 +70,7 @@ export class BrowserManager {
         this.workingBrowser.contexts()[contextIndex].pages().forEach(async (page) => await page.close());
         await expect(async () => expect(this.workingBrowser.contexts()[contextIndex].pages().length).toEqual(0)).toPass();
         await this.workingBrowser.contexts()[contextIndex].close();
-        this.removeContextPageTypes(contextIndex);
+        this.tabPageTypeHelper.removeContextPageTypes(contextIndex);
     }
 
     async closeTab(contextIndex: number, tabIndex: number) {
@@ -82,7 +79,7 @@ export class BrowserManager {
         const attemptingToCloseWorkingTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
         expect(attemptingToCloseWorkingTab, `Tab [${contextIndex},${tabIndex}] is the Working Tab. It cannot be closed`).toBeFalsy();
         await this.workingBrowser.contexts()[contextIndex].pages()[tabIndex].close();
-        this.removeContextPageTypes(contextIndex);
+        this.tabPageTypeHelper.removeContextPageTypes(contextIndex);
     }
 
     async closeBrowser() {
@@ -93,25 +90,5 @@ export class BrowserManager {
         });
         await expect(async () => expect(this.workingBrowser.contexts().length).toEqual(0)).toPass();
         await this.workingBrowser.close();
-    }
-
-    tabPageType(contextIndex: number, tabIndex: number) {
-        return this._tabPageType[contextIndex][tabIndex];
-    }
-
-    initializeContextPageTypes() {
-        this._tabPageType.push(new Array<PageType>());
-    }
-
-    initializeTabPageType(contextIndex: number, tabIndex: number) {
-        this.updateTabPageType(contextIndex, tabIndex, defaultTabPageType);
-    }
-
-    removeContextPageTypes(contextIndex: number) {
-        this._tabPageType.splice(contextIndex, 1);
-    }
-
-    updateTabPageType(contextIndex: number, tabIndex: number, pageType: PageType) {
-        this._tabPageType[contextIndex][tabIndex] = pageType;
     }
 }

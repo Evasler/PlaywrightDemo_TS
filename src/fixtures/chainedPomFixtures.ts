@@ -10,8 +10,7 @@ type TestFixtures = {
 
 export const test = base.extend<TestFixtures, {}>({
     pageHelper: [ async ({ page }, use) => {
-        const tabPageTypeHelper = new TabPageTypeHelper();
-        const browserHelper = new BrowserHelper(page, tabPageTypeHelper);
+        const browserHelper = new BrowserHelper(page);
         const stepSequenceHelper = new StepSequenceHelper();
         const pageHelper = new PageHelper(browserHelper, stepSequenceHelper);
         await use(pageHelper);

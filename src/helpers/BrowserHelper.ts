@@ -4,9 +4,10 @@ import { TabPageTypeHelper } from "./TabPageTypeHelper";
 
 export class BrowserHelper {
 
-    constructor(private _workingTab: Page, readonly tabPageTypeHelper: TabPageTypeHelper) {
-        this.tabPageTypeHelper.initializeContextPageTypes();
-        this.tabPageTypeHelper.initializeTabPageType(0, 0);
+    private readonly tabPageTypeHelper: TabPageTypeHelper;
+
+    constructor(private _workingTab: Page) {
+        this.tabPageTypeHelper = new TabPageTypeHelper();
     }
 
     get workingBrowser() {
@@ -37,21 +38,17 @@ export class BrowserHelper {
         return this.workingBrowser.contexts()[contextIndex].pages().length - 1;
     }
 
-    private set workingTab(workingTab: Page) {
-        this._workingTab = workingTab;
-    }
-
     updateWorkingTab(contextIndex: number, tabIndex: number) {
-        this.workingTab = this.workingBrowser.contexts()[contextIndex].pages()[tabIndex];
+        this._workingTab = this.workingBrowser.contexts()[contextIndex].pages()[tabIndex];
     }
-        
+    
     async openNewTab(targetContext: "newContext" | "currentContext") {
         if (targetContext === "newContext") {
             const newContext = await this.workingBrowser.newContext();
             await newContext.newPage();
         } else if (targetContext === "currentContext") {
-            await this.workingContext.newPage();
-        }
+        await this.workingContext.newPage();
+    }
     }
 
     async switchWorkingTab(contextIndex: number, tabIndex: number, expectedPageType: PageType) {

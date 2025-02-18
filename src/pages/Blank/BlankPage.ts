@@ -13,15 +13,15 @@ export class BlankPage extends BasePage {
     }
 
     @step()
-    async goToUiTestAutomationPlayground(homePage: HomePage) {
-        console.log("goToUiTestAutomationPlayground");
+    async goToUiTestAutomationPlayground_async(homePage: HomePage) {
+        console.log("goToUiTestAutomationPlayground_async");
         await this.workingTab.goto("http://uitestingplayground.com");
         return homePage;
     }
 
-    goToUiTestAutomationPlayground_SS(homePage: HomePage) {
-        this.addStep("goToUiTestAutomationPlayground_SS", async() => {
-            console.log("goToUiTestAutomationPlayground_SS");
+    goToUiTestAutomationPlayground(homePage: HomePage) {
+        this.addStep("goToUiTestAutomationPlayground", async() => {
+            console.log("goToUiTestAutomationPlayground");
             await this.workingTab.goto("http://uitestingplayground.com");
         });
         return homePage;

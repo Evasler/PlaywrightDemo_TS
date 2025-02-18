@@ -6,7 +6,7 @@ test.describe("Initial Page without storageState", () => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.loginPage)
         .verifyLogIntoYourAccountIsVisible()
-        .openNewTabInCurrentContext_SS(pageHelper.blankPage)
+        .openNewTabInCurrentContext(pageHelper.blankPage)
         .goToAutomationInTesting(pageHelper.loginPage)
         .verifyLogIntoYourAccountIsVisible()
         .execute();
@@ -15,7 +15,7 @@ test.describe("Initial Page without storageState", () => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.loginPage)
         .verifyLogIntoYourAccountIsVisible()
-        .openNewTabInNewContext_SS(pageHelper.blankPage)
+        .openNewTabInNewContext(pageHelper.blankPage)
         .goToAutomationInTesting(pageHelper.loginPage)
         .verifyLogIntoYourAccountIsVisible()
         .execute();
@@ -24,7 +24,7 @@ test.describe("Initial Page without storageState", () => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.loginPage)
         .verifyLogIntoYourAccountIsVisible()
-        .openNewTabInNewContext_SS(pageHelper.blankPage, "administrator")
+        .openNewTabInNewContext(pageHelper.blankPage, "administrator")
         .goToAutomationInTesting(pageHelper.adminPanelPage)
         .verifyLogoutIsVisible()
         .execute();
@@ -37,7 +37,7 @@ test.describe("Starting Page with storageState", () => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.adminPanelPage)
         .verifyLogoutIsVisible()
-        .openNewTabInCurrentContext_SS(pageHelper.blankPage)
+        .openNewTabInCurrentContext(pageHelper.blankPage)
         .goToAutomationInTesting(pageHelper.adminPanelPage)
         .verifyLogoutIsVisible()
         .execute();
@@ -46,7 +46,7 @@ test.describe("Starting Page with storageState", () => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.adminPanelPage)
         .verifyLogoutIsVisible()
-        .openNewTabInNewContext_SS(pageHelper.blankPage)
+        .openNewTabInNewContext(pageHelper.blankPage)
         .goToAutomationInTesting(pageHelper.loginPage)
         .verifyLogIntoYourAccountIsVisible()
         .execute();
@@ -55,7 +55,7 @@ test.describe("Starting Page with storageState", () => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.adminPanelPage)
         .verifyLogoutIsVisible()
-        .openNewTabInNewContext_SS(pageHelper.blankPage, "administrator")
+        .openNewTabInNewContext(pageHelper.blankPage, "administrator")
         .goToAutomationInTesting(pageHelper.adminPanelPage)
         .verifyLogoutIsVisible()
         .execute();

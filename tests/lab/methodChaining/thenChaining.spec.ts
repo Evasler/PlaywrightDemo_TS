@@ -3,10 +3,10 @@ import { TestUtils } from "../../../src/utils/TestUtils";
 
 test(TestUtils.buildTestTitle(0, "Chained POM | ThenChaining"), async({ pageHelper }) => {
     await pageHelper.blankPage
-    .openNewTabInNewContext(pageHelper.blankPage)
-    .then(res => res.goToUiTestAutomationPlayground(pageHelper.homePage))
-    .then(res => res.clickAjaxData(pageHelper.ajaxDataPage))
-    .then(res => res.switchWorkingTab(0, 0, pageHelper.blankPage))
-    .then(res => res.goToUiTestAutomationPlayground(pageHelper.homePage))
-    .then(res => res.clickAjaxData(pageHelper.ajaxDataPage));
+    .openNewTabInNewContext_async(pageHelper.blankPage)
+    .then(res => res.goToUiTestAutomationPlayground_async(pageHelper.homePage))
+    .then(res => res.clickAjaxData_async(pageHelper.ajaxDataPage))
+    .then(res => res.switchWorkingTab_async(0, 0, pageHelper.blankPage))
+    .then(res => res.goToUiTestAutomationPlayground_async(pageHelper.homePage))
+    .then(res => res.clickAjaxData_async(pageHelper.ajaxDataPage));
 });

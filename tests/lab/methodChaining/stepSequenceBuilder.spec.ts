@@ -3,11 +3,11 @@ import { TestUtils } from "../../../src/utils/TestUtils";
 
 test(TestUtils.buildTestTitle(0, "Chained POM | StepSequenceBuilder"), async({ pageHelper }) => {
     await pageHelper.blankPage
-    .openNewTabInNewContext_SS(pageHelper.blankPage)
-    .goToUiTestAutomationPlayground_SS(pageHelper.homePage)
-    .clickAjaxData_SS(pageHelper.ajaxDataPage)
-    .switchWorkingTab_SS(0, 0, pageHelper.blankPage)
-    .goToUiTestAutomationPlayground_SS(pageHelper.homePage)
-    .clickAjaxData_SS(pageHelper.ajaxDataPage)
+    .openNewTabInNewContext(pageHelper.blankPage)
+    .goToUiTestAutomationPlayground(pageHelper.homePage)
+    .clickAjaxData(pageHelper.ajaxDataPage)
+    .switchWorkingTab(0, 0, pageHelper.blankPage)
+    .goToUiTestAutomationPlayground(pageHelper.homePage)
+    .clickAjaxData(pageHelper.ajaxDataPage)
     .execute();
 });

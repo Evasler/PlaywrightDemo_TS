@@ -14,17 +14,17 @@ export class HomePage extends BasePage {
         this.homePageLocators = new HomePageLocators(browserHelper);
     }
 
-    clickAjaxData_SS(ajaxDataPage: AjaxDataPage) {
-        this.addStep("clickAjaxData_SS", async() => {
-            console.log("clickAjaxData_SS");
+    clickAjaxData(ajaxDataPage: AjaxDataPage) {
+        this.addStep("clickAjaxData", async() => {
+            console.log("clickAjaxData");
             await this.homePageLocators.ajaxDataLink.click();
         });
         return ajaxDataPage;
     }
 
     @step()
-    async clickAjaxData(ajaxDataPage: AjaxDataPage): Promise<AjaxDataPage> {
-        console.log("clickAjaxData")
+    async clickAjaxData_async(ajaxDataPage: AjaxDataPage): Promise<AjaxDataPage> {
+        console.log("clickAjaxData_async")
         await this.homePageLocators.ajaxDataLink.click();
         return ajaxDataPage;
     }

@@ -5,11 +5,6 @@ export const defaultTabPageType: PageType = "BlankPage";
 export class TabPageTypeHelper {
 
     private readonly _tabPageType: Array<Array<PageType>> = [];
-    
-    constructor() {
-        this.initializeContextPageTypes();
-        this.initializeTabPageType(0, 0);
-    }
 
     tabPageType(contextIndex: number, tabIndex: number) {
         return this._tabPageType[contextIndex][tabIndex];

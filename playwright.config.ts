@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { StorageStateOptions } from './src/fixtures/chainedPomFixtures';
 
 /**
  * Read environment variables from file.
@@ -11,7 +12,7 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<StorageStateOptions>({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -30,7 +31,9 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    baseURL: "http://uitestingplayground.com",
+    // baseURL: "",
+    authenticationEndpoint: "https://automationintesting.online/auth/login",
+    validationEndpoint: "https://automationintesting.online/auth/validate",
     headless: false
   },
 

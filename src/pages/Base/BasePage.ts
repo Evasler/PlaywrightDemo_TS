@@ -2,7 +2,6 @@ import { PageType } from "../../customTypes/PageTypes";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
 import test from "@playwright/test";
-import { defaultTabPageType } from "../../helpers/TabPageTypeHelper";
 
 export abstract class BasePage {
 
@@ -20,17 +19,18 @@ export abstract class BasePage {
         return this.stepSequenceHelper.stepSequence;
     }
 
-    openNewTab_SS<T extends BasePage>(targetContext: "newContext" | "currentContext", page: T): T {
-        this.addStep("openNewTab_SS", async() => {
+    openNewTabInNewContext_SS<T extends BasePage>(page: T, storageStateUser?: string): T {
+        this.addStep("openNewTabInNewContext_SS", async() => {
             console.log("openNewTab_SS");
-            await this.browserHelper.openNewTab(targetContext);
-            const targetIsNewContext = targetContext === "newContext";
-            const targetContextIndex = targetIsNewContext ? this.browserHelper.lastContextIndex : this.browserHelper.workingContextIndex;
-            const newTabIndex = this.browserHelper.lastTabIndex(targetContextIndex);
-            if (targetIsNewContext)
-                this.browserHelper.tabPageTypeHelper.initializeContextPageTypes();
-            this.browserHelper.tabPageTypeHelper.initializeTabPageType(targetContextIndex, newTabIndex);
-            await this.browserHelper.switchWorkingTab(targetContextIndex, newTabIndex, defaultTabPageType);
+            await this.browserHelper.openNewTabInNewContext(storageStateUser);
+        });
+        return page;
+    }
+
+    openNewTabInCurrentContext_SS<T extends BasePage>(page: T): T {
+        this.addStep("openNewTab_SS", async() => {
+            console.log("openNewTabInCurrentContext_SS");
+            await this.browserHelper.openNewTabInCurrentContext();
         });
         return page;
     }
@@ -43,16 +43,18 @@ export abstract class BasePage {
         return page;
     }
 
-    async openNewTab<T extends BasePage>(targetContext: "newContext" | "currentContext", page: T): Promise<T> {
+    async openNewTabInNewContext<T extends BasePage>(page: T, storageStateUser?: string): Promise<T> {
         return await test.step("openNewTab", async() => {
-            await this.browserHelper.openNewTab(targetContext);
-            const targetIsNewContext = targetContext === "newContext";
-            const targetContextIndex = targetIsNewContext ? this.browserHelper.lastContextIndex : this.browserHelper.workingContextIndex;
-            const newTabIndex = this.browserHelper.lastTabIndex(targetContextIndex);
-            if (targetIsNewContext)
-                this.browserHelper.tabPageTypeHelper.initializeContextPageTypes();
-            this.browserHelper.tabPageTypeHelper.initializeTabPageType(targetContextIndex, newTabIndex);
-            await this.browserHelper.switchWorkingTab(targetContextIndex, newTabIndex, defaultTabPageType);
+            console.log("openNewTabInNewContext");
+            await this.browserHelper.openNewTabInNewContext(storageStateUser);
+            return page;
+        });
+    }
+
+    async openNewTabInCurrentContext<T extends BasePage>(page: T): Promise<T> {
+        return await test.step("openNewTab", async() => {
+            console.log("openNewTabInCurrentContext");
+            await this.browserHelper.openNewTabInCurrentContext();
             return page;
         });
     }

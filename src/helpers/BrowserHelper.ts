@@ -1,17 +1,20 @@
-import { expect, Page } from "@playwright/test";
+import { Browser, BrowserContext, expect, Page } from "@playwright/test";
 import { PageType } from "../customTypes/PageTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
+import { getUserCredentials } from "./CredentialsHelper";
+import fs from "fs";
 
 export class BrowserHelper {
 
     private readonly tabPageTypeHelper: TabPageTypeHelper;
+    private _workingTab!: Page;
 
-    constructor(private _workingTab: Page) {
+    constructor(private _workingBrowser: Browser, private readonly authenticationEndpoint: string, private readonly validationEndpoint: string) {
         this.tabPageTypeHelper = new TabPageTypeHelper();
     }
 
     get workingBrowser() {
-        return this.workingTab.context().browser()!;
+        return this._workingBrowser;
     }
 
     get workingContext() {
@@ -42,13 +45,31 @@ export class BrowserHelper {
         this._workingTab = this.workingBrowser.contexts()[contextIndex].pages()[tabIndex];
     }
     
-    async openNewTab(targetContext: "newContext" | "currentContext") {
-        if (targetContext === "newContext") {
-            const newContext = await this.workingBrowser.newContext();
-            await newContext.newPage();
-        } else if (targetContext === "currentContext") {
+    async openNewTabInCurrentContext() {
         await this.workingContext.newPage();
+        this.tabPageTypeHelper.initializeTabPageType(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
+        this.updateWorkingTab(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
     }
+
+    async openNewTabInNewContext(storageStateUser?: string) {
+        let context: BrowserContext;
+        if (!storageStateUser) {
+            context = await this.workingBrowser.newContext();
+        } else {
+            const userCredentials = getUserCredentials(storageStateUser);
+            const storageStatePath = `.auth/${storageStateUser}.json`;
+            if (!fs.existsSync(storageStatePath)) {
+                await this.saveStorageState(this.workingBrowser, userCredentials.username, userCredentials.password, storageStatePath);
+            }
+            if (!await this.storageStateIsValid(this.workingBrowser, storageStatePath)) {
+                await this.saveStorageState(this.workingBrowser, userCredentials.username, userCredentials.password, storageStatePath);
+            }
+            context = await this.workingBrowser.newContext({storageState: storageStatePath});
+        }
+        await context.newPage();
+        this.tabPageTypeHelper.initializeContextPageTypes();
+        this.tabPageTypeHelper.initializeTabPageType(this.lastContextIndex, 0);
+        this.updateWorkingTab(this.lastContextIndex, 0);
     }
 
     async switchWorkingTab(contextIndex: number, tabIndex: number, expectedPageType: PageType) {
@@ -91,5 +112,31 @@ export class BrowserHelper {
     async closeBrowser() {
         await this.closeAllContexts();
         await this.workingBrowser.close();
+    }
+    
+    async saveStorageState(browser: Browser, username: string, password: string, storageStatePath: string) {
+        const context = await browser.newContext();
+        await context.request.post(this.authenticationEndpoint, {
+            data: {
+                username: username,
+                password: password
+            }
+        });
+        await context.request.storageState({ path: storageStatePath});
+        await context.close();
+        console.log(`Created ${storageStatePath}`);
+    }
+    
+    async storageStateIsValid(browser: Browser, storageStatePath: string) {
+        const tokenValue = JSON.parse(fs.readFileSync(storageStatePath).toString())["cookies"][0].value;
+        const loggedInContext = await browser.newContext({ storageState: storageStatePath });
+        const response = await loggedInContext.request.post(this.validationEndpoint, {
+            data: {
+                token: tokenValue
+            }
+        });
+        await loggedInContext.close();
+        console.log(`Verified ${storageStatePath} is ${response.ok() ? "valid" : "invalid"}`);
+        return response.ok();
     }
 }

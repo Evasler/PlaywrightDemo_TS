@@ -1,1 +1,1 @@
-export type PageType = "BlankPage" | "HomePage" | "AjaxPage";
+export type PageType = "BlankPage" | "Login" | "AdminPanel" | "HomePage" | "AjaxPage";

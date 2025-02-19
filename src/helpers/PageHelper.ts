@@ -5,6 +5,7 @@ import { AjaxDataPage } from "../pages/AjaxData/AjaxDataPage";
 import { StepSequenceHelper } from "./StepSequenceHelper";
 import { LoginPage } from "../pages/AutomationInTesting/Login/LoginPage";
 import { AdminPanelPage } from "../pages/AutomationInTesting/AdminPanel/AdminPanelPage";
+import { ErrorPage } from "../pages/Error/ErrorPage";
 
 export class PageHelper {
 
@@ -13,6 +14,9 @@ export class PageHelper {
     //https://automationintesting.online/
     private _loginPage?: LoginPage;
     private _adminPanelPage?: AdminPanelPage;
+
+    //Dummy page to showcase ErrorListener
+    private _errorPage?: ErrorPage;
 
     //http://uitestingplayground.com
     private _homePage?: HomePage;
@@ -39,6 +43,13 @@ export class PageHelper {
             this._adminPanelPage = new AdminPanelPage(this.browserHelper, this.stepSequenceHelper);
         }
         return this._adminPanelPage;
+    }
+
+    get errorPage() {
+        if (this._errorPage === undefined) {
+            this._errorPage = new ErrorPage(this.browserHelper, this.stepSequenceHelper);
+        }
+        return this._errorPage;
     }
 
     get homePage() {

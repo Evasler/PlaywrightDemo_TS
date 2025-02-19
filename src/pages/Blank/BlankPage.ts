@@ -5,6 +5,7 @@ import { BasePage } from "../Base/BasePage";
 import { HomePage } from "../Home/HomePage";
 import { LoginPage } from "../AutomationInTesting/Login/LoginPage";
 import { AdminPanelPage } from "../AutomationInTesting/AdminPanel/AdminPanelPage";
+import { ErrorPage } from "../Error/ErrorPage";
 
 export class BlankPage extends BasePage {
     
@@ -33,5 +34,30 @@ export class BlankPage extends BasePage {
             await this.workingTab.goto("https://automationintesting.online/#/admin");
         });
         return landingpage;
+    }
+
+    goToJsErrorPage(errorPage: ErrorPage) {
+        this.addStep("goToJsErrorPage", async() => {
+            console.log("goToJsErrorPage");
+            await this.workingTab.goto("data:text/html,<script>throw new Error(\"myJavaScriptError\")</script>");
+        });
+        return errorPage;
+    }
+
+    goToInternalServerErrorPage(errorPage: ErrorPage) {
+        this.addStep("goToInternalServerErrorPage", async() => {
+            console.log("goToInternalServerErrorPage");
+            await this.workingTab.goto("https://httpstat.us/500");
+        });
+        return errorPage;
+    }
+
+    goToConnectionErrorPage(errorPage: ErrorPage) {
+        this.addStep("goToConnectionErrorPage", async() => {
+            console.log("goToConnectionErrorPage");
+            await this.workingTab.route("http://uitestingplayground.com/", (route) => route.abort());
+            await this.workingTab.goto("http://uitestingplayground.com/");
+        });
+        return errorPage;
     }
 }

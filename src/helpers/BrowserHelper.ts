@@ -3,14 +3,18 @@ import { PageType } from "../customTypes/PageTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
 import { getUserCredentials } from "./CredentialsHelper";
 import fs from "fs";
+import { ErrorListener } from "../listeners/ErrorListener";
 
 export class BrowserHelper {
 
-    private readonly tabPageTypeHelper: TabPageTypeHelper;
+    private readonly _errorListener: ErrorListener;
+    private readonly _tabPageTypeHelper: TabPageTypeHelper;
+
     private _workingTab!: Page;
 
     constructor(private _workingBrowser: Browser, private readonly authenticationEndpoint: string, private readonly validationEndpoint: string) {
-        this.tabPageTypeHelper = new TabPageTypeHelper();
+        this._errorListener = new ErrorListener();
+        this._tabPageTypeHelper = new TabPageTypeHelper();
     }
 
     get workingBrowser() {
@@ -46,8 +50,9 @@ export class BrowserHelper {
     }
     
     async openNewTabInCurrentContext() {
-        await this.workingContext.newPage();
-        this.tabPageTypeHelper.initializeTabPageType(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
+        const newPage = await this.workingContext.newPage();
+        this._errorListener.attachTo(newPage);
+        this._tabPageTypeHelper.initializeTabPageType(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
         this.updateWorkingTab(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
     }
 
@@ -66,9 +71,10 @@ export class BrowserHelper {
             }
             context = await this.workingBrowser.newContext({storageState: storageStatePath});
         }
-        await context.newPage();
-        this.tabPageTypeHelper.initializeContextPageTypes();
-        this.tabPageTypeHelper.initializeTabPageType(this.lastContextIndex, 0);
+        const newPage = await context.newPage();
+        this._errorListener.attachTo(newPage);
+        this._tabPageTypeHelper.initializeContextPageTypes();
+        this._tabPageTypeHelper.initializeTabPageType(this.lastContextIndex, 0);
         this.updateWorkingTab(this.lastContextIndex, 0);
     }
 
@@ -77,7 +83,7 @@ export class BrowserHelper {
         expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThan(this.workingBrowser.contexts()[contextIndex].pages().length);
         const alreadyWorkingOnTheTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
         expect(alreadyWorkingOnTheTab, `Already working on tab [${contextIndex},${tabIndex}]`).toBeFalsy();
-        const actualPageType = this.tabPageTypeHelper.tabPageType(contextIndex, tabIndex);
+        const actualPageType = this._tabPageTypeHelper.tabPageType(contextIndex, tabIndex);
         expect(actualPageType).toBe(expectedPageType);
         this.updateWorkingTab(contextIndex, tabIndex);
     }
@@ -88,7 +94,7 @@ export class BrowserHelper {
         this.workingBrowser.contexts()[contextIndex].pages().forEach(async (page) => await page.close());
         await expect(async () => expect(this.workingBrowser.contexts()[contextIndex].pages().length).toEqual(0)).toPass();
         await this.workingBrowser.contexts()[contextIndex].close();
-        this.tabPageTypeHelper.removeContextPageTypes(contextIndex);
+        this._tabPageTypeHelper.removeContextPageTypes(contextIndex);
     }
 
     async closeTab(contextIndex: number, tabIndex: number) {
@@ -97,7 +103,7 @@ export class BrowserHelper {
         const attemptingToCloseWorkingTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
         expect(attemptingToCloseWorkingTab, `Tab [${contextIndex},${tabIndex}] is the Working Tab. It cannot be closed`).toBeFalsy();
         await this.workingBrowser.contexts()[contextIndex].pages()[tabIndex].close();
-        this.tabPageTypeHelper.removeContextPageTypes(contextIndex);
+        this._tabPageTypeHelper.removeContextPageTypes(contextIndex);
     }
 
     async closeAllContexts() {

@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { StorageStateOptions } from './src/fixtures/chainedPomFixtures';
+import { ErrorListenerOptions, StorageStateOptions } from './src/fixtures/chainedPomFixtures';
 
 /**
  * Read environment variables from file.
@@ -12,7 +12,7 @@ import { StorageStateOptions } from './src/fixtures/chainedPomFixtures';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig<StorageStateOptions>({
+export default defineConfig<StorageStateOptions & ErrorListenerOptions>({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -34,6 +34,9 @@ export default defineConfig<StorageStateOptions>({
     // baseURL: "",
     authenticationEndpoint: "https://automationintesting.online/auth/login",
     validationEndpoint: "https://automationintesting.online/auth/validate",
+    failOnJsError: true,
+    failOnConnectionError: true,
+    failOnRequestError: true,
     headless: false
   },
 

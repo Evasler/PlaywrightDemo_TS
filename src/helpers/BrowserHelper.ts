@@ -12,8 +12,15 @@ export class BrowserHelper {
 
     private _workingTab!: Page;
 
-    constructor(private _workingBrowser: Browser, private readonly authenticationEndpoint: string, private readonly validationEndpoint: string) {
-        this._errorListener = new ErrorListener();
+    constructor(
+        private _workingBrowser: Browser, 
+        private readonly authenticationEndpoint: string, 
+        private readonly validationEndpoint: string, 
+        failOnJsError: boolean, 
+        failOnConnectionError: boolean, 
+        failOnRequestError: boolean
+    ) {
+        this._errorListener = new ErrorListener(failOnJsError, failOnConnectionError, failOnRequestError);
         this._tabPageTypeHelper = new TabPageTypeHelper();
     }
 

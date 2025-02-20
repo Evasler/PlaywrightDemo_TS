@@ -2,31 +2,15 @@ import { test as base, Page } from "@playwright/test";
 import { BrowserHelper } from "../helpers/BrowserHelper";
 import { PageHelper } from "../helpers/PageHelper";
 import { StepSequenceHelper } from "../helpers/StepSequenceHelper";
+import { ErrorListenerOptionsObj, PageHelperObj, SharedStorageStateEndpointsObj, SharedStorageStateUser } from "../customTypes/CustomTypes";
 
-export type StorageStateOptions = {
-    authenticationEndpoint: string;
-    validationEndpoint: string;
-    storageStateUser: string;
-};
-export type ErrorListenerOptions = {
-    failOnJsError: boolean;
-    failOnConnectionError: boolean;
-    failOnRequestError: boolean;
-}
-type TestFixtures = {
-    pageHelper: PageHelper;
-};
-
-export const test = base.extend<TestFixtures & StorageStateOptions & ErrorListenerOptions, {}>({
-    authenticationEndpoint: [ "", { option: true }],
-    validationEndpoint: [ "", { option: true }],
-    storageStateUser: [ "", { option: true }],
-    failOnJsError: [ false, { option: true }],
-    failOnConnectionError: [ false, { option: true }],
-    failOnRequestError: [ false, { option: true }],
-    pageHelper: [ async ({ browser, storageStateUser, authenticationEndpoint, validationEndpoint, failOnJsError, failOnConnectionError, failOnRequestError }, use) => {
-        const browserHelper = new BrowserHelper(browser, authenticationEndpoint, validationEndpoint, failOnJsError, failOnConnectionError, failOnRequestError);
-        await browserHelper.openNewTabInNewContext(storageStateUser);
+export const test = base.extend<PageHelperObj & SharedStorageStateEndpointsObj & SharedStorageStateUser & ErrorListenerOptionsObj, {}>({
+    sharedStorageStateEndpoints: [ { authentication: "", validation: "" }, { option: true }],
+    sharedStorageStateUser: [ "", { option: true }],
+    errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
+    pageHelper: [ async ({ browser, sharedStorageStateEndpoints, sharedStorageStateUser, errorListenerOptions }, use) => {
+        const browserHelper = new BrowserHelper(browser, sharedStorageStateEndpoints, errorListenerOptions);
+        await browserHelper.openNewTabInNewContext(sharedStorageStateUser);
         const stepSequenceHelper = new StepSequenceHelper();
         const pageHelper = new PageHelper(browserHelper, stepSequenceHelper);
         await use(pageHelper);

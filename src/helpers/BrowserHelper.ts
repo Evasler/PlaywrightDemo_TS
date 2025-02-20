@@ -1,5 +1,5 @@
 import { Browser, BrowserContext, expect, Page } from "@playwright/test";
-import { PageType } from "../customTypes/PageTypes";
+import { ErrorListenerOptions, PageType, SharedStorageStateEndpoints } from "../customTypes/CustomTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
 import { getUserCredentials } from "./CredentialsHelper";
 import fs from "fs";
@@ -14,13 +14,10 @@ export class BrowserHelper {
 
     constructor(
         private _workingBrowser: Browser, 
-        private readonly authenticationEndpoint: string, 
-        private readonly validationEndpoint: string, 
-        failOnJsError: boolean, 
-        failOnConnectionError: boolean, 
-        failOnRequestError: boolean
+        private readonly sharedStorageState: SharedStorageStateEndpoints, 
+        errorListenerOptions: ErrorListenerOptions
     ) {
-        this._errorListener = new ErrorListener(failOnJsError, failOnConnectionError, failOnRequestError);
+        this._errorListener = new ErrorListener(errorListenerOptions);
         this._tabPageTypeHelper = new TabPageTypeHelper();
     }
 
@@ -63,13 +60,13 @@ export class BrowserHelper {
         this.updateWorkingTab(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
     }
 
-    async openNewTabInNewContext(storageStateUser?: string) {
+    async openNewTabInNewContext(sharedStorageStateUser?: string) {
         let context: BrowserContext;
-        if (!storageStateUser) {
+        if (!sharedStorageStateUser) {
             context = await this.workingBrowser.newContext();
         } else {
-            const userCredentials = getUserCredentials(storageStateUser);
-            const storageStatePath = `.auth/${storageStateUser}.json`;
+            const userCredentials = getUserCredentials(sharedStorageStateUser);
+            const storageStatePath = `.auth/${sharedStorageStateUser}.json`;
             if (!fs.existsSync(storageStatePath)) {
                 await this.saveStorageState(this.workingBrowser, userCredentials.username, userCredentials.password, storageStatePath);
             }
@@ -128,8 +125,10 @@ export class BrowserHelper {
     }
     
     async saveStorageState(browser: Browser, username: string, password: string, storageStatePath: string) {
+        if (!this.sharedStorageState.authentication)
+            throw new Error("authenticationEndpoint is undefined");
         const context = await browser.newContext();
-        await context.request.post(this.authenticationEndpoint, {
+        await context.request.post(this.sharedStorageState.authentication, {
             data: {
                 username: username,
                 password: password
@@ -141,9 +140,11 @@ export class BrowserHelper {
     }
     
     async storageStateIsValid(browser: Browser, storageStatePath: string) {
+        if (!this.sharedStorageState.validation)
+            throw new Error("validationEndpoint is undefined");
         const tokenValue = JSON.parse(fs.readFileSync(storageStatePath).toString())["cookies"][0].value;
         const loggedInContext = await browser.newContext({ storageState: storageStatePath });
-        const response = await loggedInContext.request.post(this.validationEndpoint, {
+        const response = await loggedInContext.request.post(this.sharedStorageState.validation, {
             data: {
                 token: tokenValue
             }

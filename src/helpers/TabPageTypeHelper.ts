@@ -1,4 +1,4 @@
-import { PageType } from "../customTypes/PageTypes";
+import { PageType } from "../customTypes/CustomTypes";
 
 export const defaultTabPageType: PageType = "BlankPage";
 

@@ -1,4 +1,4 @@
-import { PageType } from "../../customTypes/PageTypes";
+import { PageType } from "../../customTypes/CustomTypes";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
 import test from "@playwright/test";
@@ -19,10 +19,10 @@ export abstract class BasePage {
         return this.stepSequenceHelper.stepSequence;
     }
 
-    openNewTabInNewContext<T extends BasePage>(page: T, storageStateUser?: string): T {
+    openNewTabInNewContext<T extends BasePage>(page: T, sharedStorageStateUser?: string): T {
         this.addStep("openNewTabInNewContext", async() => {
             console.log("openNewTabInNewContext");
-            await this.browserHelper.openNewTabInNewContext(storageStateUser);
+            await this.browserHelper.openNewTabInNewContext(sharedStorageStateUser);
         });
         return page;
     }

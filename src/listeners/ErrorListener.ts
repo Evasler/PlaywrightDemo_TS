@@ -1,25 +1,22 @@
 import { Page } from "@playwright/test";
+import { ErrorListenerOptions } from "../customTypes/CustomTypes";
 
 export class ErrorListener {
 
-    constructor(
-        private readonly failOnJsError: boolean, 
-        private readonly failOnConnectionError: boolean, 
-        private readonly failOnRequestError: boolean
-    ) { }
+    constructor(private readonly errorListenerOptions: ErrorListenerOptions) { }
 
     attachTo(page: Page) {
-        if (this.failOnJsError)
+        if (this.errorListenerOptions.failOnJsError)
             page.on("pageerror", (error) => {
                 throw new Error(`Uncaught JS error: ${error.message}`);
             });
 
-        if (this.failOnConnectionError)
+        if (this.errorListenerOptions.failOnConnectionError)
             page.on("requestfailed", (request) => {
                 throw new Error(`Request failed: ${request.url()}`);
             });
         
-        if (this.failOnRequestError)
+        if (this.errorListenerOptions.failOnRequestError)
             page.on("requestfinished", async (request) => {
                 const response = await request.response();
                 if (response !== null && response.status() >= 400)

@@ -1,6 +1,5 @@
 import path from "path";
-
-type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
+import { LogLevel } from "../customTypes/CustomTypes";
 
 export class TerminalUtils {
 

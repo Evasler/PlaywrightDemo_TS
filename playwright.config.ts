@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { ErrorListenerOptions, StorageStateOptions } from './src/fixtures/chainedPomFixtures';
+import { ErrorListenerOptionsObj, SharedStorageStateEndpointsObj } from './src/customTypes/CustomTypes';
 
 /**
  * Read environment variables from file.
@@ -12,7 +12,7 @@ import { ErrorListenerOptions, StorageStateOptions } from './src/fixtures/chaine
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig<StorageStateOptions & ErrorListenerOptions>({
+export default defineConfig<SharedStorageStateEndpointsObj & ErrorListenerOptionsObj>({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -32,11 +32,15 @@ export default defineConfig<StorageStateOptions & ErrorListenerOptions>({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     // baseURL: "",
-    authenticationEndpoint: "https://automationintesting.online/auth/login",
-    validationEndpoint: "https://automationintesting.online/auth/validate",
-    failOnJsError: true,
-    failOnConnectionError: true,
-    failOnRequestError: true,
+    sharedStorageStateEndpoints: {
+      authentication: "https://automationintesting.online/auth/login",
+      validation: "https://automationintesting.online/auth/validate"
+    },
+    errorListenerOptions: {
+      failOnJsError: true,
+      failOnConnectionError: true,
+      failOnRequestError: true
+    },
     headless: false
   },
 

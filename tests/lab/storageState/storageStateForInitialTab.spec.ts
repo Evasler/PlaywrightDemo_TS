@@ -1,6 +1,7 @@
 import { test } from "../../../src/fixtures/chainedPomFixtures";
 import { TestUtils } from "../../../src/utils/TestUtils";
 
+test.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false } });
 test.describe("Initial Tab without storageState", () => {
     test(TestUtils.buildTestTitle(0, "Login page displayed, when initial tab isn't instantiated with a storageState"), async({ pageHelper }) => {
         await pageHelper.blankPage
@@ -11,7 +12,7 @@ test.describe("Initial Tab without storageState", () => {
 });
 
 test.describe("Initial Tab with storageState", () => {
-    test.use({storageStateUser: "administrator"});
+    test.use({ sharedStorageStateUser: "administrator" });
     test(TestUtils.buildTestTitle(1, "Admin Panel displayed, when initial tab is instantiated with a storageState"), async({ pageHelper }) => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.adminPanelPage)

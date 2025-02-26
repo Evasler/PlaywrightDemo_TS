@@ -1,3 +1,4 @@
+import { ApiHelper } from "../helpers/ApiHelper";
 import { PageHelper } from "../helpers/PageHelper";
 
 export type PageType = "BlankPage" | "Login" | "AdminPanel" | "Error" | "HomePage" | "AjaxPage";
@@ -17,3 +18,4 @@ export type ErrorListenerOptions = {
 };
 export type ErrorListenerOptionsObj = { errorListenerOptions: ErrorListenerOptions; };
 export type PageHelperObj = { pageHelper: PageHelper; };
+export type ApiHelperObj = { apiHelper: ApiHelper; };

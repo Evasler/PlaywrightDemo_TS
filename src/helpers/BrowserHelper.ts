@@ -52,7 +52,7 @@ export class BrowserHelper {
     updateWorkingTab(contextIndex: number, tabIndex: number) {
         this._workingTab = this.workingBrowser.contexts()[contextIndex].pages()[tabIndex];
     }
-    
+
     async openNewTabInCurrentContext() {
         const newPage = await this.workingContext.newPage();
         this._errorListener.attachTo(newPage);
@@ -138,7 +138,7 @@ export class BrowserHelper {
         await context.close();
         console.log(`Created ${storageStatePath}`);
     }
-    
+
     async storageStateIsValid(browser: Browser, storageStatePath: string) {
         if (!this.sharedStorageState.validation)
             throw new Error("validationEndpoint is undefined");

@@ -1,4 +1,4 @@
-import { test as base, Page } from "@playwright/test";
+import { test as base } from "@playwright/test";
 import { BrowserHelper } from "../helpers/BrowserHelper";
 import { PageHelper } from "../helpers/PageHelper";
 import { StepSequenceHelper } from "../helpers/StepSequenceHelper";

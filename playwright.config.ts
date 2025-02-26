@@ -31,7 +31,7 @@ export default defineConfig<SharedStorageStateEndpointsObj & ErrorListenerOption
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    // baseURL: "",
+    baseURL: "https://automationintesting.online/",
     sharedStorageStateEndpoints: {
       authentication: "https://automationintesting.online/auth/login",
       validation: "https://automationintesting.online/auth/validate"

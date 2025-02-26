@@ -1,15 +1,14 @@
 import { test as base } from "@playwright/test";
-import { ApiHelperObj, SharedStorageStateEndpointsObj, SharedUser } from "../customTypes/CustomTypes";
+import { ApiHelperObj, SharedUser } from "../customTypes/CustomTypes";
 import { ApiHelper } from "../helpers/ApiHelper";
 import { RequestHelper } from "../helpers/RequestHelper";
 
-export const test = base.extend<ApiHelperObj & SharedStorageStateEndpointsObj & SharedUser, {}>({
-    sharedStorageStateEndpoints: [ { authentication: "", validation: "" }, { option: true }],
+export const test = base.extend<ApiHelperObj & SharedUser, {}>({
     sharedUser: [ undefined, { option: true }],
-    apiHelper: [ async ({ playwright, baseURL, sharedStorageStateEndpoints, sharedUser }, use) => {
+    apiHelper: [ async ({ playwright, baseURL, sharedUser }, use) => {
         if (!baseURL)
             throw new Error("baseURL not defined in playwright.config.ts");
-        const requestHelper = new RequestHelper(playwright.request, sharedStorageStateEndpoints);
+        const requestHelper = new RequestHelper(playwright.request);
         await requestHelper.openNewContext(sharedUser);
         const apiHelper = new ApiHelper(requestHelper, baseURL);
         await use(apiHelper);

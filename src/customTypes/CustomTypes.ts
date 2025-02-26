@@ -3,13 +3,6 @@ import { PageHelper } from "../helpers/PageHelper";
 
 export type PageType = "BlankPage" | "Login" | "AdminPanel" | "Error" | "HomePage" | "AjaxPage";
 export type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
-export type SharedStorageStateEndpoints = {
-    authentication: string;
-    validation: string;
-};
-export type SharedStorageStateEndpointsObj = {
-    sharedStorageStateEndpoints: SharedStorageStateEndpoints;
-};
 export type SharedUser = { sharedUser: string | undefined; };
 export type ErrorListenerOptions = {
     failOnJsError: boolean;

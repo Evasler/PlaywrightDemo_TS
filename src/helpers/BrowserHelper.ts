@@ -1,5 +1,5 @@
 import { Browser, expect, Page } from "@playwright/test";
-import { ErrorListenerOptions, PageType, SharedStorageStateEndpoints } from "../customTypes/CustomTypes";
+import { ErrorListenerOptions, PageType } from "../customTypes/CustomTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
 import { ErrorListener } from "../listeners/ErrorListener";
 import { storageStateValue } from "./StorageStateHelper";
@@ -13,7 +13,6 @@ export class BrowserHelper {
 
     constructor(
         private _workingBrowser: Browser,
-        private readonly sharedStorageState: SharedStorageStateEndpoints, 
         errorListenerOptions: ErrorListenerOptions
     ) {
         this._errorListener = new ErrorListener(errorListenerOptions);

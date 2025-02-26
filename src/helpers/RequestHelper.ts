@@ -1,5 +1,4 @@
 import { APIRequest, APIRequestContext, expect } from "@playwright/test";
-import { SharedStorageStateEndpoints } from "../customTypes/CustomTypes";
 import { storageStateValue } from "./StorageStateHelper";
 
 export class RequestHelper {
@@ -8,7 +7,7 @@ export class RequestHelper {
 
     private _workingRequestContext!: APIRequestContext;
 
-    constructor(private readonly _apiRequest: APIRequest, private readonly sharedStorageStateEndpoints: SharedStorageStateEndpoints) { }
+    constructor(private readonly _apiRequest: APIRequest) { }
 
     get workingRequestContext() {
         return this._workingRequestContext;

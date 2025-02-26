@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { ErrorListenerOptionsObj, SharedStorageStateEndpointsObj } from './src/customTypes/CustomTypes';
+import { ErrorListenerOptionsObj } from './src/customTypes/CustomTypes';
 
 /**
  * Read environment variables from file.
@@ -12,7 +12,7 @@ import { ErrorListenerOptionsObj, SharedStorageStateEndpointsObj } from './src/c
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig<SharedStorageStateEndpointsObj & ErrorListenerOptionsObj>({
+export default defineConfig<ErrorListenerOptionsObj>({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: false,
@@ -32,10 +32,6 @@ export default defineConfig<SharedStorageStateEndpointsObj & ErrorListenerOption
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     baseURL: "https://automationintesting.online/",
-    sharedStorageStateEndpoints: {
-      authentication: "https://automationintesting.online/auth/login",
-      validation: "https://automationintesting.online/auth/validate"
-    },
     errorListenerOptions: {
       failOnJsError: true,
       failOnConnectionError: true,

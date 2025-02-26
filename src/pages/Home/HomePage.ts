@@ -4,14 +4,13 @@ import { HomePageLocators } from "./HomeLocators";
 import { AjaxDataPage } from "../AjaxData/AjaxDataPage";
 import { step } from "../../decorators/StepDecorator";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
-import { StorageStateHelper } from "../../helpers/StorageStateHelper";
 
 export class HomePage extends BasePage {
 
     private readonly homePageLocators: HomePageLocators;
 
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, storageStateHelper: StorageStateHelper) {
-        super("HomePage", browserHelper, stepSequenceHelper, storageStateHelper);
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
+        super("HomePage", browserHelper, stepSequenceHelper);
         this.homePageLocators = new HomePageLocators(browserHelper);
     }
 

@@ -3,14 +3,13 @@ import { RequestHelper } from "../../helpers/RequestHelper";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BaseService } from "../Base/BaseService";
 import { RoomRequests } from "./RoomRequests";
-import { StorageStateHelper } from "../../helpers/StorageStateHelper";
 
 export class RoomService extends BaseService {
     
     private readonly roomRequests;
 
-    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, storageStateHelper: StorageStateHelper, baseUrl: string) {
-        super(requestHelper, stepSequenceHelper, storageStateHelper);
+    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, baseUrl: string) {
+        super(requestHelper, stepSequenceHelper);
         this.roomRequests = new RoomRequests(requestHelper, baseUrl);
     }
     

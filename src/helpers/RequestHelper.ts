@@ -1,13 +1,16 @@
 import { APIRequest, APIRequestContext, expect } from "@playwright/test";
-import { storageStateValue } from "./StorageStateHelper";
+import { StorageStateHelper, storageStateValue } from "./StorageStateHelper";
 
 export class RequestHelper {
 
     private readonly _requestContexts: APIRequestContext[] = [];
+    private readonly _storageStateHelper;
 
     private _workingRequestContext!: APIRequestContext;
 
-    constructor(private readonly _apiRequest: APIRequest) { }
+    constructor(private readonly _apiRequest: APIRequest, baseUrl: string) {
+        this._storageStateHelper = new StorageStateHelper(baseUrl);
+    }
 
     get workingRequestContext() {
         return this._workingRequestContext;
@@ -25,6 +28,8 @@ export class RequestHelper {
         let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(sharedUser) });
         this._requestContexts.push(newContext);
         this.updateWorkingRequestContext(this._requestContexts.length - 1);
+        if (sharedUser)
+            await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(this.workingRequestContext, sharedUser);
     }
 
     async switchWorkingContext(requestContextIndex: number) {

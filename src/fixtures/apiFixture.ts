@@ -8,7 +8,7 @@ export const test = base.extend<ApiHelperObj & SharedUser, {}>({
     apiHelper: [ async ({ playwright, baseURL, sharedUser }, use) => {
         if (!baseURL)
             throw new Error("baseURL not defined in playwright.config.ts");
-        const requestHelper = new RequestHelper(playwright.request);
+        const requestHelper = new RequestHelper(playwright.request, baseURL);
         await requestHelper.openNewContext(sharedUser);
         const apiHelper = new ApiHelper(requestHelper, baseURL);
         await use(apiHelper);

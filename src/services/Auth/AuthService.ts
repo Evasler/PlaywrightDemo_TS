@@ -4,14 +4,13 @@ import { RequestHelper } from "../../helpers/RequestHelper";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { AuthRequests } from "./AuthRequests";
 import { BaseService } from "../Base/BaseService";
-import { StorageStateHelper } from "../../helpers/StorageStateHelper";
 
 export class AuthService extends BaseService {
     
     private readonly authRequests;
 
-    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, storageStateHelper: StorageStateHelper, baseUrl: string) {
-        super(requestHelper, stepSequenceHelper, storageStateHelper);
+    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, baseUrl: string) {
+        super(requestHelper, stepSequenceHelper);
         this.authRequests = new AuthRequests(requestHelper, baseUrl);
     }
 

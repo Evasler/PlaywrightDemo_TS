@@ -2,11 +2,10 @@ import test from "@playwright/test";
 import { PageType } from "../../customTypes/CustomTypes";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
-import { StorageStateHelper } from "../../helpers/StorageStateHelper";
 
 export abstract class BasePage {
 
-    constructor(private readonly pageType: PageType, private readonly browserHelper: BrowserHelper, private readonly stepSequenceHelper: StepSequenceHelper, private readonly _storageStateHelper: StorageStateHelper) { }
+    constructor(private readonly pageType: PageType, private readonly browserHelper: BrowserHelper, private readonly stepSequenceHelper: StepSequenceHelper) { }
 
     protected addStep(title: string, callback: () => Promise<void>) {
         this.stepSequenceHelper.addStep(async() => {
@@ -24,8 +23,6 @@ export abstract class BasePage {
         this.addStep("openNewTabInNewContext", async() => {
             console.log("openNewTabInNewContext");
             await this.browserHelper.openNewTabInNewContext(sharedUser);
-            if (sharedUser)
-                await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(this.browserHelper.workingContext.request, sharedUser);
         });
         return page;
     }

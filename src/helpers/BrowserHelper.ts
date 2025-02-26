@@ -2,21 +2,24 @@ import { Browser, expect, Page } from "@playwright/test";
 import { ErrorListenerOptions, PageType } from "../customTypes/CustomTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
 import { ErrorListener } from "../listeners/ErrorListener";
-import { storageStateValue } from "./StorageStateHelper";
+import { StorageStateHelper, storageStateValue } from "./StorageStateHelper";
 
 export class BrowserHelper {
 
     private readonly _errorListener: ErrorListener;
     private readonly _tabPageTypeHelper: TabPageTypeHelper;
+    private readonly _storageStateHelper: StorageStateHelper;
 
     private _workingTab!: Page;
 
     constructor(
         private _workingBrowser: Browser,
+        baseUrl: string,
         errorListenerOptions: ErrorListenerOptions
     ) {
         this._errorListener = new ErrorListener(errorListenerOptions);
         this._tabPageTypeHelper = new TabPageTypeHelper();
+        this._storageStateHelper = new StorageStateHelper(baseUrl);
     }
 
     get workingBrowser() {
@@ -65,6 +68,8 @@ export class BrowserHelper {
         this._tabPageTypeHelper.initializeContextPageTypes();
         this._tabPageTypeHelper.initializeTabPageType(this.lastContextIndex, 0);
         this.updateWorkingTab(this.lastContextIndex, 0);
+        if (sharedUser)
+            await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(this.workingContext.request, sharedUser);
     }
 
     async switchWorkingTab(contextIndex: number, tabIndex: number, expectedPageType: PageType) {

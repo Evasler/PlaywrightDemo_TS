@@ -6,12 +6,11 @@ import { HomePage } from "../Home/HomePage";
 import { LoginPage } from "../AutomationInTesting/Login/LoginPage";
 import { AdminPanelPage } from "../AutomationInTesting/AdminPanel/AdminPanelPage";
 import { ErrorPage } from "../Error/ErrorPage";
-import { StorageStateHelper } from "../../helpers/StorageStateHelper";
 
 export class BlankPage extends BasePage {
     
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, storageStateHelper: StorageStateHelper) {
-        super("BlankPage", browserHelper, stepSequenceHelper, storageStateHelper);
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
+        super("BlankPage", browserHelper, stepSequenceHelper);
     }
 
     @step()

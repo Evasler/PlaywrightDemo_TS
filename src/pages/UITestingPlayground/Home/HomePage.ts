@@ -1,9 +1,9 @@
-import { BasePage } from "../Base/BasePage";
-import { BrowserHelper } from "../../helpers/BrowserHelper";
+import { BasePage } from "../../Base/BasePage";
+import { BrowserHelper } from "../../../helpers/BrowserHelper";
 import { HomePageLocators } from "./HomeLocators";
 import { AjaxDataPage } from "../AjaxData/AjaxDataPage";
-import { step } from "../../decorators/StepDecorator";
-import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
+import { step } from "../../../decorators/StepDecorator";
+import { StepSequenceHelper } from "../../../helpers/StepSequenceHelper";
 
 export class HomePage extends BasePage {
 

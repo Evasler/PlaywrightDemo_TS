@@ -1,5 +1,5 @@
-import { BaseLocators } from "../Base/BaseLocators";
-import { BrowserHelper } from "../../helpers/BrowserHelper";
+import { BaseLocators } from "../../Base/BaseLocators";
+import { BrowserHelper } from "../../../helpers/BrowserHelper";
 
 export class HomePageLocators extends BaseLocators {
 

@@ -2,7 +2,7 @@ import { step } from "../../decorators/StepDecorator";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
 import { BasePage } from "../Base/BasePage";
-import { HomePage } from "../Home/HomePage";
+import { HomePage } from "../UITestingPlayground/Home/HomePage";
 import { LoginPage } from "../AutomationInTesting/Login/LoginPage";
 import { AdminPanelPage } from "../AutomationInTesting/AdminPanel/AdminPanelPage";
 import { ErrorPage } from "../Error/ErrorPage";

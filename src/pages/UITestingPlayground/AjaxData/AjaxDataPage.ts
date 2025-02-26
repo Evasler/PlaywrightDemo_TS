@@ -1,6 +1,6 @@
-import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
-import { BrowserHelper } from "../../helpers/BrowserHelper";
-import { BasePage } from "../Base/BasePage";
+import { StepSequenceHelper } from "../../../helpers/StepSequenceHelper";
+import { BrowserHelper } from "../../../helpers/BrowserHelper";
+import { BasePage } from "../../Base/BasePage";
 
 export class AjaxDataPage extends BasePage {
 

@@ -1,7 +1,7 @@
 import { BrowserHelper } from "./BrowserHelper";
-import { HomePage } from "../pages/Home/HomePage";
+import { HomePage } from "../pages/UITestingPlayground/Home/HomePage";
 import { BlankPage } from "../pages/Blank/BlankPage";
-import { AjaxDataPage } from "../pages/AjaxData/AjaxDataPage";
+import { AjaxDataPage } from "../pages/UITestingPlayground/AjaxData/AjaxDataPage";
 import { StepSequenceHelper } from "./StepSequenceHelper";
 import { LoginPage } from "../pages/AutomationInTesting/Login/LoginPage";
 import { AdminPanelPage } from "../pages/AutomationInTesting/AdminPanel/AdminPanelPage";

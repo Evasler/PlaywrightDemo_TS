@@ -1,11 +1,9 @@
+import { BaseLocators } from "../Base/BaseLocators";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
 
-export class HomePageLocators {
+export class HomePageLocators extends BaseLocators {
 
-    constructor(private readonly browserHelper: BrowserHelper) { }
-    private get page() {
-        return this.browserHelper.workingTab;
-    }
+    constructor(browserHelper: BrowserHelper) { super(browserHelper) }
 
-    get ajaxDataLink() { return this.page.getByRole("link", {name: "AJAX Data", exact: true}) }
+    get ajaxDataLink() { return this.workingTab.getByRole("link", {name: "AJAX Data", exact: true}) }
 }

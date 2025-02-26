@@ -1,12 +1,9 @@
+import { BaseLocators } from "../../Base/BaseLocators";
 import { BrowserHelper } from "../../../helpers/BrowserHelper";
 
-export class AdminPanelLocators {
+export class AdminPanelLocators extends BaseLocators {
 
-    constructor(private readonly browserHelper: BrowserHelper) { }
-    
-    private get page() {
-        return this.browserHelper.workingTab;
-    }
+    constructor(browserHelper: BrowserHelper) { super(browserHelper) }
 
-    get logoutLink() { return this.page.getByRole("link", {name: "Logout", exact: true}) }
+    get logoutLink() { return this.workingTab.getByRole("link", {name: "Logout", exact: true}) }
 }

@@ -1,10 +1,9 @@
+import { BaseLocators } from "../../Base/BaseLocators";
 import { BrowserHelper } from "../../../helpers/BrowserHelper";
 
-export class LoginLocators {
+export class LoginLocators extends BaseLocators {
 
-    constructor(private readonly browserHelper: BrowserHelper) { }
+    constructor(browserHelper: BrowserHelper) { super(browserHelper) }
 
-    private get page() { return this.browserHelper.workingTab; }
-
-    get logIntoYourAccountHeading() { return this.page.getByRole("heading", {name: "Log into your account", exact: true}) }
+    get logIntoYourAccountHeading() { return this.workingTab.getByRole("heading", {name: "Log into your account", exact: true}) }
 }

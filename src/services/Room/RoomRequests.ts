@@ -1,17 +1,18 @@
 import { BaseRequests } from "../Base/BaseRequests";
 import { RequestHelper } from "../../helpers/RequestHelper";
+import { RoomUrls } from "./RoomUrls";
 
 export class RoomRequests extends BaseRequests {
 
-    constructor(requestHelper: RequestHelper, baseUrl: string) { super(requestHelper, baseUrl) }
+    private readonly _roomUrls;
 
-    private readonly _roomBase = "room/";
-
-    private get _roomBaseUrl() { return `${this.baseUrl}${this._roomBase}`}
-    private roomUrl(roomId: number) { return `${this._roomBaseUrl}/${roomId}`}
+    constructor(requestHelper: RequestHelper, baseUrl: string) {
+        super(requestHelper, baseUrl);
+        this._roomUrls = new RoomUrls(baseUrl);
+    }
 
     async getRoom() {
-        return this.workingRequest.get(this._roomBaseUrl);
+        return this.workingRequest.get(this._roomUrls.serviceBaseUrl);
     }
 
     async postRoom(roomName: string, type: string, accessible: "true" | "false", description: string, image: string, roomPrice: string, features: string[]) {
@@ -24,10 +25,10 @@ export class RoomRequests extends BaseRequests {
             roomPrice: roomPrice,
             features: features
         }
-        return this.workingRequest.post(this._roomBaseUrl, { data: payload });
+        return this.workingRequest.post(this._roomUrls.serviceBaseUrl, { data: payload });
     }
 
     async deleteRoom(roomId: number) {
-        return this.workingRequest.delete(this.roomUrl(roomId));
+        return this.workingRequest.delete(this._roomUrls.roomUrl(roomId));
     }
 }

@@ -1,29 +1,25 @@
 import { BaseRequests } from "../Base/BaseRequests";
 import { RequestHelper } from "../../helpers/RequestHelper";
+import { AuthUrls } from "./AuthUrls";
 
 export class AuthRequests extends BaseRequests {
 
-    constructor(requestHelper: RequestHelper, baseUrl: string) { super(requestHelper, baseUrl) }
+    private readonly _authUrls;
 
-    private readonly _authBase = "auth/";
-    private readonly _login = "login";
-    private readonly _validate = "validate";
-    private readonly _logout = "logout";
-
-    private get _loginBaseUrl() { return `${this.baseUrl}${this._authBase}` }
-    private get _loginUrl() { return `${this._loginBaseUrl}${this._login}`}
-    private get _validateUrl() { return `${this._loginBaseUrl}${this._validate}`}
-    private get _logoutUrl() { return `${this._loginBaseUrl}${this._logout}`}
-
-    async login(payload: { username: string; password: string; }) {
-        return this.workingRequest.post(this._loginUrl, { data: payload });
+    constructor(requestHelper: RequestHelper, baseUrl: string) { 
+        super(requestHelper, baseUrl);
+        this._authUrls = new AuthUrls(baseUrl);
     }
 
-    async validate(payload: { token: string })  {
-        return this.workingRequest.post(this._validateUrl, { data: payload });
+    login(payload: { username: string; password: string; }) {
+        return this.workingRequest.post(this._authUrls.login, { data: payload });
     }
 
-    async logout(payload: { token: string })  {
-        return this.workingRequest.post(this._logoutUrl, { data: payload });
+    validate(payload: { token: string })  {
+        return this.workingRequest.post(this._authUrls.validate, { data: payload });
+    }
+
+    logout(payload: { token: string })  {
+        return this.workingRequest.post(this._authUrls.logout, { data: payload });
     }
 }

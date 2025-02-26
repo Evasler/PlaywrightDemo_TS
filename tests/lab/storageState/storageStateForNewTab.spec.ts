@@ -33,7 +33,7 @@ test.describe("Initial Page without storageState", () => {
 });
 
 test.describe("Starting Page with storageState", () => {
-    test.use({ sharedStorageStateUser: "administrator" });
+    test.use({ sharedUser: "administrator" });
     test(TestUtils.buildTestTitle(3, "Admin Panel page displayed, when the new tab is instantiated in the current context, which was instantiated with storageState"), async({ pageHelper }) => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.adminPanelPage)

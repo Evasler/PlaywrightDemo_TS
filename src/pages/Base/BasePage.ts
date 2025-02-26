@@ -1,11 +1,12 @@
+import test from "@playwright/test";
 import { PageType } from "../../customTypes/CustomTypes";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
-import test from "@playwright/test";
+import { StorageStateHelper } from "../../helpers/StorageStateHelper";
 
 export abstract class BasePage {
 
-    constructor(private readonly pageType: PageType, private readonly browserHelper: BrowserHelper, private readonly stepSequenceHelper: StepSequenceHelper) { }
+    constructor(private readonly pageType: PageType, private readonly browserHelper: BrowserHelper, private readonly stepSequenceHelper: StepSequenceHelper, private readonly _storageStateHelper: StorageStateHelper) { }
 
     protected addStep(title: string, callback: () => Promise<void>) {
         this.stepSequenceHelper.addStep(async() => {
@@ -19,10 +20,12 @@ export abstract class BasePage {
         return this.stepSequenceHelper.stepSequence;
     }
 
-    openNewTabInNewContext<T extends BasePage>(page: T, sharedStorageStateUser?: string): T {
+    openNewTabInNewContext<T extends BasePage>(page: T, sharedUser?: string): T {
         this.addStep("openNewTabInNewContext", async() => {
             console.log("openNewTabInNewContext");
-            await this.browserHelper.openNewTabInNewContext(sharedStorageStateUser);
+            await this.browserHelper.openNewTabInNewContext(sharedUser);
+            if (sharedUser)
+                await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(this.browserHelper.workingContext.request, sharedUser);
         });
         return page;
     }

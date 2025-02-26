@@ -1,7 +1,6 @@
 import { APIRequest, APIRequestContext, expect } from "@playwright/test";
-import { getUserCredentials } from "./CredentialsHelper";
-import fs from "fs";
 import { SharedStorageStateEndpoints } from "../customTypes/CustomTypes";
+import { storageStateValue } from "./StorageStateHelper";
 
 export class RequestHelper {
 
@@ -23,20 +22,9 @@ export class RequestHelper {
         this._workingRequestContext = this._requestContexts[requestContextIndex];
     }
     
-    async openNewContext(sharedStorageStateUser?: string) {
-        if (!sharedStorageStateUser) {
-            this._requestContexts.push(await this._apiRequest.newContext());
-        } else {
-            const userCredentials = getUserCredentials(sharedStorageStateUser);
-            const storageStatePath = `.auth/${sharedStorageStateUser}.json`;
-            if (!fs.existsSync(storageStatePath)) {
-                await this.saveStorageState(userCredentials.username, userCredentials.password, storageStatePath);
-            }
-            if (!await this.storageStateIsValid(storageStatePath)) {
-                await this.saveStorageState(userCredentials.username, userCredentials.password, storageStatePath);
-            }
-            this._requestContexts.push(await this._apiRequest.newContext({ storageState: storageStatePath }));
-        }
+    async openNewContext(sharedUser?: string) {
+        let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(sharedUser) });
+        this._requestContexts.push(newContext);
         this.updateWorkingRequestContext(this._requestContexts.length - 1);
     }
 
@@ -44,33 +32,5 @@ export class RequestHelper {
         expect(requestContextIndex, `Context [${requestContextIndex}] not found`).toBeLessThan(this._requestContexts.length);
         expect(requestContextIndex, `Already working on context [${requestContextIndex}]`).not.toEqual(this.workingRequestContextIndex);
         this.updateWorkingRequestContext(requestContextIndex);
-    }
-        
-    async saveStorageState(username: string, password: string, storageStatePath: string) {
-        if (!this.sharedStorageStateEndpoints.authentication)
-            throw new Error("authenticationEndpoint is undefined");
-        const request = await this._apiRequest.newContext();
-        await request.post(this.sharedStorageStateEndpoints.authentication, {
-            data: {
-                username: username,
-                password: password
-            }
-        });
-        await request.storageState({ path: storageStatePath});
-        console.log(`Created ${storageStatePath}`);
-    }
-
-    async storageStateIsValid(storageStatePath: string) {
-        if (!this.sharedStorageStateEndpoints.validation)
-            throw new Error("validationEndpoint is undefined");
-        const tokenValue = JSON.parse(fs.readFileSync(storageStatePath).toString())["cookies"][0].value;
-        const loggedInRequest = await this._apiRequest.newContext({ storageState: storageStatePath });
-        const response = await loggedInRequest.post(this.sharedStorageStateEndpoints.validation, {
-            data: {
-                token: tokenValue
-            }
-        });
-        console.log(`Verified ${storageStatePath} is ${response.ok() ? "valid" : "invalid"}`);
-        return response.ok();
     }
 }

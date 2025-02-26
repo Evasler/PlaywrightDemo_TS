@@ -12,7 +12,7 @@ test.describe("Initial Tab without storageState", () => {
 });
 
 test.describe("Initial Tab with storageState", () => {
-    test.use({ sharedStorageStateUser: "administrator" });
+    test.use({ sharedUser: "administrator" });
     test(TestUtils.buildTestTitle(1, "Admin Panel displayed, when initial tab is instantiated with a storageState"), async({ pageHelper }) => {
         await pageHelper.blankPage
         .goToAutomationInTesting(pageHelper.adminPanelPage)

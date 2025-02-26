@@ -10,7 +10,7 @@ export type SharedStorageStateEndpoints = {
 export type SharedStorageStateEndpointsObj = {
     sharedStorageStateEndpoints: SharedStorageStateEndpoints;
 };
-export type SharedStorageStateUser = { sharedStorageStateUser: string; };
+export type SharedUser = { sharedUser: string | undefined; };
 export type ErrorListenerOptions = {
     failOnJsError: boolean;
     failOnConnectionError: boolean;

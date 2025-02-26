@@ -1,14 +1,13 @@
+import { BaseRequests } from "../Base/BaseRequests";
 import { RequestHelper } from "../../helpers/RequestHelper";
 
-export class RoomRequests {
+export class RoomRequests extends BaseRequests {
 
-    constructor(private readonly _requestHelper: RequestHelper, private readonly _baseUrl: string) { }
-
-    private get workingRequest() { return this._requestHelper.workingRequestContext; }
+    constructor(requestHelper: RequestHelper, baseUrl: string) { super(requestHelper, baseUrl) }
 
     private readonly _roomBase = "room/";
 
-    private get _roomBaseUrl() { return `${this._baseUrl}${this._roomBase}`}
+    private get _roomBaseUrl() { return `${this.baseUrl}${this._roomBase}`}
     private roomUrl(roomId: number) { return `${this._roomBaseUrl}/${roomId}`}
 
     async getRoom() {

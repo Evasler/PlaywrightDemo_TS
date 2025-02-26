@@ -1,6 +1,6 @@
 import test from "@playwright/test";
-import { StepSequenceHelper } from "../helpers/StepSequenceHelper";
-import { RequestHelper } from "../helpers/RequestHelper";
+import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
+import { RequestHelper } from "../../helpers/RequestHelper";
 
 export abstract class BaseService {
 

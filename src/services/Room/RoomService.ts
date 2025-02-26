@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import { RequestHelper } from "../../helpers/RequestHelper";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
-import { BaseService } from "../BaseService";
+import { BaseService } from "../Base/BaseService";
 import { RoomRequests } from "./RoomRequests";
 
 export class RoomService extends BaseService {

@@ -3,7 +3,7 @@ import { getUserCredentials } from "../../helpers/CredentialsHelper";
 import { RequestHelper } from "../../helpers/RequestHelper";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { AuthRequests } from "./AuthRequests";
-import { BaseService } from "../BaseService";
+import { BaseService } from "../Base/BaseService";
 
 export class AuthService extends BaseService {
     

@@ -1,10 +1,9 @@
 import { AuthService } from "../services/Auth/AuthService";
 import { RoomService } from "../services/Room/RoomService";
-import { RequestHelper } from "./RequestHelper";
-import { StorageStateHelper } from "./StorageStateHelper";
 import { StepSequenceHelper } from "./StepSequenceHelper";
+import { RequestHelper } from "./RequestHelper";
 
-export class ApiHelper {
+export class ServiceHelper {
 
     private readonly _stepSequenceHelper: StepSequenceHelper;
 

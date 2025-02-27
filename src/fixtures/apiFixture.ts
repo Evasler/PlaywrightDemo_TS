@@ -1,16 +1,16 @@
 import { test as base } from "@playwright/test";
-import { ApiHelperObj, SharedUser } from "../customTypes/CustomTypes";
-import { ApiHelper } from "../helpers/ApiHelper";
+import { ServiceHelperObj, SharedUser } from "../customTypes/CustomTypes";
+import { ServiceHelper } from "../helpers/ServiceHelper";
 import { RequestHelper } from "../helpers/RequestHelper";
 
-export const test = base.extend<ApiHelperObj & SharedUser, {}>({
+export const test = base.extend<ServiceHelperObj & SharedUser, {}>({
     sharedUser: [ undefined, { option: true }],
-    apiHelper: [ async ({ playwright, baseURL, sharedUser }, use) => {
+    serviceHelper: [ async ({ playwright, baseURL, sharedUser }, use) => {
         if (!baseURL)
             throw new Error("baseURL not defined in playwright.config.ts");
         const requestHelper = new RequestHelper(playwright.request, baseURL);
         await requestHelper.openNewContext(sharedUser);
-        const apiHelper = new ApiHelper(requestHelper, baseURL);
-        await use(apiHelper);
+        const serviceHelper = new ServiceHelper(requestHelper, baseURL);
+        await use(serviceHelper);
     }, { scope: "test" }]
 });

@@ -6,17 +6,17 @@ import { LoginLocators } from "./LoginLocators";
 
 export class LoginPage extends BasePage {
     
-    private readonly loginLocators: LoginLocators;
+    private readonly _loginLocators: LoginLocators;
 
     constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
         super("Login", browserHelper, stepSequenceHelper);
-        this.loginLocators = new LoginLocators(browserHelper);
+        this._loginLocators = new LoginLocators(browserHelper);
     }
 
     verifyLogIntoYourAccountIsVisible() {
         this.addStep("verifyLogIntoYourAccountIsVisible", async() => {
             console.log("Verifying \"Log into your account\" is visible");
-            await expect(this.loginLocators.logIntoYourAccountHeading).toBeVisible();
+            await expect(this._loginLocators.logIntoYourAccountHeading).toBeVisible();
         });
         return this;
     }

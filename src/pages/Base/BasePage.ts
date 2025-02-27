@@ -5,24 +5,24 @@ import { BrowserHelper } from "../../helpers/BrowserHelper";
 
 export abstract class BasePage {
 
-    constructor(private readonly pageType: PageType, private readonly browserHelper: BrowserHelper, private readonly stepSequenceHelper: StepSequenceHelper) { }
+    constructor(private readonly _pageType: PageType, private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper) { }
 
     protected addStep(title: string, callback: () => Promise<void>) {
-        this.stepSequenceHelper.addStep(async() => {
+        this._stepSequenceHelper.addStep(async() => {
             await test.step(title, callback);
         });
     }
 
-    protected get workingTab() { return this.browserHelper.workingTab; }
+    protected get workingTab() { return this._browserHelper.workingTab; }
 
     execute() {
-        return this.stepSequenceHelper.stepSequence;
+        return this._stepSequenceHelper.stepSequence;
     }
 
     openNewTabInNewContext<T extends BasePage>(page: T, sharedUser?: string): T {
         this.addStep("openNewTabInNewContext", async() => {
             console.log("openNewTabInNewContext");
-            await this.browserHelper.openNewTabInNewContext(sharedUser);
+            await this._browserHelper.openNewTabInNewContext(sharedUser);
         });
         return page;
     }
@@ -30,7 +30,7 @@ export abstract class BasePage {
     openNewTabInCurrentContext<T extends BasePage>(page: T): T {
         this.addStep("openNewTabInCurrentContext", async() => {
             console.log("openNewTabInCurrentContext");
-            await this.browserHelper.openNewTabInCurrentContext();
+            await this._browserHelper.openNewTabInCurrentContext();
         });
         return page;
     }
@@ -38,7 +38,7 @@ export abstract class BasePage {
     switchWorkingTab<T extends BasePage>(contextIndex: number, pageIndex: number, page: T): T {
         this.addStep("switchWorkingTab", async() => {
             console.log("switchWorkingTab");
-            await this.browserHelper.switchWorkingTab(contextIndex, pageIndex, page.pageType);
+            await this._browserHelper.switchWorkingTab(contextIndex, pageIndex, page._pageType);
         });
         return page;
     }
@@ -46,7 +46,7 @@ export abstract class BasePage {
     async openNewTabInNewContext_async<T extends BasePage>(page: T, storageStateUser?: string): Promise<T> {
         return await test.step("openNewTabInNewContext_async", async() => {
             console.log("openNewTabInNewContext_async");
-            await this.browserHelper.openNewTabInNewContext(storageStateUser);
+            await this._browserHelper.openNewTabInNewContext(storageStateUser);
             return page;
         });
     }
@@ -54,7 +54,7 @@ export abstract class BasePage {
     async openNewTabInCurrentContext_async<T extends BasePage>(page: T): Promise<T> {
         return await test.step("openNewTabInCurrentContext_async", async() => {
             console.log("openNewTabInCurrentContext_async");
-            await this.browserHelper.openNewTabInCurrentContext();
+            await this._browserHelper.openNewTabInCurrentContext();
             return page;
         });
     }
@@ -62,7 +62,7 @@ export abstract class BasePage {
     async switchWorkingTab_async<T extends BasePage>(contextIndex: number, pageIndex: number, page: T): Promise<T> {
         return await test.step("switchWorkingTab_async", async() => {
             console.log("switchWorkingTab_async")
-            await this.browserHelper.switchWorkingTab(contextIndex, pageIndex, page.pageType);
+            await this._browserHelper.switchWorkingTab(contextIndex, pageIndex, page._pageType);
             return page;
         });
     }

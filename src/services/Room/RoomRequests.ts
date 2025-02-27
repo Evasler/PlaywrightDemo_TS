@@ -7,7 +7,7 @@ export class RoomRequests extends BaseRequests {
     private readonly _roomUrls;
 
     constructor(requestHelper: RequestHelper, baseUrl: string) {
-        super(requestHelper, baseUrl);
+        super(requestHelper);
         this._roomUrls = new RoomUrls(baseUrl);
     }
 

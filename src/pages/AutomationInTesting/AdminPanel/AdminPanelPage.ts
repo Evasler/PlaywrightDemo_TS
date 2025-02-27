@@ -6,17 +6,17 @@ import { AdminPanelLocators } from "./AdminPanelLocators";
 
 export class AdminPanelPage extends BasePage {
 
-    private readonly adminPanelLocators: AdminPanelLocators;
+    private readonly _adminPanelLocators: AdminPanelLocators;
 
     constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
         super("AdminPanel", browserHelper, stepSequenceHelper);
-        this.adminPanelLocators = new AdminPanelLocators(browserHelper);
+        this._adminPanelLocators = new AdminPanelLocators(browserHelper);
     }
     
     verifyLogoutIsVisible() {
         this.addStep("verifyLogIntoYourAccountIsVisible", async() => {
             console.log("Verifying \"Logout\" is visible");
-            await expect(this.adminPanelLocators.logoutLink).toBeVisible();
+            await expect(this._adminPanelLocators.logoutLink).toBeVisible();
         });
         return this;
     }

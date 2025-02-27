@@ -3,20 +3,20 @@ import { ErrorListenerOptions } from "../customTypes/CustomTypes";
 
 export class ErrorListener {
 
-    constructor(private readonly errorListenerOptions: ErrorListenerOptions) { }
+    constructor(private readonly _errorListenerOptions: ErrorListenerOptions) { }
 
     attachTo(page: Page) {
-        if (this.errorListenerOptions.failOnJsError)
+        if (this._errorListenerOptions.failOnJsError)
             page.on("pageerror", (error) => {
                 throw new Error(`Uncaught JS error: ${error.message}`);
             });
 
-        if (this.errorListenerOptions.failOnConnectionError)
+        if (this._errorListenerOptions.failOnConnectionError)
             page.on("requestfailed", (request) => {
                 throw new Error(`Request failed: ${request.url()}`);
             });
         
-        if (this.errorListenerOptions.failOnRequestError)
+        if (this._errorListenerOptions.failOnRequestError)
             page.on("requestfinished", async (request) => {
                 const response = await request.response();
                 if (response !== null && response.status() >= 400)

@@ -7,7 +7,7 @@ export class AuthRequests extends BaseRequests {
     private readonly _authUrls;
 
     constructor(requestHelper: RequestHelper, baseUrl: string) { 
-        super(requestHelper, baseUrl);
+        super(requestHelper);
         this._authUrls = new AuthUrls(baseUrl);
     }
 

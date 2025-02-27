@@ -3,8 +3,8 @@ import { TerminalUtils } from '../utils/TerminalUtils';
 
 export default class MyReporter implements Reporter {
 
-  private testId = 1;
-  private testCount: number;
+  private _testId = 1;
+  private _testCount: number = 0;
 
   constructor() {
     console.log('\n');
@@ -13,12 +13,12 @@ export default class MyReporter implements Reporter {
   }
 
   onBegin(config: FullConfig, suite: Suite) {
-    this.testCount = suite.allTests().length;
+    this._testCount = suite.allTests().length;
     TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "onBegin");
   }
 
   onTestBegin(test: TestCase) {
-    console.log(`(${this.testId++}/${this.testCount}) ${test.parent.project()!.name} > ${test.title}`)
+    console.log(`(${this._testId++}/${this._testCount}) ${test.parent.project()!.name} > ${test.title}`)
     TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "onTestBegin");
   }
 

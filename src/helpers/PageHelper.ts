@@ -24,7 +24,7 @@ export class PageHelper {
     private _homePage?: HomePage;
     private _ajaxDataPage?: AjaxDataPage;
     
-    constructor(private readonly _browserHelper: BrowserHelper, baseUrl: string) {
+    constructor(private readonly _browserHelper: BrowserHelper) {
         this._stepSequenceHelper = new StepSequenceHelper();
     }
 

@@ -1,4 +1,3 @@
-import { step } from "../../decorators/StepDecorator";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
 import { BasePage } from "../Base/BasePage";
@@ -11,13 +10,6 @@ export class BlankPage extends BasePage {
     
     constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
         super("BlankPage", browserHelper, stepSequenceHelper);
-    }
-
-    @step()
-    async goToUiTestAutomationPlayground_async(homePage: HomePage) {
-        console.log("goToUiTestAutomationPlayground_async");
-        await this.workingTab.goto("http://uitestingplayground.com");
-        return homePage;
     }
 
     goToUiTestAutomationPlayground(homePage: HomePage) {

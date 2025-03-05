@@ -42,28 +42,4 @@ export abstract class BasePage {
         });
         return page;
     }
-
-    async openNewTabInNewContext_async<T extends BasePage>(page: T, storageStateUser?: string): Promise<T> {
-        return await test.step("openNewTabInNewContext_async", async() => {
-            console.log("openNewTabInNewContext_async");
-            await this._browserHelper.openNewTabInNewContext(storageStateUser);
-            return page;
-        });
-    }
-
-    async openNewTabInCurrentContext_async<T extends BasePage>(page: T): Promise<T> {
-        return await test.step("openNewTabInCurrentContext_async", async() => {
-            console.log("openNewTabInCurrentContext_async");
-            await this._browserHelper.openNewTabInCurrentContext();
-            return page;
-        });
-    }
-    
-    async switchWorkingTab_async<T extends BasePage>(contextIndex: number, pageIndex: number, page: T): Promise<T> {
-        return await test.step("switchWorkingTab_async", async() => {
-            console.log("switchWorkingTab_async")
-            await this._browserHelper.switchWorkingTab(contextIndex, pageIndex, page._pageType);
-            return page;
-        });
-    }
 }

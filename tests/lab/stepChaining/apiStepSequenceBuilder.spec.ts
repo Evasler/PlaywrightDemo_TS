@@ -1,5 +1,5 @@
-import { test as apiTest } from "../../../../src/fixtures/apiFixture";
-import { TestUtils } from "../../../../src/utils/TestUtils";
+import { test as apiTest } from "../../../src/fixtures/apiFixture";
+import { TestUtils } from "../../../src/utils/TestUtils";
 
 apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async({ serviceHelper }) => {
     await serviceHelper.authService

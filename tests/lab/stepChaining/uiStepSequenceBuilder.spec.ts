@@ -1,5 +1,5 @@
-import { test as uiTest } from "../../../../src/fixtures/chainedPomFixtures";
-import { TestUtils } from "../../../../src/utils/TestUtils";
+import { test as uiTest } from "../../../src/fixtures/chainedPomFixtures";
+import { TestUtils } from "../../../src/utils/TestUtils";
 
 uiTest(TestUtils.buildTestTitle(0, "Chained Page Object Model | StepSequenceBuilder"), async({ pageHelper }) => {
     await pageHelper.blankPage

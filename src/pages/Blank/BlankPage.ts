@@ -5,11 +5,12 @@ import { HomePage } from "../UITestingPlayground/Home/HomePage";
 import { LoginPage } from "../AutomationInTesting/Login/LoginPage";
 import { AdminPanelPage } from "../AutomationInTesting/AdminPanel/AdminPanelPage";
 import { ErrorPage } from "../Error/ErrorPage";
+import { DataHelper } from "../../helpers/DataHelper";
 
 export class BlankPage extends BasePage {
     
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper) {
-        super("BlankPage", browserHelper, stepSequenceHelper);
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, dataHelper: DataHelper) {
+        super("BlankPage", browserHelper, stepSequenceHelper, dataHelper);
     }
 
     goToUiTestAutomationPlayground(homePage: HomePage) {

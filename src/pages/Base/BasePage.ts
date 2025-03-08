@@ -2,10 +2,11 @@ import test from "@playwright/test";
 import { PageType } from "../../customTypes/CustomTypes";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
+import { DataHelper } from "../../helpers/DataHelper";
 
 export abstract class BasePage {
 
-    constructor(private readonly _pageType: PageType, private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper) { }
+    constructor(private readonly _pageType: PageType, private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _dataHelper: DataHelper) { }
 
     protected addStep(title: string, callback: () => Promise<void>) {
         this._stepSequenceHelper.addStep(async() => {
@@ -14,6 +15,22 @@ export abstract class BasePage {
     }
 
     protected get workingTab() { return this._browserHelper.workingTab; }
+
+    protected setTempData<T extends string | number | boolean>(key: string, value: T) {
+        this._dataHelper.setTempData(key, value);
+    }
+    
+    protected getTempStringData(key: string) {
+        return this._dataHelper.getTempStringData(key);
+    }
+
+    protected getTempNumberData(key: string) {
+        return this._dataHelper.getTempNumberData(key);
+    }
+
+    protected getTempBooleanData(key: string) {
+        return this._dataHelper.getTempBooleanData(key);
+    }
 
     execute() {
         return this._stepSequenceHelper.stepSequence;

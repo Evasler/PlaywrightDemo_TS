@@ -1,6 +1,7 @@
 import { BaseRequests } from "../Base/BaseRequests";
 import { RequestHelper } from "../../helpers/RequestHelper";
 import { RoomUrls } from "./RoomUrls";
+import { CreateRoomPayload } from "../../customTypes/ApiPayloadTypes";
 
 export class RoomRequests extends BaseRequests {
 
@@ -15,16 +16,7 @@ export class RoomRequests extends BaseRequests {
         return this.workingRequest.get(this._roomUrls.serviceBaseUrl);
     }
 
-    async postRoom(roomName: string, type: string, accessible: "true" | "false", description: string, image: string, roomPrice: string, features: string[]) {
-        const payload = {
-            roomName: roomName,
-            type: type,
-            accessible: accessible,
-            description: description,
-            image: image,
-            roomPrice: roomPrice,
-            features: features
-        }
+    async postRoom(payload: CreateRoomPayload) {
         return this.workingRequest.post(this._roomUrls.serviceBaseUrl, { data: payload });
     }
 

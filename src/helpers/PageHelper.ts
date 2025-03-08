@@ -6,6 +6,7 @@ import { StepSequenceHelper } from "./StepSequenceHelper";
 import { LoginPage } from "../pages/AutomationInTesting/Login/LoginPage";
 import { AdminPanelPage } from "../pages/AutomationInTesting/AdminPanel/AdminPanelPage";
 import { ErrorPage } from "../pages/Error/ErrorPage";
+import { DataHelper } from "./DataHelper";
 
 export class PageHelper {
 
@@ -24,48 +25,48 @@ export class PageHelper {
     private _homePage?: HomePage;
     private _ajaxDataPage?: AjaxDataPage;
     
-    constructor(private readonly _browserHelper: BrowserHelper) {
+    constructor(private readonly _browserHelper: BrowserHelper, private readonly _dataHelper: DataHelper) {
         this._stepSequenceHelper = new StepSequenceHelper();
     }
 
     get blankPage() {
         if (this._blankPage === undefined) {
-            this._blankPage = new BlankPage(this._browserHelper, this._stepSequenceHelper);
+            this._blankPage = new BlankPage(this._browserHelper, this._stepSequenceHelper, this._dataHelper);
         }
         return this._blankPage;
     }
 
     get loginPage() {
         if (this._loginPage === undefined) {
-            this._loginPage = new LoginPage(this._browserHelper, this._stepSequenceHelper);
+            this._loginPage = new LoginPage(this._browserHelper, this._stepSequenceHelper, this._dataHelper);
         }
         return this._loginPage;
     }
 
     get adminPanelPage() {
         if (this._adminPanelPage === undefined) {
-            this._adminPanelPage = new AdminPanelPage(this._browserHelper, this._stepSequenceHelper);
+            this._adminPanelPage = new AdminPanelPage(this._browserHelper, this._stepSequenceHelper, this._dataHelper);
         }
         return this._adminPanelPage;
     }
 
     get errorPage() {
         if (this._errorPage === undefined) {
-            this._errorPage = new ErrorPage(this._browserHelper, this._stepSequenceHelper);
+            this._errorPage = new ErrorPage(this._browserHelper, this._stepSequenceHelper, this._dataHelper);
         }
         return this._errorPage;
     }
 
     get homePage() {
         if (this._homePage === undefined) {
-            this._homePage = new HomePage(this._browserHelper, this._stepSequenceHelper);
+            this._homePage = new HomePage(this._browserHelper, this._stepSequenceHelper, this._dataHelper);
         }
         return this._homePage;
     }
 
     get ajaxDataPage() {
         if (this._ajaxDataPage === undefined) {
-            this._ajaxDataPage = new AjaxDataPage(this._browserHelper, this._stepSequenceHelper);
+            this._ajaxDataPage = new AjaxDataPage(this._browserHelper, this._stepSequenceHelper, this._dataHelper);
         }
         return this._ajaxDataPage;
     }

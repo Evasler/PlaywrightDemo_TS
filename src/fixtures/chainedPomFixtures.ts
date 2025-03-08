@@ -1,7 +1,7 @@
 import { test as base } from "@playwright/test";
 import { BrowserHelper } from "../helpers/BrowserHelper";
 import { PageHelper } from "../helpers/PageHelper";
-import { DataHelperObj, ErrorListenerOptionsObj, PageHelperObj, SharedUser } from "../customTypes/CustomTypes";
+import { DataHelperObj, ErrorListenerOptionsObj, PageHelperObj, SharedUser } from "../customTypes/FixtureTypes";
 import { DataHelper } from "../helpers/DataHelper";
 
 export const test = base.extend<PageHelperObj & SharedUser & ErrorListenerOptionsObj & DataHelperObj, {}>({

@@ -1,5 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { ErrorListenerOptionsObj } from './src/customTypes/CustomTypes';
+import { ErrorListenerOptionsObj } from './src/customTypes/FixtureTypes';
 
 /**
  * Read environment variables from file.

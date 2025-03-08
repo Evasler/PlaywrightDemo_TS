@@ -1,5 +1,6 @@
 import { Browser, expect, Page } from "@playwright/test";
-import { ErrorListenerOptions, PageType } from "../customTypes/CustomTypes";
+import { PageType } from "../customTypes/FrameworkTypes";
+import { ErrorListenerOptions } from "../customTypes/FixtureTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
 import { ErrorListener } from "../listeners/ErrorListener";
 import { StorageStateHelper, storageStateValue } from "./StorageStateHelper";

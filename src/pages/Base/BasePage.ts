@@ -1,5 +1,5 @@
 import test from "@playwright/test";
-import { PageType } from "../../customTypes/CustomTypes";
+import { PageType } from "../../customTypes/FrameworkTypes";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
 import { DataHelper } from "../../helpers/DataHelper";

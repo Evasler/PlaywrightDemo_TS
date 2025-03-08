@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import { DataHelperObj, ServiceHelperObj, SharedUser } from "../customTypes/CustomTypes";
+import { DataHelperObj, ServiceHelperObj, SharedUser } from "../customTypes/FixtureTypes";
 import { ServiceHelper } from "../helpers/ServiceHelper";
 import { RequestHelper } from "../helpers/RequestHelper";
 import { DataHelper } from "../helpers/DataHelper";

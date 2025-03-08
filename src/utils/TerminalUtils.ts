@@ -1,5 +1,5 @@
 import path from "path";
-import { LogLevel } from "../customTypes/CustomTypes";
+import { LogLevel } from "../customTypes/FrameworkTypes";
 
 export class TerminalUtils {
 

@@ -1,5 +1,5 @@
-import { test as apiTest } from "../../../../src/fixtures/apiFixture";
-import { TestUtils } from "../../../../src/utils/TestUtils";
+import { test as apiTest } from "../../../src/fixtures/apiFixture";
+import { TestUtils } from "../../../src/utils/TestUtils";
 
 apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async({ serviceHelper }) => {
     await serviceHelper.authService
@@ -14,10 +14,9 @@ apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenc
             image: "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
             roomPrice: 350,
             features: ["TV"]
-        }
+        },
+        "myFirstRoom"
     )
-    .openNewContext(serviceHelper.authService, "administrator")
-    .switchServiceCategory(serviceHelper.roomService)
     .createRoom(
         {
             roomName: "999",
@@ -27,7 +26,10 @@ apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenc
             image: "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
             roomPrice: 400,
             features: ["Views"]
-        }
+        },
+        "mySecondRoom"
     )
+    .deleteRoom("myFirstRoom")
+    .deleteRoom("mySecondRoom")
     .execute();
 });

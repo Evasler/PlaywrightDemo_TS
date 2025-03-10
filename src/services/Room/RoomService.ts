@@ -25,23 +25,23 @@ export class RoomService extends BaseService {
         return this;
     }
     
-    createRoom(payload: CreateRoomPayload, tempDataUniqueId?: string) {
+    createRoom(payload: CreateRoomPayload, tempDataKeyPrefix?: string) {
         this.addStep("createRoom", async() => {
             console.log("createRoom");
             const response = await this._roomRequests.postRoom(payload);
             expect(response.status()).toEqual(201);
-            if (tempDataUniqueId) {
+            if (tempDataKeyPrefix) {
                 const responseJson = await response.json() as CreateRoomResponse;
-                this.setTempData(`${tempDataUniqueId}_roomId`, responseJson.roomid);
+                this.setTempData(`${tempDataKeyPrefix}_roomId`, responseJson.roomid);
             }
         });
         return this;
     }
 
-    deleteRoom(tempDataUniqueId: string) {
+    deleteRoom(tempDataKeyPrefix: string) {
         this.addStep("deleteRoom", async () => {
             console.log("deleteRoom");
-            const response = await this._roomRequests.deleteRoom(this.getTempNumberData(`${tempDataUniqueId}_roomId`));
+            const response = await this._roomRequests.deleteRoom(this.getTempNumberData(`${tempDataKeyPrefix}_roomId`));
             expect(response.status()).toEqual(202);
         });
         return this;

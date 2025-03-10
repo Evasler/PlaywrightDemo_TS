@@ -1,7 +1,7 @@
 import { test as apiTest } from "../../../src/fixtures/apiFixture";
 import { TestUtils } from "../../../src/utils/TestUtils";
 
-apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async({ serviceHelper }) => {
+apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ serviceHelper }) => {
     await serviceHelper.authService
     .login("administrator")
     .switchServiceCategory(serviceHelper.roomService)

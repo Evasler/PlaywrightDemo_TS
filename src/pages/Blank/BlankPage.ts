@@ -5,12 +5,12 @@ import { HomePage } from "../UITestingPlayground/Home/HomePage";
 import { LoginPage } from "../RestfulBooker/Login/LoginPage";
 import { AdminPanelPage } from "../RestfulBooker/AdminPanel/AdminPanelPage";
 import { ErrorPage } from "../Error/ErrorPage";
-import { DataHelper } from "../../helpers/DataHelper";
+import { TempDataHelper } from "../../helpers/TempDataHelper";
 
 export class BlankPage extends BasePage {
     
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, dataHelper: DataHelper) {
-        super("BlankPage", browserHelper, stepSequenceHelper, dataHelper);
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper) {
+        super("BlankPage", browserHelper, stepSequenceHelper, tempDataHelper);
     }
 
     goToUiTestAutomationPlayground(homePage: HomePage) {

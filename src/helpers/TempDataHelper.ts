@@ -1,4 +1,4 @@
-export class DataHelper {
+export class TempDataHelper {
     
     private tempStringData = new Map<string,string>();
     private tempNumberData = new Map<string,number>();

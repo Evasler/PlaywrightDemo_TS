@@ -3,14 +3,14 @@ import { BrowserHelper } from "../../../helpers/BrowserHelper";
 import { StepSequenceHelper } from "../../../helpers/StepSequenceHelper";
 import { BasePage } from "../../Base/BasePage";
 import { LoginLocators } from "./LoginLocators";
-import { DataHelper } from "../../../helpers/DataHelper";
+import { TempDataHelper } from "../../../helpers/TempDataHelper";
 
 export class LoginPage extends BasePage {
     
     private readonly _loginLocators: LoginLocators;
 
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, dataHelper: DataHelper) {
-        super("Login", browserHelper, stepSequenceHelper, dataHelper);
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper) {
+        super("Login", browserHelper, stepSequenceHelper, tempDataHelper);
         this._loginLocators = new LoginLocators(browserHelper);
     }
 

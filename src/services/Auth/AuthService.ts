@@ -4,15 +4,15 @@ import { RequestHelper } from "../../helpers/RequestHelper";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { AuthRequests } from "./AuthRequests";
 import { BaseService } from "../Base/BaseService";
-import { DataHelper } from "../../helpers/DataHelper";
+import { TempDataHelper } from "../../helpers/TempDataHelper";
 import { LoginResponse, ValidateResponse } from "../../customTypes/ApiResponseTypes";
 
 export class AuthService extends BaseService {
     
     private readonly _authRequests;
 
-    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, dataHelper: DataHelper, baseUrl: string) {
-        super(requestHelper, stepSequenceHelper, dataHelper);
+    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper, baseUrl: string) {
+        super(requestHelper, stepSequenceHelper, tempDataHelper);
         this._authRequests = new AuthRequests(requestHelper, baseUrl);
     }
 

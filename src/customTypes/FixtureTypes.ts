@@ -1,6 +1,6 @@
 import { ServiceHelper } from "../helpers/ServiceHelper";
 import { PageHelper } from "../helpers/PageHelper";
-import { DataHelper } from "../helpers/DataHelper";
+import { TempDataHelper } from "../helpers/TempDataHelper";
 
 export type SharedUser = { sharedUser: string | undefined; };
 export type ErrorListenerOptions = {
@@ -11,4 +11,4 @@ export type ErrorListenerOptions = {
 export type ErrorListenerOptionsObj = { errorListenerOptions: ErrorListenerOptions; };
 export type PageHelperObj = { pageHelper: PageHelper; };
 export type ServiceHelperObj = { serviceHelper: ServiceHelper; };
-export type DataHelperObj = { dataHelper: DataHelper; };
+export type TempDataHelperObj = { tempDataHelper: TempDataHelper; };

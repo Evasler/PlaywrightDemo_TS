@@ -2,11 +2,11 @@ import test from "@playwright/test";
 import { PageType } from "../../customTypes/FrameworkTypes";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
-import { DataHelper } from "../../helpers/DataHelper";
+import { TempDataHelper } from "../../helpers/TempDataHelper";
 
 export abstract class BasePage {
 
-    constructor(private readonly _pageType: PageType, private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _dataHelper: DataHelper) { }
+    constructor(private readonly _pageType: PageType, private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
 
     protected addStep(title: string, callback: () => Promise<void>) {
         this._stepSequenceHelper.addStep(async() => {
@@ -17,19 +17,19 @@ export abstract class BasePage {
     protected get workingTab() { return this._browserHelper.workingTab; }
 
     protected setTempData<T extends string | number | boolean>(key: string, value: T) {
-        this._dataHelper.setTempData(key, value);
+        this._tempDataHelper.setTempData(key, value);
     }
     
     protected getTempStringData(key: string) {
-        return this._dataHelper.getTempStringData(key);
+        return this._tempDataHelper.getTempStringData(key);
     }
 
     protected getTempNumberData(key: string) {
-        return this._dataHelper.getTempNumberData(key);
+        return this._tempDataHelper.getTempNumberData(key);
     }
 
     protected getTempBooleanData(key: string) {
-        return this._dataHelper.getTempBooleanData(key);
+        return this._tempDataHelper.getTempBooleanData(key);
     }
 
     execute() {

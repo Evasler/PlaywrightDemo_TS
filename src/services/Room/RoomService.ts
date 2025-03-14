@@ -3,7 +3,7 @@ import { RequestHelper } from "../../helpers/RequestHelper";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BaseService } from "../Base/BaseService";
 import { RoomRequests } from "./RoomRequests";
-import { DataHelper } from "../../helpers/DataHelper";
+import { TempDataHelper } from "../../helpers/TempDataHelper";
 import { CreateRoomResponse, GetRoomResponse } from "../../customTypes/ApiResponseTypes";
 import { CreateRoomPayload } from "../../customTypes/ApiPayloadTypes";
 
@@ -11,8 +11,8 @@ export class RoomService extends BaseService {
     
     private readonly _roomRequests;
 
-    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, dataHelper: DataHelper, baseUrl: string) {
-        super(requestHelper, stepSequenceHelper, dataHelper);
+    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper, baseUrl: string) {
+        super(requestHelper, stepSequenceHelper, tempDataHelper);
         this._roomRequests = new RoomRequests(requestHelper, baseUrl);
     }
     

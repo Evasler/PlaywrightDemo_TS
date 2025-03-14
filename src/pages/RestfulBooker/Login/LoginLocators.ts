@@ -5,5 +5,5 @@ export class LoginLocators extends BaseLocators {
 
     constructor(browserHelper: BrowserHelper) { super(browserHelper) }
 
-    get logIntoYourAccountHeading() { return this.workingTab.getByRole("heading", {name: "Log into your account", exact: true}) }
+    get loginHeading() { return this.workingTab.getByRole("heading", {name: "Login", exact: true}) }
 }

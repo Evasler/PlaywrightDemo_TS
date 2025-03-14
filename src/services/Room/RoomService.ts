@@ -4,7 +4,7 @@ import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BaseService } from "../Base/BaseService";
 import { RoomRequests } from "./RoomRequests";
 import { DataHelper } from "../../helpers/DataHelper";
-import { CreateRoomResponse } from "../../customTypes/ApiResponseTypes";
+import { CreateRoomResponse, GetRoomResponse } from "../../customTypes/ApiResponseTypes";
 import { CreateRoomPayload } from "../../customTypes/ApiPayloadTypes";
 
 export class RoomService extends BaseService {
@@ -25,15 +25,26 @@ export class RoomService extends BaseService {
         return this;
     }
     
-    createRoom(payload: CreateRoomPayload, tempDataKeyPrefix?: string) {
+    createRoom(payload: CreateRoomPayload) {
         this.addStep("createRoom", async() => {
             console.log("createRoom");
             const response = await this._roomRequests.postRoom(payload);
-            expect(response.status()).toEqual(201);
-            if (tempDataKeyPrefix) {
-                const responseJson = await response.json() as CreateRoomResponse;
-                this.setTempData(`${tempDataKeyPrefix}_roomId`, responseJson.roomid);
-            }
+            expect(response.status()).toEqual(200);
+            const responseJson = await response.json() as CreateRoomResponse;
+            expect(responseJson.success).toBeTruthy();
+        });
+        return this;
+    }
+
+    getRoomId(roomName: string, tempDataKeyPrefix: string) {
+        this.addStep("getAllRooms", async() => {
+            console.log("getAllRooms");
+            const response = await this._roomRequests.getRoom();
+            expect(response.status()).toEqual(200);
+            const responseJson = await response.json() as GetRoomResponse;
+            const room = responseJson.rooms.find(room => room.roomName === roomName);
+            expect(room).toBeDefined();
+            this.setTempData(`${tempDataKeyPrefix}_roomId`, room!.roomid);
         });
         return this;
     }
@@ -42,7 +53,7 @@ export class RoomService extends BaseService {
         this.addStep("deleteRoom", async () => {
             console.log("deleteRoom");
             const response = await this._roomRequests.deleteRoom(this.getTempNumberData(`${tempDataKeyPrefix}_roomId`));
-            expect(response.status()).toEqual(202);
+            expect(response.status()).toEqual(200);
         });
         return this;
     }

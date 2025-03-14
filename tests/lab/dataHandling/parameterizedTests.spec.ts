@@ -7,10 +7,8 @@ for (const dataset of parameterizedTestsDatasets) {
         await serviceHelper.authService
         .login("administrator")
         .switchServiceCategory(serviceHelper.roomService)
-        .createRoom(
-            dataset.stepData.roomDetails,
-            dataset.stepData.roomTempDataKeyPrefix
-        )
+        .createRoom(dataset.stepData.roomDetails)
+        .getRoomId(dataset.stepData.roomDetails.roomName, dataset.stepData.roomTempDataKeyPrefix)
         .deleteRoom(dataset.stepData.roomTempDataKeyPrefix)
         .execute();
     });

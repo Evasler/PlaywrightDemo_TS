@@ -14,9 +14,9 @@ apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ serviceHelper }) 
             image: "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
             roomPrice: 350,
             features: ["TV"]
-        },
-        "myFirstRoom"
+        }
     )
+    .getRoomId("998", "myFirstRoom")
     .createRoom(
         {
             roomName: "999",
@@ -26,9 +26,9 @@ apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ serviceHelper }) 
             image: "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
             roomPrice: 400,
             features: ["Views"]
-        },
-        "mySecondRoom"
+        }
     )
+    .getRoomId("999", "mySecondRoom")
     .deleteRoom("myFirstRoom")
     .deleteRoom("mySecondRoom")
     .execute();

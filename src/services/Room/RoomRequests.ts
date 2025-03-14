@@ -13,14 +13,14 @@ export class RoomRequests extends BaseRequests {
     }
 
     async getRoom() {
-        return this.workingRequest.get(this._roomUrls.serviceBaseUrl);
+        return this.workingRequest.get(this._roomUrls.serviceBaseUrl, { headers: this.extraHeaders });
     }
 
     async postRoom(payload: CreateRoomPayload) {
-        return this.workingRequest.post(this._roomUrls.serviceBaseUrl, { data: payload });
+        return this.workingRequest.post(this._roomUrls.serviceBaseUrl, { data: payload, headers: this.extraHeaders });
     }
 
     async deleteRoom(roomId: number) {
-        return this.workingRequest.delete(this._roomUrls.roomUrl(roomId));
+        return this.workingRequest.delete(this._roomUrls.roomUrl(roomId), { headers: this.extraHeaders });
     }
 }

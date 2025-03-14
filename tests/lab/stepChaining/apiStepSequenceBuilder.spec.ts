@@ -16,7 +16,8 @@ apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenc
             features: ["TV"]
         }
     )
-    .openNewContext(serviceHelper.authService, "administrator")
+    .openNewContext(serviceHelper.authService)
+    .login("administrator")
     .switchServiceCategory(serviceHelper.roomService)
     .createRoom(
         {

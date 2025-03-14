@@ -14,10 +14,10 @@ export class AdminPanelPage extends BasePage {
         this._adminPanelLocators = new AdminPanelLocators(browserHelper);
     }
     
-    verifyLogoutIsVisible() {
-        this.addStep("verifyLogIntoYourAccountIsVisible", async() => {
-            console.log("Verifying \"Logout\" is visible");
-            await expect(this._adminPanelLocators.logoutLink).toBeVisible();
+    verifyLinkIsVisible(name: string) {
+        this.addStep("verifyLinkIsVisible", async() => {
+            console.log(`Verifying \"${name}\" link is visible`);
+            await expect(this._adminPanelLocators.link(name)).toBeVisible();
         });
         return this;
     }

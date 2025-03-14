@@ -5,6 +5,7 @@ import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { AuthRequests } from "./AuthRequests";
 import { BaseService } from "../Base/BaseService";
 import { DataHelper } from "../../helpers/DataHelper";
+import { LoginResponse, ValidateResponse } from "../../customTypes/ApiResponseTypes";
 
 export class AuthService extends BaseService {
     
@@ -21,17 +22,20 @@ export class AuthService extends BaseService {
             const userCredentialsObj = getUserCredentials(user);
             const response = await this._authRequests.login(userCredentialsObj);
             expect(response.status()).toEqual(200);
+            const token = (await response.json() as LoginResponse).token;
+            this.setTempData("token", token)
+            this.putExtraHeader("Cookie", `token=${token}`);
         });
         return this;
     }
 
-    validate(token: string, isValid: boolean) {
+    validate() {
         this.addStep("validate", async() => {
             console.log("validate");
-            const tokenObj = { token: token };
+            const tokenObj = { token: this.getTempStringData("token") };
             const response = await this._authRequests.validate(tokenObj);
-            const expectedStatus = isValid ? 200 : 403;
-            expect(response.status()).toEqual(expectedStatus);
+            const valid = (await response.json() as ValidateResponse).valid;
+            expect(valid).toBeTruthy();
         });
         return this;
     }

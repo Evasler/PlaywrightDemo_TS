@@ -5,8 +5,8 @@ test.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionError:
 test.describe("Initial Tab without storageState", () => {
     test(TestUtils.buildTestTitle(0, "Login page displayed, when initial tab isn't instantiated with a storageState"), async({ pageHelper }) => {
         await pageHelper.blankPage
-        .goToAutomationInTesting(pageHelper.loginPage)
-        .verifyLogIntoYourAccountIsVisible()
+        .goToRestfulBooker(pageHelper.loginPage)
+        .verifyLoginIsVisible()
         .execute();
     });
 });
@@ -15,8 +15,8 @@ test.describe("Initial Tab with storageState", () => {
     test.use({ sharedUser: "administrator" });
     test(TestUtils.buildTestTitle(1, "Admin Panel displayed, when initial tab is instantiated with a storageState"), async({ pageHelper }) => {
         await pageHelper.blankPage
-        .goToAutomationInTesting(pageHelper.adminPanelPage)
-        .verifyLogoutIsVisible()
+        .goToRestfulBooker(pageHelper.adminPanelPage)
+        .verifyLinkIsVisible("Rooms")
         .execute();
     });
 });

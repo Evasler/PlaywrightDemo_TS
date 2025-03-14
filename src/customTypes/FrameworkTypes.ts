@@ -8,3 +8,16 @@ export type TestDetails = {
         suiteTags?: SuiteTag[];
     };
 }
+export type StorageState = {
+    cookies: {
+        name: string,
+        value: string,
+        domain: string,
+        path: string,
+        expires: number,
+        httpOnly: boolean,
+        secure: boolean,
+        sameSite: string
+    }[],
+    origins: []
+}

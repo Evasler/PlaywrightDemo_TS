@@ -3,8 +3,8 @@ import { HomePage } from "../pages/UITestingPlayground/Home/HomePage";
 import { BlankPage } from "../pages/Blank/BlankPage";
 import { AjaxDataPage } from "../pages/UITestingPlayground/AjaxData/AjaxDataPage";
 import { StepSequenceHelper } from "./StepSequenceHelper";
-import { LoginPage } from "../pages/AutomationInTesting/Login/LoginPage";
-import { AdminPanelPage } from "../pages/AutomationInTesting/AdminPanel/AdminPanelPage";
+import { LoginPage } from "../pages/RestfulBooker/Login/LoginPage";
+import { AdminPanelPage } from "../pages/RestfulBooker/AdminPanel/AdminPanelPage";
 import { ErrorPage } from "../pages/Error/ErrorPage";
 import { DataHelper } from "./DataHelper";
 

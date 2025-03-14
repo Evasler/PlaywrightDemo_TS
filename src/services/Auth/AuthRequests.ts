@@ -12,14 +12,14 @@ export class AuthRequests extends BaseRequests {
     }
 
     login(payload: { username: string; password: string; }) {
-        return this.workingRequest.post(this._authUrls.login, { data: payload });
+        return this.workingRequest.post(this._authUrls.login, { data: payload, headers: this.extraHeaders });
     }
 
     validate(payload: { token: string })  {
-        return this.workingRequest.post(this._authUrls.validate, { data: payload });
+        return this.workingRequest.post(this._authUrls.validate, { data: payload, headers: this.extraHeaders });
     }
 
     logout(payload: { token: string })  {
-        return this.workingRequest.post(this._authUrls.logout, { data: payload });
+        return this.workingRequest.post(this._authUrls.logout, { data: payload, headers: this.extraHeaders });
     }
 }

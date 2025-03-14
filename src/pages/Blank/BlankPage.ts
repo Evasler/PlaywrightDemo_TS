@@ -2,8 +2,8 @@ import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { BrowserHelper } from "../../helpers/BrowserHelper";
 import { BasePage } from "../Base/BasePage";
 import { HomePage } from "../UITestingPlayground/Home/HomePage";
-import { LoginPage } from "../AutomationInTesting/Login/LoginPage";
-import { AdminPanelPage } from "../AutomationInTesting/AdminPanel/AdminPanelPage";
+import { LoginPage } from "../RestfulBooker/Login/LoginPage";
+import { AdminPanelPage } from "../RestfulBooker/AdminPanel/AdminPanelPage";
 import { ErrorPage } from "../Error/ErrorPage";
 import { DataHelper } from "../../helpers/DataHelper";
 
@@ -21,10 +21,10 @@ export class BlankPage extends BasePage {
         return homePage;
     }
 
-    goToAutomationInTesting<T extends LoginPage | AdminPanelPage>(landingpage: T) {
-        this.addStep("goToAutomationInTesting", async() => {
-            console.log("goToAutomationInTesting");
-            await this.workingTab.goto("https://automationintesting.online/#/admin");
+    goToRestfulBooker<T extends LoginPage | AdminPanelPage>(landingpage: T) {
+        this.addStep("goToRestfulBooker", async() => {
+            console.log("goToRestfulBooker");
+            await this.workingTab.goto("https://automationintesting.online/admin");
         });
         return landingpage;
     }

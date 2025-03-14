@@ -14,10 +14,10 @@ export class LoginPage extends BasePage {
         this._loginLocators = new LoginLocators(browserHelper);
     }
 
-    verifyLogIntoYourAccountIsVisible() {
-        this.addStep("verifyLogIntoYourAccountIsVisible", async() => {
-            console.log("Verifying \"Log into your account\" is visible");
-            await expect(this._loginLocators.logIntoYourAccountHeading).toBeVisible();
+    verifyLoginIsVisible() {
+        this.addStep("verifyLoginIsVisible", async() => {
+            console.log("Verifying \"Login\" is visible");
+            await expect(this._loginLocators.loginHeading).toBeVisible();
         });
         return this;
     }

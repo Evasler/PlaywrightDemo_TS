@@ -1,7 +1,9 @@
-import { APIRequestContext } from "@playwright/test";
-import { getUserCredentials } from "./CredentialsHelper";
-import { fileExists } from "../utils/FileUtils";
+import { APIRequestContext, expect } from "@playwright/test";
 import { AuthUrls } from "../services/Auth/AuthUrls";
+import { getUserCredentials } from "./CredentialsHelper";
+import { StorageState } from "../customTypes/FrameworkTypes";
+import { LoginResponse } from "../customTypes/ApiResponseTypes";
+import { fileExists, readFile, writeFile } from "../utils/FileUtils";
 
 function storageStatePath(user: string) { return `.auth/${user}.json`; }
 
@@ -23,22 +25,28 @@ export class StorageStateHelper {
         this._authUrls = new AuthUrls(_baseUrl);
     }
 
-    private async authorizeContext(workingRequest: APIRequestContext, user: string) {
+    private async generateStorageStateFile(workingRequest: APIRequestContext, user: string) {
+        const _storageStatePath = storageStatePath(user);
+        console.log(`Generating ${_storageStatePath}`)
         const credentials = getUserCredentials(user)
-        await workingRequest.post(this._authUrls.login, { data: credentials });
-    }
-
-    private async saveStorageState(workingRequest: APIRequestContext, storageStatePath: string) {
-        console.log(`Creating ${storageStatePath}`);
-        await workingRequest.storageState({ path: storageStatePath});
+        const response = await workingRequest.post(this._authUrls.login, { data: credentials });
+        expect(response.status()).toEqual(200);
+        const responseJson = await response.json() as LoginResponse;
+        const storageStateTemplate = JSON.parse(readFile("./resources/other/restfulBookerStorageStateTemplate.json")) as StorageState;
+        storageStateTemplate.cookies[0].value = responseJson.token;
+        writeFile(_storageStatePath, JSON.stringify(storageStateTemplate, null, 2));
     }
 
     private async contextIsAuthorized(workingRequest: APIRequestContext) {
-        const token = (await workingRequest.storageState()).cookies[0].value;
-        const response = await workingRequest.post(this._authUrls.validate, { data: { token: token } });
-        const responseIsOk = response.ok();
-        console.log(`Context is ${responseIsOk ? "authorized" : "unauthorized"}`);
-        return responseIsOk;
+        let contextIsAuthorized = false;
+        const tokenCookie = (await workingRequest.storageState()).cookies.find(cookie => cookie.name === "token");
+        if (tokenCookie) {
+            const token = tokenCookie.value;
+            const response = await workingRequest.post(this._authUrls.validate, { data: { token: token } });
+            contextIsAuthorized = response.ok();
+        }
+        console.log(`Context is ${contextIsAuthorized ? "authorized" : "unauthorized"}`);
+        return contextIsAuthorized;
     }
 
     async generateStorageStateFileIfNeededViaAPI(workingRequest: APIRequestContext, sharedUser: string) {
@@ -46,12 +54,13 @@ export class StorageStateHelper {
         if (fileExists(_storageStatePath)) {
             const workingContextIsAuthorized = await this.contextIsAuthorized(workingRequest);
             if (!workingContextIsAuthorized) {
-                await this.authorizeContext(workingRequest, sharedUser);
-                await this.saveStorageState(workingRequest, _storageStatePath);
+                await this.generateStorageStateFile(workingRequest, sharedUser);
+                return true;
             }
         } else {
-            await this.authorizeContext(workingRequest, sharedUser);
-            await this.saveStorageState(workingRequest, _storageStatePath);
+            await this.generateStorageStateFile(workingRequest, sharedUser);
+            return true;
         }
+        return false;
     }
 }

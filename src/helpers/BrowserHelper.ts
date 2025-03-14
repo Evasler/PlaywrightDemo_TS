@@ -70,8 +70,8 @@ export class BrowserHelper {
     }
 
     async switchWorkingTab(contextIndex: number, tabIndex: number, expectedPageType: PageType) {
-        expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThan(this._workingBrowser.contexts().length);
-        expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThan(this._workingBrowser.contexts()[contextIndex].pages().length);
+        expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this.lastContextIndex);
+        expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(this.lastTabIndex(contextIndex));
         const alreadyWorkingOnTheTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
         expect(alreadyWorkingOnTheTab, `Already working on tab [${contextIndex},${tabIndex}]`).toBeFalsy();
         const actualPageType = this._tabPageTypeHelper.tabPageType(contextIndex, tabIndex);
@@ -80,17 +80,17 @@ export class BrowserHelper {
     }
 
     async closeContext(contextIndex: number) {
-        expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThan(this._workingBrowser.contexts().length);
+        expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this.lastContextIndex);
         expect(contextIndex, `Context [${contextIndex}] is the Working Context. It cannot be closed`).not.toEqual(this.workingContextIndex);
         this._workingBrowser.contexts()[contextIndex].pages().forEach(async (page) => await page.close());
-        await expect(async () => expect(this._workingBrowser.contexts()[contextIndex].pages().length).toEqual(0)).toPass();
+        await expect(async () => expect(this.lastTabIndex(contextIndex)).toEqual(-1)).toPass();
         await this._workingBrowser.contexts()[contextIndex].close();
         this._tabPageTypeHelper.removeContextPageTypes(contextIndex);
     }
 
     async closeTab(contextIndex: number, tabIndex: number) {
-        expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThan(this._workingBrowser.contexts().length);
-        expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThan(this._workingBrowser.contexts()[contextIndex].pages().length);
+        expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this.lastContextIndex);
+        expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(this.lastTabIndex(contextIndex));
         const attemptingToCloseWorkingTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
         expect(attemptingToCloseWorkingTab, `Tab [${contextIndex},${tabIndex}] is the Working Tab. It cannot be closed`).toBeFalsy();
         await this._workingBrowser.contexts()[contextIndex].pages()[tabIndex].close();
@@ -103,7 +103,7 @@ export class BrowserHelper {
             await expect(async () => expect(context.pages().length).toEqual(0)).toPass();
             await context.close();
         });
-        await expect(async () => expect(this._workingBrowser.contexts().length).toEqual(0)).toPass();
+        await expect(async () => expect(this.lastContextIndex).toEqual(-1)).toPass();
     }
 
     async closeBrowser() {

@@ -36,10 +36,10 @@ export abstract class BasePage {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    openNewTabInNewContext<T extends BasePage>(page: T, sharedUser?: string): T {
+    openNewTabInNewContext<T extends BasePage>(page: T, authenticatedUser?: string): T {
         this.addStep("openNewTabInNewContext", async() => {
             console.log("openNewTabInNewContext");
-            await this._browserHelper.openNewTabInNewContext(sharedUser);
+            await this._browserHelper.openNewTabInNewContext(authenticatedUser);
         });
         return page;
     }

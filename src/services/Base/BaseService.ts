@@ -37,10 +37,10 @@ export abstract class BaseService {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    openNewContext<T extends BaseService>(serviceCategory: T, sharedUser?: string) {
+    openNewContext<T extends BaseService>(serviceCategory: T, authenticatedUser?: string) {
         this.addStep("openNewContext", async() => {
             console.log("openNewContext");
-            await this._requestHelper.openNewContext(sharedUser);
+            await this._requestHelper.openNewContext(authenticatedUser);
         });
         return serviceCategory;
     }

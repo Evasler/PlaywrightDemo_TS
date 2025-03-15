@@ -5,6 +5,7 @@ import { parameterizedTestsDatasets } from "../../../resources/testData/datasets
 for (const dataset of parameterizedTestsDatasets) {
     apiTest(TestUtils.buildTestTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ serviceHelper }) => {
         await serviceHelper.authService
+        .openNewContext(serviceHelper.authService)
         .login("administrator")
         .switchServiceCategory(serviceHelper.roomService)
         .createRoom(dataset.stepData.roomDetails)

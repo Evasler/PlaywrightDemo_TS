@@ -35,13 +35,12 @@ export class RequestHelper {
         this._workingRequestContext = this._requestContexts[requestContextIndex];
     }
     
-    async openNewContext(sharedUser?: string) {
-        let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(sharedUser) });
-        this._workingRequestContext = newContext;
-        if (sharedUser) {
-            const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(this.workingRequestContext, sharedUser);
+    async openNewContext(authenticatedUser?: string) {
+        let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+        if (authenticatedUser) {
+            const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
             if (generatedFile)
-                newContext = await this._apiRequest.newContext({ storageState: storageStateValue(sharedUser) });
+                newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
         }
         this._requestContexts.push(newContext);
         this.updateWorkingRequestContext(this._requestContexts.length - 1);

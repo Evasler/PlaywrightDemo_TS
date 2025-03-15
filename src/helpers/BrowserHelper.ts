@@ -58,15 +58,22 @@ export class BrowserHelper {
         this.updateWorkingTab(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
     }
 
-    async openNewTabInNewContext(sharedUser?: string) {
-        const newContext = await this._workingBrowser.newContext({ storageState: storageStateValue(sharedUser) });
-        const newPage = await newContext.newPage();
-        this._errorListener.attachTo(newPage);
+    async openNewTabInNewContext(authenticatedUser?: string) {
+        let newContext = await this._workingBrowser.newContext({ storageState: storageStateValue(authenticatedUser) });
+        let newTab = await newContext.newPage();
+        if (authenticatedUser) {
+            const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext.request, authenticatedUser);
+            if (generatedFile) {
+                await newTab.close();
+                await newContext.close();
+                newContext = await this._workingBrowser.newContext({ storageState: storageStateValue(authenticatedUser) });
+                newTab = await newContext.newPage();
+            }
+        }
+        this._errorListener.attachTo(newTab);
         this._tabPageTypeHelper.initializeContextPageTypes();
         this._tabPageTypeHelper.initializeTabPageType(this.lastContextIndex, 0);
         this.updateWorkingTab(this.lastContextIndex, 0);
-        if (sharedUser)
-            await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(this._workingContext.request, sharedUser);
     }
 
     async switchWorkingTab(contextIndex: number, tabIndex: number, expectedPageType: PageType) {

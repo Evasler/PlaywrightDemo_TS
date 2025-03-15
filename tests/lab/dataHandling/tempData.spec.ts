@@ -3,6 +3,7 @@ import { TestUtils } from "../../../src/utils/TestUtils";
 
 apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ serviceHelper }) => {
     await serviceHelper.authService
+    .openNewContext(serviceHelper.authService)
     .login("administrator")
     .switchServiceCategory(serviceHelper.roomService)
     .createRoom(

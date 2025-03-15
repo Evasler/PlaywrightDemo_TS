@@ -49,16 +49,16 @@ export class StorageStateHelper {
         return contextIsAuthorized;
     }
 
-    async generateStorageStateFileIfNeededViaAPI(workingRequest: APIRequestContext, sharedUser: string) {
-        const _storageStatePath = storageStatePath(sharedUser);
+    async generateStorageStateFileIfNeededViaAPI(workingRequest: APIRequestContext, authenticatedUser: string) {
+        const _storageStatePath = storageStatePath(authenticatedUser);
         if (fileExists(_storageStatePath)) {
             const workingContextIsAuthorized = await this.contextIsAuthorized(workingRequest);
             if (!workingContextIsAuthorized) {
-                await this.generateStorageStateFile(workingRequest, sharedUser);
+                await this.generateStorageStateFile(workingRequest, authenticatedUser);
                 return true;
             }
         } else {
-            await this.generateStorageStateFile(workingRequest, sharedUser);
+            await this.generateStorageStateFile(workingRequest, authenticatedUser);
             return true;
         }
         return false;

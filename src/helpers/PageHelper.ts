@@ -10,8 +10,6 @@ import { TempDataHelper } from "./TempDataHelper";
 
 export class PageHelper {
 
-    private readonly _stepSequenceHelper: StepSequenceHelper;
-
     private _blankPage?: BlankPage;
 
     //https://automationintesting.online/
@@ -25,9 +23,7 @@ export class PageHelper {
     private _homePage?: HomePage;
     private _ajaxDataPage?: AjaxDataPage;
     
-    constructor(private readonly _browserHelper: BrowserHelper, private readonly _tempDataHelper: TempDataHelper) {
-        this._stepSequenceHelper = new StepSequenceHelper();
-    }
+    constructor(private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
 
     get blankPage() {
         if (this._blankPage === undefined) {

@@ -6,14 +6,10 @@ import { TempDataHelper } from "./TempDataHelper";
 
 export class ServiceHelper {
 
-    private readonly _stepSequenceHelper: StepSequenceHelper;
-
     private _authService?: AuthService;
     private _roomService?: RoomService;
 
-    constructor(private readonly _requestHelper: RequestHelper, private readonly _tempDataHelper: TempDataHelper, private readonly _baseUrl: string) {
-        this._stepSequenceHelper = new StepSequenceHelper();
-    }
+    constructor(private readonly _requestHelper: RequestHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper, private readonly _baseUrl: string) { }
     
     get authService() {
         if (this._authService === undefined) {

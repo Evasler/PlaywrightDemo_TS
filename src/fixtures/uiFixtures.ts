@@ -1,0 +1,22 @@
+import { test as base } from "@playwright/test";
+import { BrowserHelper } from "../helpers/BrowserHelper";
+import { PageHelper } from "../helpers/PageHelper";
+import { UiHelperObj, ErrorListenerOptionsObj } from "../customTypes/FixtureTypes";
+import { TempDataHelper } from "../helpers/TempDataHelper";
+import { StepSequenceHelper } from "../helpers/StepSequenceHelper";
+import { UiHelper } from "../helpers/UiHelper";
+
+export const uiTest = base.extend<UiHelperObj & ErrorListenerOptionsObj, {}>({
+    errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
+    ui: [ async ({ browser, baseURL, errorListenerOptions }, use) => {
+        if (!baseURL)
+            throw new Error("baseURL not defined in playwright.config.ts");
+        const tempDataHelper = new TempDataHelper();
+        const stepSequenceHelper = new StepSequenceHelper();
+        const browserHelper = new BrowserHelper(browser, stepSequenceHelper, baseURL, errorListenerOptions);
+        const pageHelper = new PageHelper(browserHelper, stepSequenceHelper, tempDataHelper);
+        const uiHelper = new UiHelper(browserHelper, pageHelper);
+        await use(uiHelper);
+        await browserHelper.closeAllContexts();
+    }, { scope: "test", box: true }]
+});

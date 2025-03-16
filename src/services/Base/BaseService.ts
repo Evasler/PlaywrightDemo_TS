@@ -1,4 +1,3 @@
-import test from "@playwright/test";
 import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
 import { RequestHelper } from "../../helpers/RequestHelper";
 import { TempDataHelper } from "../../helpers/TempDataHelper";
@@ -8,9 +7,7 @@ export abstract class BaseService {
     constructor(private readonly _requestHelper: RequestHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
         
     protected addStep(title: string, callback: () => Promise<void>) {
-        this._stepSequenceHelper.addStep(async() => {
-            await test.step(title, callback);
-        });
+        this._stepSequenceHelper.addStep(title, callback);
     }
 
     protected get workingRequest() { return this._requestHelper.workingRequestContext; }
@@ -37,23 +34,17 @@ export abstract class BaseService {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    openNewContext<T extends BaseService>(serviceCategory: T, authenticatedUser?: string) {
-        this.addStep("openNewContext", async() => {
-            console.log("openNewContext");
-            await this._requestHelper.openNewContext(authenticatedUser);
-        });
-        return serviceCategory;
+    openNewContext<T extends BaseService>(service: T, authenticatedUser?: string) {
+        this._requestHelper.openNewContext(authenticatedUser);
+        return service;
     }
 
-    switchWorkingContext<T extends BaseService>(contextIndex: number, serviceCategory: T) {
-        this.addStep("switchWorkingTab", async() => {
-            console.log("switchWorkingTab");
-            await this._requestHelper.switchWorkingContext(contextIndex);
-        });
-        return serviceCategory;
+    switchWorkingContext<T extends BaseService>(contextIndex: number, service: T) {
+        this._requestHelper.switchWorkingContext(contextIndex);
+        return service;
     }
 
-    switchServiceCategory<T extends BaseService>(serviceCategory: T) {
-        return serviceCategory;
+    switchService<T extends BaseService>(service: T) {
+        return service;
     }
 }

@@ -1,11 +1,11 @@
-import { test as apiTest } from "../../../src/fixtures/apiFixture";
+import { apiTest } from "../../../src/fixtures/apiFixture";
 import { TestUtils } from "../../../src/utils/TestUtils";
 
-apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ serviceHelper }) => {
-    await serviceHelper.authService
-    .openNewContext(serviceHelper.authService)
+apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ api }) => {
+    await api
+    .openNewContext(api.serviceHelper.authService)
     .login("administrator")
-    .switchServiceCategory(serviceHelper.roomService)
+    .switchService(api.serviceHelper.roomService)
     .createRoom(
         {
             roomName: "998",

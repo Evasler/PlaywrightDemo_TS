@@ -1,5 +1,6 @@
 import { APIRequest, APIRequestContext, expect } from "@playwright/test";
 import { StorageStateHelper, storageStateValue } from "./StorageStateHelper";
+import { StepSequenceHelper } from "./StepSequenceHelper";
 
 export class RequestHelper {
 
@@ -9,7 +10,7 @@ export class RequestHelper {
 
     private _workingRequestContext!: APIRequestContext;
 
-    constructor(private readonly _apiRequest: APIRequest, baseUrl: string) {
+    constructor(private readonly _apiRequest: APIRequest, private readonly _stepSequenceHelper: StepSequenceHelper, baseUrl: string) {
         this._storageStateHelper = new StorageStateHelper(baseUrl);
     }
 
@@ -35,20 +36,26 @@ export class RequestHelper {
         this._workingRequestContext = this._requestContexts[requestContextIndex];
     }
     
-    async openNewContext(authenticatedUser?: string) {
-        let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
-        if (authenticatedUser) {
-            const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
-            if (generatedFile)
-                newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
-        }
-        this._requestContexts.push(newContext);
-        this.updateWorkingRequestContext(this._requestContexts.length - 1);
+    openNewContext(authenticatedUser?: string) {
+        this._stepSequenceHelper.addStep("openNewContext", async () => {
+            console.log("openNewContext");
+            let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+            if (authenticatedUser) {
+                const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
+                if (generatedFile)
+                    newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+            }
+            this._requestContexts.push(newContext);
+            this.updateWorkingRequestContext(this._requestContexts.length - 1);
+        });
     }
 
-    async switchWorkingContext(requestContextIndex: number) {
-        expect(requestContextIndex, `Context [${requestContextIndex}] not found`).toBeLessThan(this._requestContexts.length);
-        expect(requestContextIndex, `Already working on context [${requestContextIndex}]`).not.toEqual(this.workingRequestContextIndex);
-        this.updateWorkingRequestContext(requestContextIndex);
+    switchWorkingContext(requestContextIndex: number) {
+        this._stepSequenceHelper.addStep("switchWorkingContext", async () => {
+            console.log("switchWorkingContext");
+            expect(requestContextIndex, `Context [${requestContextIndex}] not found`).toBeLessThan(this._requestContexts.length);
+            expect(requestContextIndex, `Already working on context [${requestContextIndex}]`).not.toEqual(this.workingRequestContextIndex);
+            this.updateWorkingRequestContext(requestContextIndex);
+        });
     }
 }

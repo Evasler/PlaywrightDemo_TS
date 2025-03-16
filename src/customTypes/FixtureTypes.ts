@@ -1,6 +1,5 @@
-import { ServiceHelper } from "../helpers/ServiceHelper";
-import { PageHelper } from "../helpers/PageHelper";
-import { TempDataHelper } from "../helpers/TempDataHelper";
+import { ApiHelper } from "../helpers/ApiHelper";
+import { UiHelper } from "../helpers/UiHelper";
 
 export type ErrorListenerOptions = {
     failOnJsError: boolean;
@@ -8,6 +7,5 @@ export type ErrorListenerOptions = {
     failOnRequestError: boolean;
 };
 export type ErrorListenerOptionsObj = { errorListenerOptions: ErrorListenerOptions; };
-export type PageHelperObj = { pageHelper: PageHelper; };
-export type ServiceHelperObj = { serviceHelper: ServiceHelper; };
-export type TempDataHelperObj = { tempDataHelper: TempDataHelper; };
+export type UiHelperObj = { ui: UiHelper; };
+export type ApiHelperObj = { api: ApiHelper; };

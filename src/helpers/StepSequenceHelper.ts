@@ -1,3 +1,4 @@
+import test from "@playwright/test";
 import config from "../../playwright.config";
 
 export class StepSequenceHelper {
@@ -33,8 +34,9 @@ export class StepSequenceHelper {
         return callstack;
     }
 
-    addStep(step: () => Promise<void>) {
+    addStep(title: string, callback: () => Promise<void>) {
         const myError = new Error();
+        const step = async() => { await test.step(title, callback); }
         this._stepSequence = this._stepSequence.then(step).catch(error => {
             this.populateTestFileStepCall(myError.stack!);
             error.stack = this.overwriteTestFileFunctionCall(error.stack!);

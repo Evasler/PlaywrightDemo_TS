@@ -1,13 +1,8 @@
+import { StepsArgsArray } from "./StepArgsTypes";
+
 export type PageType = "BlankPage" | "Login" | "AdminPanel" | "Error" | "HomePage" | "AjaxPage";
 export type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
 export type SuiteTag = "@smoke" | "@regression" | "@fullScope";
-export type TestDetails = {
-    testDetails: {
-        id: number;
-        title: string;
-        suiteTags?: SuiteTag[];
-    };
-}
 export type StorageState = {
     cookies: {
         name: string,
@@ -21,3 +16,12 @@ export type StorageState = {
     }[],
     origins: []
 }
+export type TestDetailsObj = {
+    testDetails: {
+        id: number;
+        title: string;
+        suiteTags?: SuiteTag[];
+    };
+}
+export type SetupStepsArgsObj = { setupStepsArgsArray?: StepsArgsArray };
+export type TeardownStepsArgsObj = { teardownStepsArgsArray?: StepsArgsArray };

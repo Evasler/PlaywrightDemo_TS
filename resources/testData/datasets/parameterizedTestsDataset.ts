@@ -1,7 +1,7 @@
 import { CreateRoomPayload } from "../../../src/customTypes/ApiPayloadTypes";
-import { TestDetails } from "../../../src/customTypes/FrameworkTypes";
+import { TestDetailsObj } from "../../../src/customTypes/FrameworkTypes";
 
-type ParameterizedTestsDataset = TestDetails & {
+type ParameterizedTestsDataset = TestDetailsObj & {
     stepData: {
         roomDetails: CreateRoomPayload;
         roomTempDataKeyPrefix: string;

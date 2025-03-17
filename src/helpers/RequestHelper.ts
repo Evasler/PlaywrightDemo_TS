@@ -49,6 +49,19 @@ export class RequestHelper {
             this.updateWorkingRequestContext(this._requestContexts.length - 1);
         });
     }
+    
+    openNewThrowAwayContext(authenticatedUser?: string) {
+        this._stepSequenceHelper.addStep("openNewThrowAwayContext", async () => {
+            console.log("openNewThrowAwayContext");
+            let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+            if (authenticatedUser) {
+                const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
+                if (generatedFile)
+                    newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+            }
+            this._workingRequestContext = newContext;
+        });
+    }
 
     switchWorkingContext(requestContextIndex: number) {
         this._stepSequenceHelper.addStep("switchWorkingContext", async () => {

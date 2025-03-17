@@ -6,11 +6,11 @@ for (const dataset of parameterizedTestsDatasets) {
     apiTest(TestUtils.buildTestTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ api }) => {
         await api
         .openNewContext(api.serviceHelper.authService)
-        .login("administrator")
+        .login({ user: "administrator" })
         .switchService(api.serviceHelper.roomService)
-        .createRoom(dataset.stepData.roomDetails)
-        .getRoomId(dataset.stepData.roomDetails.roomName, dataset.stepData.roomTempDataKeyPrefix)
-        .deleteRoom(dataset.stepData.roomTempDataKeyPrefix)
+        .createRoom({ payload: dataset.stepData.roomDetails })
+        .getRoomId({ roomName: dataset.stepData.roomDetails.roomName, tempDataKeyPrefix: dataset.stepData.roomTempDataKeyPrefix })
+        .deleteRoom({ tempDataKeyPrefix: dataset.stepData.roomTempDataKeyPrefix })
         .execute();
     });
 }

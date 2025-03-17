@@ -5,7 +5,7 @@ import { BaseService } from "../Base/BaseService";
 import { RoomRequests } from "./RoomRequests";
 import { TempDataHelper } from "../../helpers/TempDataHelper";
 import { CreateRoomResponse, GetRoomResponse } from "../../customTypes/ApiResponseTypes";
-import { CreateRoomPayload } from "../../customTypes/ApiPayloadTypes";
+import { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../customTypes/StepArgsTypes";
 
 export class RoomService extends BaseService {
     
@@ -25,7 +25,7 @@ export class RoomService extends BaseService {
         return this;
     }
     
-    createRoom(payload: CreateRoomPayload) {
+    createRoom({ payload }: CreateRoomArgs) {
         this.addStep("createRoom", async() => {
             console.log("createRoom");
             const response = await this._roomRequests.postRoom(payload);
@@ -36,9 +36,9 @@ export class RoomService extends BaseService {
         return this;
     }
 
-    getRoomId(roomName: string, tempDataKeyPrefix: string) {
-        this.addStep("getAllRooms", async() => {
-            console.log("getAllRooms");
+    getRoomId({ roomName, tempDataKeyPrefix }: GetRoomIdArgs) {
+        this.addStep("getRoomId", async() => {
+            console.log("getRoomId");
             const response = await this._roomRequests.getRoom();
             expect(response.status()).toEqual(200);
             const responseJson = await response.json() as GetRoomResponse;
@@ -49,7 +49,7 @@ export class RoomService extends BaseService {
         return this;
     }
 
-    deleteRoom(tempDataKeyPrefix: string) {
+    deleteRoom({ tempDataKeyPrefix }: DeleteRoomArgs) {
         this.addStep("deleteRoom", async () => {
             console.log("deleteRoom");
             const response = await this._roomRequests.deleteRoom(this.getTempNumberData(`${tempDataKeyPrefix}_roomId`));

@@ -4,10 +4,10 @@ import { TestUtils } from "../../../src/utils/TestUtils";
 apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async({ api }) => {
     await api
     .openNewContext(api.serviceHelper.authService)
-    .login("administrator")
+    .login({ user: "administrator" })
     .switchService(api.serviceHelper.roomService)
-    .createRoom(
-        {
+    .createRoom({
+        payload: {
             roomName: "998",
             type: "Double",
             accessible: false,
@@ -16,12 +16,12 @@ apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenc
             roomPrice: 350,
             features: ["TV"]
         }
-    )
+    })
     .openNewContext(api.serviceHelper.authService)
-    .login("administrator")
+    .login({ user: "administrator" })
     .switchService(api.serviceHelper.roomService)
-    .createRoom(
-        {
+    .createRoom({
+        payload: {
             roomName: "999",
             type: "Family",
             accessible: false,
@@ -30,6 +30,6 @@ apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenc
             roomPrice: 400,
             features: ["Views"]
         }
-    )
+    })
     .execute();
 });

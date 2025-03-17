@@ -4,10 +4,10 @@ import { TestUtils } from "../../../src/utils/TestUtils";
 apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ api }) => {
     await api
     .openNewContext(api.serviceHelper.authService)
-    .login("administrator")
+    .login({ user: "administrator" })
     .switchService(api.serviceHelper.roomService)
-    .createRoom(
-        {
+    .createRoom({
+        payload: {
             roomName: "998",
             type: "Double",
             accessible: false,
@@ -16,10 +16,10 @@ apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ api }) => {
             roomPrice: 350,
             features: ["TV"]
         }
-    )
-    .getRoomId("998", "myFirstRoom")
-    .createRoom(
-        {
+    })
+    .getRoomId({ roomName: "998", tempDataKeyPrefix: "myFirstRoom" })
+    .createRoom({
+        payload: {
             roomName: "999",
             type: "Family",
             accessible: false,
@@ -28,9 +28,9 @@ apiTest(TestUtils.buildTestTitle(1, "Temporary Data"), async({ api }) => {
             roomPrice: 400,
             features: ["Views"]
         }
-    )
-    .getRoomId("999", "mySecondRoom")
-    .deleteRoom("myFirstRoom")
-    .deleteRoom("mySecondRoom")
+    })
+    .getRoomId({ roomName: "999", tempDataKeyPrefix: "mySecondRoom" })
+    .deleteRoom({ tempDataKeyPrefix: "myFirstRoom" })
+    .deleteRoom({ tempDataKeyPrefix: "mySecondRoom" })
     .execute();
 });

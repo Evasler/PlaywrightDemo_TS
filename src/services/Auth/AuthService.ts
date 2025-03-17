@@ -6,6 +6,7 @@ import { AuthRequests } from "./AuthRequests";
 import { BaseService } from "../Base/BaseService";
 import { TempDataHelper } from "../../helpers/TempDataHelper";
 import { LoginResponse, ValidateResponse } from "../../customTypes/ApiResponseTypes";
+import { LoginArgs } from "../../customTypes/StepArgsTypes";
 
 export class AuthService extends BaseService {
     
@@ -16,7 +17,7 @@ export class AuthService extends BaseService {
         this._authRequests = new AuthRequests(requestHelper, baseUrl);
     }
 
-    login(user: string) {
+    login({ user }: LoginArgs) {
         this.addStep("login", async() => {
             console.log("login");
             const userCredentialsObj = getUserCredentials(user);

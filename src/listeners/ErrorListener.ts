@@ -1,5 +1,5 @@
 import { Page } from "@playwright/test";
-import { ErrorListenerOptions } from "../customTypes/FixtureTypes";
+import { ErrorListenerOptions } from "../customTypes/FrameworkTypes";
 
 export class ErrorListener {
 

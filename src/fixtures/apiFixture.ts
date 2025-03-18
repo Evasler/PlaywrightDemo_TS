@@ -4,7 +4,7 @@ import { RequestHelper } from "../helpers/RequestHelper";
 import { TempDataHelper } from "../helpers/TempDataHelper";
 import { StepSequenceHelper } from "../helpers/StepSequenceHelper";
 import { ApiHelper } from "../helpers/ApiHelper";
-import { ApiHelperObj } from "../customTypes/FixtureTypes";
+import { ApiHelperObj } from "../customTypes/FrameworkTypes";
 import { ExtraStepsHelper } from "../helpers/ExtraStepsHelper";
 import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
 

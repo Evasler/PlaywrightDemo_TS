@@ -1,7 +1,7 @@
 import { test as base } from "@playwright/test";
 import { BrowserHelper } from "../helpers/BrowserHelper";
 import { PageHelper } from "../helpers/PageHelper";
-import { UiHelperObj, ErrorListenerOptionsObj } from "../customTypes/FixtureTypes";
+import { UiHelperObj, ErrorListenerOptionsObj } from "../customTypes/FrameworkTypes";
 import { TempDataHelper } from "../helpers/TempDataHelper";
 import { StepSequenceHelper } from "../helpers/StepSequenceHelper";
 import { UiHelper } from "../helpers/UiHelper";

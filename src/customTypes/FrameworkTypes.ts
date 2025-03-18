@@ -1,3 +1,5 @@
+import { UiHelper } from "../helpers/UiHelper";
+import { ApiHelper } from "../helpers/ApiHelper";
 import { StepsArgsArray } from "./StepArgsTypes";
 
 export type PageType = "BlankPage" | "Login" | "AdminPanel" | "Error" | "HomePage" | "AjaxPage";
@@ -16,6 +18,14 @@ export type StorageState = {
     }[],
     origins: []
 }
+export type ErrorListenerOptions = {
+    failOnJsError: boolean;
+    failOnConnectionError: boolean;
+    failOnRequestError: boolean;
+};
+export type ErrorListenerOptionsObj = { errorListenerOptions: ErrorListenerOptions };
+export type UiHelperObj = { ui: UiHelper; };
+export type ApiHelperObj = { api: ApiHelper };
 export type TestDetailsObj = {
     testDetails: {
         id: number;

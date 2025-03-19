@@ -3,7 +3,7 @@ import { PageType } from "../customTypes/FrameworkTypes";
 import { ErrorListenerOptions } from "../customTypes/FrameworkTypes";
 import { TabPageTypeHelper } from "./TabPageTypeHelper";
 import { ErrorListener } from "../listeners/ErrorListener";
-import { StorageStateHelper, storageStateValue } from "./StorageStateHelper";
+import { StorageStateHelper } from "./StorageStateHelper";
 import { StepSequenceHelper } from "./StepSequenceHelper";
 
 export class BrowserHelper {
@@ -66,14 +66,14 @@ export class BrowserHelper {
     openNewTabInNewContext(authenticatedUser?: string) {
         this._stepSequenceHelper.addStep("openNewTabInNewContext", async() => {
             console.log("openNewTabInNewContext");
-            let newContext = await this._workingBrowser.newContext({ storageState: storageStateValue(authenticatedUser) });
+            let newContext = await this._workingBrowser.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             let newTab = await newContext.newPage();
             if (authenticatedUser) {
                 const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext.request, authenticatedUser);
                 if (generatedFile) {
                     await newTab.close();
                     await newContext.close();
-                    newContext = await this._workingBrowser.newContext({ storageState: storageStateValue(authenticatedUser) });
+                    newContext = await this._workingBrowser.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
                     newTab = await newContext.newPage();
                 }
             }

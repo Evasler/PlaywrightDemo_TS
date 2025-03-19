@@ -1,5 +1,5 @@
 import { APIRequest, APIRequestContext, expect } from "@playwright/test";
-import { StorageStateHelper, storageStateValue } from "./StorageStateHelper";
+import { StorageStateHelper } from "./StorageStateHelper";
 import { StepSequenceHelper } from "./StepSequenceHelper";
 
 export class RequestHelper {
@@ -39,11 +39,11 @@ export class RequestHelper {
     openNewContext(authenticatedUser?: string) {
         this._stepSequenceHelper.addStep("openNewContext", async () => {
             console.log("openNewContext");
-            let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+            let newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             if (authenticatedUser) {
                 const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
                 if (generatedFile)
-                    newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+                    newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             }
             this._requestContexts.push(newContext);
             this.updateWorkingRequestContext(this._requestContexts.length - 1);
@@ -53,11 +53,11 @@ export class RequestHelper {
     openNewThrowAwayContext(authenticatedUser?: string) {
         this._stepSequenceHelper.addStep("openNewThrowAwayContext", async () => {
             console.log("openNewThrowAwayContext");
-            let newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+            let newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             if (authenticatedUser) {
                 const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
                 if (generatedFile)
-                    newContext = await this._apiRequest.newContext({ storageState: storageStateValue(authenticatedUser) });
+                    newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             }
             this._workingRequestContext = newContext;
         });

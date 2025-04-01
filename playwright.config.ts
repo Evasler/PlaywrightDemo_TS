@@ -23,7 +23,18 @@ export default defineConfig<ErrorListenerOptionsObj>({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'list', //'./src/reporters/ExecOrderReporter.ts',
+  reporter: [
+    ['list'], 
+    ['./src/reporters/ExcelReporter.ts', 
+      { 
+        enabled: true,
+        mandatoryReporting: false,
+        filepath: "./excel-report/PlaywrightDemo_TS.xlsx",
+        configurations: ["configuration1", "configuration2"]
+      }
+    ]
+    //'./src/reporters/ExecOrderReporter.ts'
+  ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -59,6 +70,20 @@ export default defineConfig<ErrorListenerOptionsObj>({
       name: 'executionOrder',
       testMatch: '**/executionOrder/core/**',
       dependencies: ['executionOrderDependency']
+    },
+    {
+      name: 'configuration1',
+      testMatch: '**/excelReporting/**',
+      use: {
+        ...devices['Desktop Chrome']
+      }
+    },
+    {
+      name: 'configuration2',
+      testMatch: '**/excelReporting/**',
+      use: {
+        ...devices['Desktop Chrome']
+      }
     }
     // {
     //   name: 'chromium',

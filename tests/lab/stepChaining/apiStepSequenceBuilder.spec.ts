@@ -1,7 +1,7 @@
 import { apiTest } from "../../../src/fixtures/apiFixture";
 import { TestUtils } from "../../../src/utils/TestUtils";
 
-apiTest(TestUtils.buildTestTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async({ api }) => {
+apiTest(TestUtils.fullTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async({ api }) => {
     await api
     .openNewContext(api.serviceHelper.authService)
     .login({ user: "administrator" })

@@ -1,5 +1,5 @@
-import path from "path";
 import { LogLevel } from "../customTypes/FrameworkTypes";
+import path from "path";
 
 export class TerminalUtils {
 
@@ -15,31 +15,57 @@ export class TerminalUtils {
         console.log(`|${this.padText("filename")}|${this.padText("title")}|${this.padText("level")}|${this.padText("message")}|${this.RESET}`);
     }
 
-    static printColoredMessage(filepath: string, title: string, level: LogLevel, message: string) {
-        let messageColor: string;
+    static printLogLevelMessage(filepath: string, title: string, level: LogLevel, message: string) {
+        let textColor: string;
         switch(level) {
             case "test":
-                messageColor = this.FG_WHITE;
+                textColor = this.FG_WHITE;
                 break;
             case "describe":
-                messageColor = this.FG_BLUE;
+                textColor = this.FG_BLUE;
                 break;
             case "specFile":
-                messageColor = this.FG_YELLOW;
+                textColor = this.FG_YELLOW;
                 break;
             case "fixture":
-                messageColor = this.FG_GREEN;
+                textColor = this.FG_GREEN;
                 break;
             case "projectDependency":
-                messageColor = this.FG_RED;
+                textColor = this.FG_RED;
                 break;
             case "reporter":
-                messageColor = this.FG_MAGENTA;
+                textColor = this.FG_MAGENTA;
                 break;
         }
-        console.log(`${messageColor}|${this.padText(path.basename(filepath))}|${this.padText(title)}|${this.padText(level)}|${this.padText(message)}|${this.RESET}`);
+        console.log(`${textColor}|${this.padText(path.basename(filepath))}|${this.padText(title)}|${this.padText(level)}|${this.padText(message)}|${this.RESET}`);
     }
 
+    static printColoredText(text: string, color: "red" | "green" | "yellow" | "blue" | "magenta") {
+        let textColor: string;
+        switch(color) {
+            case "blue":
+                textColor = this.FG_BLUE;
+                break;
+            case "yellow":
+                textColor = this.FG_YELLOW;
+                break;
+            case "green":
+                textColor = this.FG_GREEN;
+                break;
+            case "red":
+                textColor = this.FG_RED;
+                break;
+            case "magenta":
+                textColor = this.FG_MAGENTA;
+                break;
+        }
+        console.log(`${textColor}${text}${this.RESET}`);
+    }
+
+    static clearOutput(outputText: string) {
+        return outputText.replaceAll(/(\\x1(b|B))?\[[0-9;]*[mK]/g, "");
+    }
+    
     private static padText(text: string) {
         const maxLength = 20;
         text = text.substring(0, maxLength);

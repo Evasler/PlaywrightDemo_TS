@@ -9,39 +9,39 @@ export default class MyReporter implements Reporter {
   constructor() {
     console.log('\n');
     TerminalUtils.printHeader();
-    TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "constructor");
+    TerminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "constructor");
   }
 
   onBegin(config: FullConfig, suite: Suite) {
     this._testCount = suite.allTests().length;
-    TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "onBegin");
+    TerminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onBegin");
   }
 
   onTestBegin(test: TestCase) {
     console.log(`(${this._testId++}/${this._testCount}) ${test.parent.project()!.name} > ${test.title}`)
-    TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "onTestBegin");
+    TerminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onTestBegin");
   }
 
   // Commented-out due to extreme noise
   // onStepBegin(test: TestCase, result: TestResult, step: TestStep) {
-  //   TerminalUtils.printColoredMessage(__filename, "", "reporter", "onStepBegin");
+  //   TerminalUtils.printLogLevelMessage(__filename, "", "reporter", "onStepBegin");
   // }
 
   // Commented-out due to extreme noise
   // onStepEnd(test: TestCase, result: TestResult, step: TestStep) {
-  //   TerminalUtils.printColoredMessage(__filename, "", "reporter", "onStepEnd");
+  //   TerminalUtils.printLogLevelMessage(__filename, "", "reporter", "onStepEnd");
   // }
 
   onTestEnd(test: TestCase, result: TestResult) {
-    TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "onTestEnd");
+    TerminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onTestEnd");
   }
 
   onEnd(result: FullResult) {
-    TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "onEnd");
+    TerminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onEnd");
   }
 
   async onExit(): Promise<void> {
-    TerminalUtils.printColoredMessage(__filename, "customReporter", "reporter", "onExit");
+    TerminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onExit");
     console.log('\n');
   }
 

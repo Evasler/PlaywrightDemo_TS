@@ -35,3 +35,9 @@ export type TestDetailsObj = {
 }
 export type SetupStepsArgsObj = { setupStepsArgsArray?: StepsArgsArray };
 export type TeardownStepsArgsObj = { teardownStepsArgsArray?: StepsArgsArray };
+export type ExcelReporterOptions = {
+    enabled: boolean;
+    mandatoryReporting: boolean;
+    filepath: string;
+    configurations: string[];
+}

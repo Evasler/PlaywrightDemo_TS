@@ -67,7 +67,7 @@ export class ExcelReportHelper {
 
     printUnreportedTestResultsWarning() {
         if (this._unreportedTestTitles.length > 0)
-            TerminalUtils.printColoredText("The following Tests' results were not reported", "yellow");
+            TerminalUtils.printColoredText("The following Tests' result was not added to the Excel Report", "yellow");
         for (const unreportedTestTitle of this._unreportedTestTitles)
             TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
     }

@@ -25,6 +25,7 @@ export default defineConfig<ErrorListenerOptionsObj>({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['list'], 
+    ['./src/reporters/GlobalReporter.ts'],
     ['./src/reporters/ExcelReporter.ts', 
       { 
         enabled: true,

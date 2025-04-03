@@ -5,7 +5,7 @@ export class StepSequenceHelper {
     
     private _testFilePath: RegExp;
     private _testFileStepCall: string | undefined;
-    private _stepSequence: Promise<void> = Promise.resolve();
+    private _stepSequence = Promise.resolve();
     
     constructor() {
         this._testFilePath = new RegExp(`${config.testDir!.replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+\.spec\.ts:[0-9]+:[0-9]+$`);

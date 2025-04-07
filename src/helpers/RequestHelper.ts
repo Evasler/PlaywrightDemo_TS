@@ -4,9 +4,11 @@ import StepSequenceHelper from "./StepSequenceHelper";
 
 export default class RequestHelper {
 
-    private readonly _requestContexts: APIRequestContext[] = [];
     private readonly _storageStateHelper;
-    private readonly _extraHeaders: { [key: string]: string; }[] = [];
+    private readonly _requestContexts: APIRequestContext[] = [];
+    private readonly _throwAwayContexts: APIRequestContext[] = [];
+    private readonly _requestContextsExtraHeaders: { [key: string]: string; }[] = [];
+    private readonly _throwAwayContextsExtraHeaders: { [key: string]: string; }[] = [];
 
     private _workingRequestContext!: APIRequestContext;
 
@@ -22,14 +24,30 @@ export default class RequestHelper {
         return this._requestContexts.indexOf(this.workingRequestContext);
     }
 
-    putExtraHeader(contextIndex: number, key: string, value: string) {
-        if(!this._extraHeaders[contextIndex])
-            this._extraHeaders[contextIndex] = {};
-        this._extraHeaders[contextIndex][key] = value;
+    putExtraHeader(key: string, value: string) {
+        const contextIndex = this._requestContexts.indexOf(this.workingRequestContext);
+        if (contextIndex >= 0) {
+            if(!this._requestContextsExtraHeaders[contextIndex])
+                this._requestContextsExtraHeaders[contextIndex] = {};
+            this._requestContextsExtraHeaders[contextIndex][key] = value;
+            return;
+        }
+        const throwAwayContextIndex = this._throwAwayContexts.indexOf(this.workingRequestContext);
+        if (throwAwayContextIndex >= 0) {
+            if(!this._throwAwayContextsExtraHeaders[throwAwayContextIndex])
+                this._throwAwayContextsExtraHeaders[throwAwayContextIndex] = {};
+            this._throwAwayContextsExtraHeaders[throwAwayContextIndex][key] = value;
+        }
     }
 
-    getExtraHeaders(contextIndex: number) {
-        return this._extraHeaders[contextIndex];
+    getExtraHeaders() {
+        const contextIndex = this._requestContexts.indexOf(this.workingRequestContext);
+        if (contextIndex >= 0)
+            return this._requestContextsExtraHeaders[contextIndex];
+        const throwAwayContextIndex = this._throwAwayContexts.indexOf(this.workingRequestContext);
+        if (throwAwayContextIndex >= 0)
+            return this._throwAwayContextsExtraHeaders[throwAwayContextIndex];
+        throw new Error("Could not find workingRequestContext's Extra Headers")
     }
 
     private _updateWorkingRequestContext(requestContextIndex: number) {
@@ -59,6 +77,7 @@ export default class RequestHelper {
                 if (generatedFile)
                     newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             }
+            this._throwAwayContexts.push(newContext);
             this._workingRequestContext = newContext;
         });
     }

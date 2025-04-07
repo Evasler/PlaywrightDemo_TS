@@ -12,7 +12,7 @@ export default abstract class BaseServiceSteps {
 
     protected get workingRequest() { return this._requestHelper.workingRequestContext; }
 
-    protected putExtraHeader(key: string, value: string) { return this._requestHelper.putExtraHeader(this._requestHelper.workingRequestContextIndex, key, value); }
+    protected putExtraHeader(key: string, value: string) { return this._requestHelper.putExtraHeader(key, value); }
 
     protected setTempData<T extends string | number | boolean>(key: string, value: T) {
         this._tempDataHelper.setTempData(key, value);

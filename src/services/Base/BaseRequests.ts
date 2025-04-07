@@ -6,5 +6,5 @@ export default abstract class BaseRequests {
 
     protected get workingRequest() { return this._requestHelper.workingRequestContext; }
     
-    protected get extraHeaders() { return this._requestHelper.getExtraHeaders(this._requestHelper.workingRequestContextIndex) }
+    protected get extraHeaders() { return this._requestHelper.getExtraHeaders() }
 }

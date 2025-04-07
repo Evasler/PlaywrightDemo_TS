@@ -1,7 +1,7 @@
 import { Page } from "@playwright/test";
 import { ErrorListenerOptions } from "../customTypes/FrameworkTypes";
 
-export class ErrorListener {
+export default class ErrorListener {
 
     constructor(private readonly _errorListenerOptions: ErrorListenerOptions) { }
 

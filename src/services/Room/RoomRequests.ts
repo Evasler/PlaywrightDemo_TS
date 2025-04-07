@@ -1,9 +1,9 @@
-import { BaseRequests } from "../Base/BaseRequests";
-import { RequestHelper } from "../../helpers/RequestHelper";
-import { RoomUrls } from "./RoomUrls";
+import BaseRequests from "../Base/BaseRequests";
+import RequestHelper from "../../helpers/RequestHelper";
+import RoomUrls from "./RoomUrls";
 import { CreateRoomPayload } from "../../customTypes/ApiPayloadTypes";
 
-export class RoomRequests extends BaseRequests {
+export default class RoomRequests extends BaseRequests {
 
     private readonly _roomUrls;
 

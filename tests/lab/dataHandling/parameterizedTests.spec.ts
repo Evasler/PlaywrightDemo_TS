@@ -1,8 +1,8 @@
-import { apiTest } from "../../../src/fixtures/apiFixture";
-import { TestUtils } from "../../../src/utils/TestUtils";
-import { parameterizedTestsDatasets } from "../../../resources/testData/datasets/parameterizedTestsDataset";
+import apiTest from "../../../src/fixtures/apiFixture";
+import TestUtils from "../../../src/utils/TestUtils";
+import datasets from "../../../resources/testData/datasets/parameterizedTestsDataset";
 
-for (const dataset of parameterizedTestsDatasets) {
+for (const dataset of datasets) {
     apiTest(TestUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ api }) => {
         await api
         .openNewContext(api.serviceHelper.authService)

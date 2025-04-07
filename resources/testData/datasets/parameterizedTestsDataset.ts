@@ -8,7 +8,7 @@ type ParameterizedTestsDataset = TestDetailsObj & {
     }
 };
 
-export const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
+const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     {
         testDetails: {
             id: 1,
@@ -47,4 +47,6 @@ export const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
             roomTempDataKeyPrefix: "room999"
         }
     }
-]
+];
+
+export default parameterizedTestsDatasets;

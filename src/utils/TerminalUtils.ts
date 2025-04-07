@@ -1,7 +1,7 @@
 import { LogLevel } from "../customTypes/FrameworkTypes";
 import path from "path";
 
-export class TerminalUtils {
+export default abstract class TerminalUtils {
 
     private static RESET = "\x1b[0m";
     private static FG_RED = "\x1b[31m";

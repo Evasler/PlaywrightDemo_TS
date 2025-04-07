@@ -1,13 +1,13 @@
-import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
-import { BrowserHelper } from "../../helpers/BrowserHelper";
-import { BasePage } from "../Base/BasePage";
-import { HomePage } from "../UITestingPlayground/Home/HomePage";
-import { LoginPage } from "../RestfulBooker/Login/LoginPage";
-import { AdminPanelPage } from "../RestfulBooker/AdminPanel/AdminPanelPage";
-import { ErrorPage } from "../Error/ErrorPage";
-import { TempDataHelper } from "../../helpers/TempDataHelper";
+import StepSequenceHelper from "../../helpers/StepSequenceHelper";
+import BrowserHelper from "../../helpers/BrowserHelper";
+import BasePage from "../Base/BasePage";
+import HomePage from "../UITestingPlayground/Home/HomePage";
+import LoginPage from "../RestfulBooker/Login/LoginPage";
+import AdminPanelPage from "../RestfulBooker/AdminPanel/AdminPanelPage";
+import ErrorPage from "../Error/ErrorPage";
+import TempDataHelper from "../../helpers/TempDataHelper";
 
-export class BlankPage extends BasePage {
+export default class BlankPage extends BasePage {
     
     constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper) {
         super("BlankPage", browserHelper, stepSequenceHelper, tempDataHelper);

@@ -1,6 +1,6 @@
-import { BaseAzureTestUrls } from "../BaseAzureTestUrls";
+import BaseAzureTestUrls from "../BaseAzureTestUrls"
 
-export class PlansUrls extends BaseAzureTestUrls {
+export default class PlansUrls extends BaseAzureTestUrls {
 
     constructor(baseUrl: string) { super(baseUrl, "Plans/") }
 

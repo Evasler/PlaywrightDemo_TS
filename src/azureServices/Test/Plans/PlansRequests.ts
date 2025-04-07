@@ -1,7 +1,7 @@
 import { APIRequestContext } from "@playwright/test";
-import { PlansUrls } from "./PlansUrls";
+import PlansUrls from "./PlansUrls";
 
-export class PlansRequests {
+export default class PlansRequests {
 
     private readonly _plansUrls;
 

@@ -1,8 +1,8 @@
-import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
-import { RequestHelper } from "../../helpers/RequestHelper";
-import { TempDataHelper } from "../../helpers/TempDataHelper";
+import StepSequenceHelper from "../../helpers/StepSequenceHelper";
+import RequestHelper from "../../helpers/RequestHelper";
+import TempDataHelper from "../../helpers/TempDataHelper";
 
-export abstract class BaseService {
+export default abstract class BaseService {
 
     constructor(private readonly _requestHelper: RequestHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
         

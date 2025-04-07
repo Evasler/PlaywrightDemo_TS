@@ -1,13 +1,13 @@
 import { Suite, TestCase, TestResult } from "@playwright/test/reporter";
 import { request } from "@playwright/test";
-import { TerminalUtils } from "../utils/TerminalUtils";
-import { TestUtils } from "../utils/TestUtils";
+import TerminalUtils from "../utils/TerminalUtils";
+import TestUtils from "../utils/TestUtils";
 import { APIRequestContext } from "@playwright/test";
-import { RunsService } from "../azureServices/Test/Runs/RunsService";
-import { PlansService } from "../azureServices/Test/Plans/PlansService";
+import RunsService from "../azureServices/Test/Runs/RunsService";
+import PlansService from "../azureServices/Test/Plans/PlansService";
 import { ResultDetails, RunDetails } from "../customTypes/FrameworkTypes";
 
-export class AzureReportHelper {
+export default class AzureReportHelper {
 
     private readonly _unreportedTestTitles: string[] = [];
     private _authorizedContext!: APIRequestContext;

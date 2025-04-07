@@ -1,7 +1,7 @@
 import test from "@playwright/test";
 import config from "../../playwright.config";
 
-export class StepSequenceHelper {
+export default class StepSequenceHelper {
     
     private _testFilePath: RegExp;
     private _testFileStepCall: string | undefined;

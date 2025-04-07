@@ -9,7 +9,7 @@ type TestData = TestDetailsObj & SetupStepsArgsObj & TeardownStepsArgsObj & {
     };
 };
 
-export const teardownStepsApiDataset: TestData = {
+const teardownStepsApiDataset: TestData = {
     testDetails: {
         id: 1,
         title: "Teardown Steps | API Test",
@@ -46,3 +46,5 @@ export const teardownStepsApiDataset: TestData = {
         }
     ]
 };
+
+export default teardownStepsApiDataset;

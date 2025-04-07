@@ -1,10 +1,10 @@
-import { AuthService } from "../services/Auth/AuthService";
-import { RoomService } from "../services/Room/RoomService";
-import { StepSequenceHelper } from "./StepSequenceHelper";
-import { RequestHelper } from "./RequestHelper";
-import { TempDataHelper } from "./TempDataHelper";
+import AuthService from "../services/Auth/AuthService";
+import RoomService from "../services/Room/RoomService";
+import StepSequenceHelper from "./StepSequenceHelper";
+import RequestHelper from "./RequestHelper";
+import TempDataHelper from "./TempDataHelper";
 
-export class ServiceHelper {
+export default class ServiceHelper {
 
     private _authService?: AuthService;
     private _roomService?: RoomService;

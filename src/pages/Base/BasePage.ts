@@ -1,10 +1,9 @@
-import test from "@playwright/test";
 import { PageType } from "../../customTypes/FrameworkTypes";
-import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
-import { BrowserHelper } from "../../helpers/BrowserHelper";
-import { TempDataHelper } from "../../helpers/TempDataHelper";
+import StepSequenceHelper from "../../helpers/StepSequenceHelper";
+import BrowserHelper from "../../helpers/BrowserHelper";
+import TempDataHelper from "../../helpers/TempDataHelper";
 
-export abstract class BasePage {
+export default abstract class BasePage {
 
     constructor(private readonly _pageType: PageType, private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
 

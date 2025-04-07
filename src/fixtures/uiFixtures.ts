@@ -1,16 +1,16 @@
 import { test as base } from "@playwright/test";
-import { BrowserHelper } from "../helpers/BrowserHelper";
-import { PageHelper } from "../helpers/PageHelper";
+import BrowserHelper from "../helpers/BrowserHelper";
+import PageHelper from "../helpers/PageHelper";
 import { UiHelperObj, ErrorListenerOptionsObj } from "../customTypes/FrameworkTypes";
-import { TempDataHelper } from "../helpers/TempDataHelper";
-import { StepSequenceHelper } from "../helpers/StepSequenceHelper";
-import { UiHelper } from "../helpers/UiHelper";
+import TempDataHelper from "../helpers/TempDataHelper";
+import StepSequenceHelper from "../helpers/StepSequenceHelper";
+import UiHelper from "../helpers/UiHelper";
 import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
-import { ExtraStepsHelper } from "../helpers/ExtraStepsHelper";
-import { RequestHelper } from "../helpers/RequestHelper";
-import { ServiceHelper } from "../helpers/ServiceHelper";
+import ExtraStepsHelper from "../helpers/ExtraStepsHelper";
+import RequestHelper from "../helpers/RequestHelper";
+import ServiceHelper from "../helpers/ServiceHelper";
 
-export const uiTest = base.extend<UiHelperObj & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
+const uiTest = base.extend<UiHelperObj & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
     errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
@@ -33,3 +33,5 @@ export const uiTest = base.extend<UiHelperObj & ErrorListenerOptionsObj & SetupS
         await browserHelper.closeAllContexts();
     }, { scope: "test", box: true }]
 });
+
+export default uiTest;

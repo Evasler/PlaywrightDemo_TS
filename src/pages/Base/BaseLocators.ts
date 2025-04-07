@@ -1,6 +1,6 @@
-import { BrowserHelper } from "../../helpers/BrowserHelper";
+import BrowserHelper from "../../helpers/BrowserHelper";
 
-export class BaseLocators {
+export default class BaseLocators {
 
     constructor(private readonly _browserHelper: BrowserHelper) { }
 

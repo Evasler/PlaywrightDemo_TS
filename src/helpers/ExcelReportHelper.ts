@@ -1,11 +1,11 @@
 import { Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import { GeneralUtils } from "../utils/GeneralUtils";
-import { TerminalUtils } from "../utils/TerminalUtils";
-import { fileExists } from "../utils/FileUtils";
-import { TestUtils } from "../utils/TestUtils";
+import GeneralUtils from "../utils/GeneralUtils";
+import TerminalUtils from "../utils/TerminalUtils";
+import FileUtils from "../utils/FileUtils";
+import TestUtils from "../utils/TestUtils";
 import Excel from "exceljs";
 
-export class ExcelReportHelper {
+export default class ExcelReportHelper {
 
     private readonly _unreportedTestTitles: string[] = [];
 
@@ -84,7 +84,7 @@ export class ExcelReportHelper {
 
     private async excelFileErrors() {
         const excelFileErrors = [];
-        if (!fileExists(this._filepath))
+        if (!FileUtils.fileExists(this._filepath))
             excelFileErrors.push(`Filepath \"${this._filepath}\" not found`);
         else if (!await this.excelIsWritable())
             excelFileErrors.push(`Excel Report is locked or not writable`);

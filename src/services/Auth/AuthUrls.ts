@@ -1,6 +1,6 @@
-import { BaseUrls } from "../Base/BaseUrls";
+import BaseUrls from "../Base/BaseUrls";
 
-export class AuthUrls extends BaseUrls {
+export default class AuthUrls extends BaseUrls {
 
     constructor(baseUrl: string) { super(baseUrl, "auth/") }
 

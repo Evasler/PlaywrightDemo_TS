@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import { TerminalUtils } from "../utils/TerminalUtils";
+import TerminalUtils from "../utils/TerminalUtils";
 import path from "path";
 
 type TestFixtures = {
@@ -12,7 +12,7 @@ type WorkerFixtures = {
     dependencyFixture: void;
 };
 
-export const test = base.extend<TestFixtures, WorkerFixtures>({
+const test = base.extend<TestFixtures, WorkerFixtures>({
     autoTestFixture: [ async ({}, use, testInfo) => {
         TerminalUtils.printLogLevelMessage(path.basename(__filename), testInfo.title, "fixture", "autoSetup");
         await use();
@@ -39,3 +39,5 @@ export const test = base.extend<TestFixtures, WorkerFixtures>({
         TerminalUtils.printLogLevelMessage(path.basename(__filename), `worker ${testInfo.workerIndex}`, "fixture", "manualTeardown");
     }, {scope: "worker"}]
 });
+
+export default test;

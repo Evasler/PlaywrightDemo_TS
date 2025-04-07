@@ -1,9 +1,9 @@
 import { StepsArgsArray } from "../customTypes/StepArgsTypes";
-import { RequestHelper } from "./RequestHelper";
-import { ServiceHelper } from "./ServiceHelper";
+import RequestHelper from "./RequestHelper";
+import ServiceHelper from "./ServiceHelper";
 import test from "@playwright/test";
 
-export class ExtraStepsHelper {
+export default class ExtraStepsHelper {
 
     constructor(private readonly _requestHelper: RequestHelper, private readonly _serviceHelper: ServiceHelper) { }
 

@@ -1,5 +1,5 @@
-import { uiTest } from "../../../src/fixtures/uiFixtures";
-import { TestUtils } from "../../../src/utils/TestUtils";
+import uiTest from "../../../src/fixtures/uiFixtures";
+import TestUtils from "../../../src/utils/TestUtils";
 
 uiTest.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false } });
 uiTest.describe("Initial Tab without storageState", () => {

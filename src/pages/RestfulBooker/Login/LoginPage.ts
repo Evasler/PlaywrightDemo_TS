@@ -1,13 +1,13 @@
 import { expect } from "@playwright/test";
-import { BrowserHelper } from "../../../helpers/BrowserHelper";
-import { StepSequenceHelper } from "../../../helpers/StepSequenceHelper";
-import { BasePage } from "../../Base/BasePage";
-import { LoginLocators } from "./LoginLocators";
-import { TempDataHelper } from "../../../helpers/TempDataHelper";
-import { getUserCredentials } from "../../../helpers/CredentialsHelper";
-import { AdminPanelPage } from "../AdminPanel/AdminPanelPage";
+import BrowserHelper from "../../../helpers/BrowserHelper";
+import StepSequenceHelper from "../../../helpers/StepSequenceHelper";
+import BasePage from "../../Base/BasePage";
+import LoginLocators from "./LoginLocators";
+import TempDataHelper from "../../../helpers/TempDataHelper";
+import CredentialsUtils from "../../../utils/CredentialsUtils";
+import AdminPanelPage from "../AdminPanel/AdminPanelPage";
 
-export class LoginPage extends BasePage {
+export default class LoginPage extends BasePage {
     
     private readonly _loginLocators: LoginLocators;
 
@@ -27,7 +27,7 @@ export class LoginPage extends BasePage {
     populateCredentials(user: string) {
         this.addStep("populateCredentials", async() => {
             console.log("populateCredentials");
-            const userCredentials = getUserCredentials(user);
+            const userCredentials = CredentialsUtils.getUserCredentials(user);
             await this._loginLocators.textbox("Username").fill(userCredentials.username);
             await this._loginLocators.textbox("Password").fill(userCredentials.password);
         });

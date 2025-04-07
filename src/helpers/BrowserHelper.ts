@@ -1,12 +1,12 @@
 import { Browser, expect, Page } from "@playwright/test";
 import { PageType } from "../customTypes/FrameworkTypes";
 import { ErrorListenerOptions } from "../customTypes/FrameworkTypes";
-import { TabPageTypeHelper } from "./TabPageTypeHelper";
-import { ErrorListener } from "../listeners/ErrorListener";
-import { StorageStateHelper } from "./StorageStateHelper";
-import { StepSequenceHelper } from "./StepSequenceHelper";
+import TabPageTypeHelper from "./TabPageTypeHelper";
+import ErrorListener from "../listeners/ErrorListener";
+import StorageStateHelper from "./StorageStateHelper";
+import StepSequenceHelper from "./StepSequenceHelper";
 
-export class BrowserHelper {
+export default class BrowserHelper {
 
     private readonly _errorListener: ErrorListener;
     private readonly _tabPageTypeHelper: TabPageTypeHelper;

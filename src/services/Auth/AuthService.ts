@@ -1,14 +1,14 @@
 import { expect } from "@playwright/test";
-import { getUserCredentials } from "../../helpers/CredentialsHelper";
-import { RequestHelper } from "../../helpers/RequestHelper";
-import { StepSequenceHelper } from "../../helpers/StepSequenceHelper";
-import { AuthRequests } from "./AuthRequests";
-import { BaseService } from "../Base/BaseService";
-import { TempDataHelper } from "../../helpers/TempDataHelper";
+import CredentialsUtils from "../../utils/CredentialsUtils";
+import RequestHelper from "../../helpers/RequestHelper";
+import StepSequenceHelper from "../../helpers/StepSequenceHelper";
+import AuthRequests from "./AuthRequests";
+import BaseService from "../Base/BaseService";
+import TempDataHelper from "../../helpers/TempDataHelper";
 import { LoginResponse, ValidateResponse } from "../../customTypes/ApiResponseTypes";
 import { LoginArgs } from "../../customTypes/StepArgsTypes";
 
-export class AuthService extends BaseService {
+export default class AuthService extends BaseService {
     
     private readonly _authRequests;
 
@@ -20,7 +20,7 @@ export class AuthService extends BaseService {
     login({ user }: LoginArgs) {
         this.addStep("login", async() => {
             console.log("login");
-            const userCredentialsObj = getUserCredentials(user);
+            const userCredentialsObj = CredentialsUtils.getUserCredentials(user);
             const response = await this._authRequests.login(userCredentialsObj);
             expect(response.status()).toEqual(200);
             const token = (await response.json() as LoginResponse).token;

@@ -1,8 +1,8 @@
 import { APIRequest, APIRequestContext, expect } from "@playwright/test";
-import { StorageStateHelper } from "./StorageStateHelper";
-import { StepSequenceHelper } from "./StepSequenceHelper";
+import StorageStateHelper from "./StorageStateHelper";
+import StepSequenceHelper from "./StepSequenceHelper";
 
-export class RequestHelper {
+export default class RequestHelper {
 
     private readonly _requestContexts: APIRequestContext[] = [];
     private readonly _storageStateHelper;

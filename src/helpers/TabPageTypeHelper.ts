@@ -2,7 +2,7 @@ import { PageType } from "../customTypes/FrameworkTypes";
 
 export const defaultTabPageType: PageType = "BlankPage";
 
-export class TabPageTypeHelper {
+export default class TabPageTypeHelper {
 
     private readonly _tabPageType: Array<Array<PageType>> = [];
 

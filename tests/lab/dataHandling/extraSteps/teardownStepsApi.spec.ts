@@ -1,6 +1,6 @@
-import { apiTest } from "../../../../src/fixtures/apiFixture";
-import { TestUtils } from "../../../../src/utils/TestUtils";
-import { teardownStepsApiDataset as dataset } from "./teardownStepsApi.data";
+import apiTest from "../../../../src/fixtures/apiFixture";
+import TestUtils from "../../../../src/utils/TestUtils";
+import dataset from "./teardownStepsApi.data";
 
 apiTest.use({ teardownStepsArgsArray: dataset.teardownStepsArgsArray });
 apiTest(TestUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ api }) => {

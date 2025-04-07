@@ -1,14 +1,14 @@
-import { BrowserHelper } from "./BrowserHelper";
-import { HomePage } from "../pages/UITestingPlayground/Home/HomePage";
-import { BlankPage } from "../pages/Blank/BlankPage";
-import { AjaxDataPage } from "../pages/UITestingPlayground/AjaxData/AjaxDataPage";
-import { StepSequenceHelper } from "./StepSequenceHelper";
-import { LoginPage } from "../pages/RestfulBooker/Login/LoginPage";
-import { AdminPanelPage } from "../pages/RestfulBooker/AdminPanel/AdminPanelPage";
-import { ErrorPage } from "../pages/Error/ErrorPage";
-import { TempDataHelper } from "./TempDataHelper";
+import BrowserHelper from "./BrowserHelper";
+import HomePage from "../pages/UITestingPlayground/Home/HomePage";
+import BlankPage from "../pages/Blank/BlankPage";
+import AjaxDataPage from "../pages/UITestingPlayground/AjaxData/AjaxDataPage";
+import StepSequenceHelper from "./StepSequenceHelper";
+import LoginPage from "../pages/RestfulBooker/Login/LoginPage";
+import AdminPanelPage from "../pages/RestfulBooker/AdminPanel/AdminPanelPage";
+import ErrorPage from "../pages/Error/ErrorPage";
+import TempDataHelper from "./TempDataHelper";
 
-export class PageHelper {
+export default class PageHelper {
 
     private _blankPage?: BlankPage;
 

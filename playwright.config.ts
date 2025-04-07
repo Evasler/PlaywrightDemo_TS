@@ -28,7 +28,7 @@ export default defineConfig<ErrorListenerOptionsObj>({
     ['./src/reporters/GlobalReporter.ts'],
     ['./src/reporters/ExcelReporter.ts', 
       { 
-        enabled: true,
+        enabled: false,
         mandatoryReporting: false,
         filepath: "./excel-report/PlaywrightDemo_TS.xlsx",
         configurations: [ "configuration1", "configuration2" ]

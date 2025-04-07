@@ -1,6 +1,6 @@
-import { uiTest } from "../../../../src/fixtures/uiFixtures";
-import { TestUtils } from "../../../../src/utils/TestUtils";
-import { setupStepsUiDataset as dataset } from "./setupStepsUi.data";
+import uiTest from "../../../../src/fixtures/uiFixtures";
+import TestUtils from "../../../../src/utils/TestUtils";
+import dataset from "./setupStepsUi.data";
 
 uiTest.use({ setupStepsArgsArray: dataset.setupStepsArgsArray });
 uiTest(TestUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ ui }) => {

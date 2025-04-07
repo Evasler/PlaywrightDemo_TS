@@ -1,4 +1,4 @@
-export class GeneralUtils {
+export default abstract class GeneralUtils {
 
     static padNumber(number: number, digitCount: number) {
         return number.toString().padStart(digitCount, "0");

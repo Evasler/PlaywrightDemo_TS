@@ -1,5 +1,5 @@
-import { uiTest } from "../../../src/fixtures/uiFixtures";
-import { TestUtils } from "../../../src/utils/TestUtils";
+import uiTest from "../../../src/fixtures/uiFixtures";
+import TestUtils from "../../../src/utils/TestUtils";
 
 uiTest(TestUtils.fullTitle(0, "Chained Page Object Model | StepSequenceBuilder"), async({ ui }) => {
     await ui

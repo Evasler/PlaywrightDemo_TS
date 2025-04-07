@@ -1,8 +1,8 @@
-import { BaseRequests } from "../Base/BaseRequests";
-import { RequestHelper } from "../../helpers/RequestHelper";
-import { AuthUrls } from "./AuthUrls";
+import BaseRequests from "../Base/BaseRequests";
+import RequestHelper from "../../helpers/RequestHelper";
+import AuthUrls from "./AuthUrls";
 
-export class AuthRequests extends BaseRequests {
+export default class AuthRequests extends BaseRequests {
 
     private readonly _authUrls;
 

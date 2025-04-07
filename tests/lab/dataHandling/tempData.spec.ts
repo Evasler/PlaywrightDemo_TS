@@ -1,5 +1,5 @@
-import { apiTest } from "../../../src/fixtures/apiFixture";
-import { TestUtils } from "../../../src/utils/TestUtils";
+import apiTest from "../../../src/fixtures/apiFixture";
+import TestUtils from "../../../src/utils/TestUtils";
 
 apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
     await api

@@ -1,4 +1,4 @@
-export abstract class BaseAzureTestUrls {
+export default abstract class BaseAzureTestUrls {
 
     protected readonly apiSuffix = "api-version=7.1";
 

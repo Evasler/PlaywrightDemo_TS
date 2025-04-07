@@ -1,6 +1,5 @@
-import { test } from "../../../../src/fixtures/firstFixtures";
-import { expect } from "@playwright/test";
-import { TerminalUtils } from "../../../../src/utils/TerminalUtils";
+import test from "../../../../src/fixtures/firstFixtures";
+import TerminalUtils from "../../../../src/utils/TerminalUtils";
 
 test.beforeAll("fileBeforeAll", ({}, testInfo) => { TerminalUtils.printLogLevelMessage(__filename, testInfo.title, "specFile", "beforeAll") });
 test.afterAll("fileAfterAll", ({}, testInfo) => { TerminalUtils.printLogLevelMessage(__filename, testInfo.title, "specFile", "afterAll") });

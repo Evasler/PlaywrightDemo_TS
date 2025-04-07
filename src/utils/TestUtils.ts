@@ -1,6 +1,6 @@
 import { TestCase, TestResult } from "@playwright/test/reporter";
 
-export class TestUtils {
+export default abstract class TestUtils {
 
     static fullTitle(id: number, title: string, tags?: string[]) {
         let testTitle = `${id}: ${title}`;

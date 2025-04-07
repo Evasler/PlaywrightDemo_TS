@@ -1,5 +1,5 @@
 import type { Reporter, FullConfig, Suite, TestCase, TestResult, FullResult, TestStep } from '@playwright/test/reporter';
-import { TerminalUtils } from '../utils/TerminalUtils';
+import TerminalUtils from '../utils/TerminalUtils';
 
 export default class MyReporter implements Reporter {
 

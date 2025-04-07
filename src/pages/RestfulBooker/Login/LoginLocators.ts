@@ -1,7 +1,7 @@
-import { BaseLocators } from "../../Base/BaseLocators";
-import { BrowserHelper } from "../../../helpers/BrowserHelper";
+import BaseLocators from "../../Base/BaseLocators";
+import BrowserHelper from "../../../helpers/BrowserHelper";
 
-export class LoginLocators extends BaseLocators {
+export default class LoginLocators extends BaseLocators {
 
     constructor(browserHelper: BrowserHelper) { super(browserHelper) }
 

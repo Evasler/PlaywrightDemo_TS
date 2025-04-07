@@ -5,7 +5,7 @@ type TestData = TestDetailsObj & SetupStepsArgsObj & TeardownStepsArgsObj & {
     stepData: { roomInfo: { roomName: string, type: string, accessible: string, price: string, roomDetails: string }; };
 };
 
-export const setupStepsUiDataset: TestData = {
+const setupStepsUiDataset: TestData = {
     testDetails: {
         id: 1,
         title: "Setup Steps | UI Test",
@@ -35,3 +35,5 @@ export const setupStepsUiDataset: TestData = {
         }
     }
 };
+
+export default setupStepsUiDataset;

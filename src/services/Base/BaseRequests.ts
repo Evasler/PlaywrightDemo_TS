@@ -1,6 +1,6 @@
-import { RequestHelper } from "../../helpers/RequestHelper";
+import RequestHelper from "../../helpers/RequestHelper";
 
-export class BaseRequests {
+export default abstract class BaseRequests {
 
     constructor(private readonly _requestHelper: RequestHelper) { }
 

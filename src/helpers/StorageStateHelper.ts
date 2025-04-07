@@ -1,4 +1,4 @@
-import { APIRequestContext, expect } from "@playwright/test";
+import { APIRequestContext, expect, Page } from "@playwright/test";
 import AuthUrls from "../services/Auth/AuthUrls";
 import CredentialsUtils from "../utils/CredentialsUtils";
 import { StorageState } from "../customTypes/FrameworkTypes";
@@ -8,9 +8,11 @@ import FileUtils from "../utils/FileUtils";
 export default class StorageStateHelper {
 
     private readonly _authUrls;
+    private readonly _loginPageUrl;
 
     constructor(_baseUrl: string) {
         this._authUrls = new AuthUrls(_baseUrl);
+        this._loginPageUrl = `${_baseUrl}admin`;
     }
 
     private _storageStatePath(user: string) { return `.auth/${user}.json`; }
@@ -25,7 +27,7 @@ export default class StorageStateHelper {
         return storageStateValue;
     }
 
-    private async generateStorageStateFile(workingRequest: APIRequestContext, user: string) {
+    private async generateStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
         const storageStatePath = this._storageStatePath(user);
         console.log(`Generating ${storageStatePath}`)
         const credentials = CredentialsUtils.getUserCredentials(user);
@@ -37,7 +39,7 @@ export default class StorageStateHelper {
         FileUtils.writeFile(storageStatePath, JSON.stringify(storageStateTemplate, null, 2));
     }
 
-    private async contextIsAuthorized(workingRequest: APIRequestContext) {
+    private async contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
         let contextIsAuthorized = false;
         const tokenCookie = (await workingRequest.storageState()).cookies.find(cookie => cookie.name === "token");
         if (tokenCookie) {
@@ -52,13 +54,54 @@ export default class StorageStateHelper {
     async generateStorageStateFileIfNeededViaAPI(workingRequest: APIRequestContext, authenticatedUser: string) {
         const storageStatePath = this._storageStatePath(authenticatedUser);
         if (FileUtils.fileExists(storageStatePath)) {
-            const workingContextIsAuthorized = await this.contextIsAuthorized(workingRequest);
+            const workingContextIsAuthorized = await this.contextIsAuthorizedViaAPI(workingRequest);
             if (!workingContextIsAuthorized) {
-                await this.generateStorageStateFile(workingRequest, authenticatedUser);
+                await this.generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
                 return true;
             }
         } else {
-            await this.generateStorageStateFile(workingRequest, authenticatedUser);
+            await this.generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
+            return true;
+        }
+        return false;
+    }
+
+    //====================================================================
+
+    private async generateStorageStateFileViaUI(workingTab: Page, user: string) {
+        const storageStatePath = this._storageStatePath(user);
+        console.log(`Generating ${storageStatePath}`)
+        const credentials = CredentialsUtils.getUserCredentials(user);
+        await workingTab.goto(this._loginPageUrl);
+        await workingTab.getByRole("textbox", { name: "Username", exact: true }).fill(credentials.username);
+        await workingTab.getByRole("textbox", { name: "Password", exact: true }).fill(credentials.password);
+        await workingTab.getByRole("button", { name: "Login", exact: true }).click();
+        await expect(workingTab.getByRole("link", {name: "Rooms", exact: true})).toBeVisible();
+        await workingTab.context().storageState({ path: storageStatePath });
+    }
+
+    private async contextIsAuthorizedViaUI(workingTab: Page) {
+        await workingTab.goto(this._loginPageUrl);
+        try {
+            await expect(workingTab.getByRole("link", {name: "Rooms", exact: true})).toBeVisible({ timeout: 5000 });
+            console.log("Context is authorized");
+            return true;
+        } catch {
+            console.log("Context is unauthorized");
+            return false;
+        }
+    }
+
+    async generateStorageStateFileIfNeededViaUI(workingTab: Page, authenticatedUser: string) {
+        const storageStatePath = this._storageStatePath(authenticatedUser);
+        if (FileUtils.fileExists(storageStatePath)) {
+            const workingContextIsAuthorized = await this.contextIsAuthorizedViaUI(workingTab);
+            if (!workingContextIsAuthorized) {
+                await this.generateStorageStateFileViaUI(workingTab, authenticatedUser);
+                return true;
+            }
+        } else {
+            await this.generateStorageStateFileViaUI(workingTab, authenticatedUser);
             return true;
         }
         return false;

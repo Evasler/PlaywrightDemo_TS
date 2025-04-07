@@ -1,6 +1,6 @@
 import BrowserHelper from "../../helpers/BrowserHelper";
 
-export default class BaseLocators {
+export default abstract class BaseLocators {
 
     constructor(private readonly _browserHelper: BrowserHelper) { }
 

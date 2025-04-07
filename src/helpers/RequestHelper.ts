@@ -32,7 +32,7 @@ export default class RequestHelper {
         return this._extraHeaders[contextIndex];
     }
 
-    updateWorkingRequestContext(requestContextIndex: number) {
+    private _updateWorkingRequestContext(requestContextIndex: number) {
         this._workingRequestContext = this._requestContexts[requestContextIndex];
     }
     
@@ -46,7 +46,7 @@ export default class RequestHelper {
                     newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             }
             this._requestContexts.push(newContext);
-            this.updateWorkingRequestContext(this._requestContexts.length - 1);
+            this._updateWorkingRequestContext(this._requestContexts.length - 1);
         });
     }
     
@@ -68,7 +68,7 @@ export default class RequestHelper {
             console.log("switchWorkingContext");
             expect(requestContextIndex, `Context [${requestContextIndex}] not found`).toBeLessThan(this._requestContexts.length);
             expect(requestContextIndex, `Already working on context [${requestContextIndex}]`).not.toEqual(this.workingRequestContextIndex);
-            this.updateWorkingRequestContext(requestContextIndex);
+            this._updateWorkingRequestContext(requestContextIndex);
         });
     }
 }

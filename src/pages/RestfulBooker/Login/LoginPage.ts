@@ -12,7 +12,7 @@ export default class LoginPage extends BasePage {
     private readonly _loginLocators: LoginLocators;
 
     constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper) {
-        super("Login", browserHelper, stepSequenceHelper, tempDataHelper);
+        super("LoginPage", browserHelper, stepSequenceHelper, tempDataHelper);
         this._loginLocators = new LoginLocators(browserHelper);
     }
 

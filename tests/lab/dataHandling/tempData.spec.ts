@@ -3,9 +3,9 @@ import TestUtils from "../../../src/utils/TestUtils";
 
 apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
     await api
-    .openNewContext(api.serviceHelper.authService)
+    ._openNewContext(api.serviceHelper.authService)
     .login({ user: "administrator" })
-    .switchService(api.serviceHelper.roomService)
+    ._switchService(api.serviceHelper.roomService)
     .createRoom({
         payload: {
             roomName: "998",
@@ -32,5 +32,5 @@ apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
     .getRoomId({ roomName: "999", tempDataKeyPrefix: "mySecondRoom" })
     .deleteRoom({ tempDataKeyPrefix: "myFirstRoom" })
     .deleteRoom({ tempDataKeyPrefix: "mySecondRoom" })
-    .execute();
+    ._execute();
 });

@@ -1,11 +1,12 @@
 import { TestCase, TestResult } from "@playwright/test/reporter";
+import { SuiteTag } from "../customTypes/FrameworkTypes";
 
 export default abstract class TestUtils {
 
-    static fullTitle(id: number, title: string, tags?: string[]) {
+    static fullTitle(id: number, title: string, suiteTags?: SuiteTag[]) {
         let testTitle = `${id}: ${title}`;
-        if (tags)
-            testTitle += ` | ${tags.map(tag => `@${tag}`).toString().replaceAll(",", " ")}`;
+        if (suiteTags)
+            testTitle += ` | ${suiteTags.join(" ")}`;
         return testTitle;
     }
     

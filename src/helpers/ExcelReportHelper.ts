@@ -11,7 +11,7 @@ export default class ExcelReportHelper {
 
     constructor(private readonly _filepath: string, private readonly _configurations: string[]) {}
 
-    private worksheetName(testType: "API" | "UI") {
+    private _worksheetName(testType: "API" | "UI") {
         return `FullScope (${testType})`;
     }
 
@@ -26,8 +26,8 @@ export default class ExcelReportHelper {
             _projectConfiguration = TestUtils.projectConfiguration(test, this._configurations);
             _testType = TestUtils.type(test);
             workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
-            const worksheetName = this.worksheetName(_testType);
-            const worksheetErrors = await this.worksheetErrors(worksheetName);
+            const worksheetName = this._worksheetName(_testType);
+            const worksheetErrors = await this._worksheetErrors(worksheetName);
             if (worksheetErrors.length > 0)
                 throw new Error();
             worksheet = workbook.getWorksheet(worksheetName)!;
@@ -72,7 +72,7 @@ export default class ExcelReportHelper {
             TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
     }
 
-    private async excelIsWritable() {
+    private async _excelIsWritable() {
         try {
             const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
             await workbook.xlsx.writeFile(this._filepath);
@@ -82,22 +82,22 @@ export default class ExcelReportHelper {
         }
     }
 
-    private async excelFileErrors() {
+    private async _excelFileErrors() {
         const excelFileErrors = [];
         if (!FileUtils.fileExists(this._filepath))
             excelFileErrors.push(`Filepath \"${this._filepath}\" not found`);
-        else if (!await this.excelIsWritable())
+        else if (!await this._excelIsWritable())
             excelFileErrors.push(`Excel Report is locked or not writable`);
         else {
-            excelFileErrors.push(...await this.worksheetErrors(this.worksheetName("API")));
-            excelFileErrors.push(...await this.worksheetErrors(this.worksheetName("UI")));
+            excelFileErrors.push(...await this._worksheetErrors(this._worksheetName("API")));
+            excelFileErrors.push(...await this._worksheetErrors(this._worksheetName("UI")));
         }
         return excelFileErrors;
     }
 
-    private async worksheetErrors(worksheetName: string) {
+    private async _worksheetErrors(worksheetName: string) {
         const worksheetErrors = [];
-        const worksheet = await this.worksheet(worksheetName);
+        const worksheet = await this._worksheet(worksheetName);
         if (!worksheet)
             worksheetErrors.push(`Worksheet \"${worksheetName}\" not found`);
         else {
@@ -112,7 +112,7 @@ export default class ExcelReportHelper {
         return worksheetErrors;
     }
 
-    private projectErrors(projectName: string) {
+    private _projectErrors(projectName: string) {
         const projectErrors = [];
         if (this._configurations) {
             const projectConfigurations = this._configurations.filter(configuration => projectName.includes(configuration));
@@ -126,7 +126,7 @@ export default class ExcelReportHelper {
         return projectErrors;
     }
 
-    private async testErrors(test: TestCase, projectName: string, excelFileIsValid: boolean) {
+    private async _testErrors(test: TestCase, projectName: string, excelFileIsValid: boolean) {
         const testFileErrors: string[] = [];
         const titleErrors: string[] = [];
         const testPointErrors: string[] = [];
@@ -152,19 +152,19 @@ export default class ExcelReportHelper {
         if (this._configurations && excelFileIsValid && testFileErrors.length === 0) {
             const projectConfigurations = this._configurations.filter(configuration => projectName.includes(configuration));
             if (titleErrors.length === 0 && projectConfigurations.length === 1)
-                if (!await this.testPointExists(test))
-                    testPointErrors.push(`Test Point [${testId},${projectConfigurations[0]}] not found in \"${this.worksheetName(testType!)}\"`);
+                if (!await this._testPointExists(test))
+                    testPointErrors.push(`Test Point [${testId},${projectConfigurations[0]}] not found in \"${this._worksheetName(testType!)}\"`);
         }
         return [...testFileErrors, ...titleErrors, ...testPointErrors];
     }
 
-    private async worksheet(worksheetName: string) {
+    private async _worksheet(worksheetName: string) {
         const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
         const worksheet = workbook.getWorksheet(worksheetName);
         return worksheet;
     }
 
-    private async testPointExists(test: TestCase) {
+    private async _testPointExists(test: TestCase) {
         let _testId;
         let _projectConfiguration
         let _testType: "API" | "UI";
@@ -175,7 +175,7 @@ export default class ExcelReportHelper {
         } catch(error) {
             return false;
         }
-        const worksheet = await this.worksheet(this.worksheetName(_testType));
+        const worksheet = await this._worksheet(this._worksheetName(_testType));
         if (!worksheet)
             return false;
         for (let rowIndex = 1; rowIndex <= worksheet.rowCount; rowIndex++) {
@@ -192,12 +192,12 @@ export default class ExcelReportHelper {
         const excelFileErrors: string[] = [];
         const projectErrors: string[] = [];
         const testErrors: string[] = [];
-        excelFileErrors.push(...await this.excelFileErrors());
+        excelFileErrors.push(...await this._excelFileErrors());
         for (const projectSuite of rootSuite.suites) {
             const projectName = projectSuite.project()!.name;
-            projectErrors.push(...this.projectErrors(projectName));
+            projectErrors.push(...this._projectErrors(projectName));
             for (const test of projectSuite.allTests())
-                testErrors.push(...await this.testErrors(test, projectName, excelFileErrors.length === 0));
+                testErrors.push(...await this._testErrors(test, projectName, excelFileErrors.length === 0));
         }
         const uniqueReportingErrors = [...new Set([...excelFileErrors, ...projectErrors, ...testErrors])];
         if (uniqueReportingErrors.length > 0) {

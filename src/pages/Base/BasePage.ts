@@ -29,21 +29,21 @@ export default abstract class BasePage {
         return this._tempDataHelper.getTempBooleanData(key);
     }
 
-    execute() {
+    _execute() {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    openNewTabInNewContext<T extends BasePage>(page: T, authenticatedUser?: string): T {
+    _openNewTabInNewContext<T extends BasePage>(page: T, authenticatedUser?: string): T {
         this._browserHelper.openNewTabInNewContext(authenticatedUser);
         return page;
     }
 
-    openNewTabInCurrentContext<T extends BasePage>(page: T): T {
+    _openNewTabInCurrentContext<T extends BasePage>(page: T): T {
         this._browserHelper.openNewTabInCurrentContext();
         return page;
     }
 
-    switchWorkingTab<T extends BasePage>(contextIndex: number, pageIndex: number, page: T): T {
+    _switchWorkingTab<T extends BasePage>(contextIndex: number, pageIndex: number, page: T): T {
         this._browserHelper.switchWorkingTab(contextIndex, pageIndex, page._pageType);
         return page;
     }

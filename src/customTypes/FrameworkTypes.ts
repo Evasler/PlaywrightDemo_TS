@@ -2,7 +2,7 @@ import UiHelper from "../helpers/UiHelper";
 import ApiHelper from "../helpers/ApiHelper";
 import { StepsArgsArray } from "./StepArgsTypes";
 
-export type PageType = "BlankPage" | "Login" | "AdminPanel" | "Error" | "HomePage" | "AjaxPage";
+export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
 export type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
 export type SuiteTag = "@smoke" | "@regression" | "@fullScope";
 export type StorageState = {

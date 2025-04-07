@@ -23,7 +23,7 @@ export default class ExtraStepsHelper {
                     for (const deleteRoomArgs of stepsArgs.deleteRoomArgsArray)
                         this._serviceHelper.roomService.deleteRoom(deleteRoomArgs);
             }
-            await this._serviceHelper.authService.execute();
+            await this._serviceHelper.authService._execute();
         });
     }
 }

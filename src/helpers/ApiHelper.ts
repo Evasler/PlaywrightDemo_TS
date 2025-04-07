@@ -6,7 +6,7 @@ export default class ApiHelper {
 
     constructor(private readonly _requestHelper: RequestHelper, public readonly serviceHelper: ServiceHelper) { }
 
-    openNewContext<T extends BaseService>(service: T, authenticatedUser?: string) {
+    _openNewContext<T extends BaseService>(service: T, authenticatedUser?: string) {
         this._requestHelper.openNewContext(authenticatedUser);
         return service;
     }

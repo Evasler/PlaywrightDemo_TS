@@ -70,7 +70,7 @@ export default class AzureReportHelper {
             TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
     }
 
-    private async requestErrors(test: TestCase) {
+    private async _requestErrors(test: TestCase) {
         let _testId;
         try {
             _testId = TestUtils.id(test);
@@ -85,7 +85,7 @@ export default class AzureReportHelper {
         }
     }
 
-    private projectErrors(projectName: string) {
+    private _projectErrors(projectName: string) {
         const projectErrors = [];
         if (this._configurations) {
             const projectConfigurations = this._configurations.filter(configuration => projectName.includes(configuration));
@@ -98,7 +98,7 @@ export default class AzureReportHelper {
         return projectErrors;
     }
     
-    private async testErrors(test: TestCase, projectName: string, requestWasSuccessful: boolean) {
+    private async _testErrors(test: TestCase, projectName: string, requestWasSuccessful: boolean) {
         const titleErrors: string[] = [];
         const testPointErrors: string[] = [];
 
@@ -111,7 +111,7 @@ export default class AzureReportHelper {
         if (this._configurations && requestWasSuccessful) {
             const projectConfigurations = this._configurations.filter(configuration => projectName.includes(configuration));
             if (titleErrors.length === 0 && projectConfigurations.length === 1)
-                if (!await this.testPointExists(test))
+                if (!await this._testPointExists(test))
                     testPointErrors.push(`Test Point [${testId},${projectConfigurations[0]}] not found in ${this._suiteIds.length > 1 ? "Suites" : "Suite"} ${this._suiteIds.join(",")} of Plan ${this._planId}`);
         }
         return [...titleErrors, ...testPointErrors];
@@ -123,11 +123,11 @@ export default class AzureReportHelper {
         const testErrors: string[] = [];
         for (const projectSuite of rootSuite.suites) {
             const projectName = projectSuite.project()!.name;
-            projectErrors.push(...this.projectErrors(projectName));
+            projectErrors.push(...this._projectErrors(projectName));
             for (const test of projectSuite.allTests()) {
                 if (requestErrors.length === 0)
-                    requestErrors.push(...await this.requestErrors(test));
-                testErrors.push(...await this.testErrors(test, projectName, requestErrors.length === 0));
+                    requestErrors.push(...await this._requestErrors(test));
+                testErrors.push(...await this._testErrors(test, projectName, requestErrors.length === 0));
             }
         }
         const uniqueReportingErrors = [...new Set([...requestErrors, ...projectErrors, ...testErrors])];
@@ -139,7 +139,7 @@ export default class AzureReportHelper {
         }
     }
     
-    private async testPointExists(test: TestCase) {
+    private async _testPointExists(test: TestCase) {
         let _testId;
         let _projectConfiguration
         try {

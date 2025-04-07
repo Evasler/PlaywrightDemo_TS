@@ -1,7 +1,5 @@
 import BrowserHelper from "./BrowserHelper";
-import HomePage from "../pages/UITestingPlayground/Home/HomePage";
 import BlankPage from "../pages/Blank/BlankPage";
-import AjaxDataPage from "../pages/UITestingPlayground/AjaxData/AjaxDataPage";
 import StepSequenceHelper from "./StepSequenceHelper";
 import LoginPage from "../pages/RestfulBooker/Login/LoginPage";
 import AdminPanelPage from "../pages/RestfulBooker/AdminPanel/AdminPanelPage";
@@ -18,16 +16,17 @@ export default class PageHelper {
 
     //Dummy page to showcase ErrorListener
     private _errorPage?: ErrorPage;
-
-    //http://uitestingplayground.com
-    private _homePage?: HomePage;
-    private _ajaxDataPage?: AjaxDataPage;
     
-    constructor(private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
+    constructor(
+        private readonly _browserHelper: BrowserHelper, 
+        private readonly _stepSequenceHelper: StepSequenceHelper, 
+        private readonly _tempDataHelper: TempDataHelper,
+        private readonly _baseUrl: string
+    ) { }
 
     get blankPage() {
         if (this._blankPage === undefined) {
-            this._blankPage = new BlankPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
+            this._blankPage = new BlankPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper, this._baseUrl);
         }
         return this._blankPage;
     }
@@ -51,19 +50,5 @@ export default class PageHelper {
             this._errorPage = new ErrorPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
         }
         return this._errorPage;
-    }
-
-    get homePage() {
-        if (this._homePage === undefined) {
-            this._homePage = new HomePage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
-        }
-        return this._homePage;
-    }
-
-    get ajaxDataPage() {
-        if (this._ajaxDataPage === undefined) {
-            this._ajaxDataPage = new AjaxDataPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
-        }
-        return this._ajaxDataPage;
     }
 }

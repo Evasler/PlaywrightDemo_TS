@@ -1,7 +1,6 @@
 import StepSequenceHelper from "../../helpers/StepSequenceHelper";
 import BrowserHelper from "../../helpers/BrowserHelper";
 import BasePage from "../Base/BasePage";
-import HomePage from "../UITestingPlayground/Home/HomePage";
 import LoginPage from "../RestfulBooker/Login/LoginPage";
 import AdminPanelPage from "../RestfulBooker/AdminPanel/AdminPanelPage";
 import ErrorPage from "../Error/ErrorPage";
@@ -9,22 +8,14 @@ import TempDataHelper from "../../helpers/TempDataHelper";
 
 export default class BlankPage extends BasePage {
     
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper) {
+    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper, private readonly _baseUrl: string) {
         super("BlankPage", browserHelper, stepSequenceHelper, tempDataHelper);
-    }
-
-    goToUiTestAutomationPlayground(homePage: HomePage) {
-        this.addStep("goToUiTestAutomationPlayground", async() => {
-            console.log("goToUiTestAutomationPlayground");
-            await this.workingTab.goto("http://uitestingplayground.com");
-        });
-        return homePage;
     }
 
     goToRestfulBooker<T extends LoginPage | AdminPanelPage>(landingpage: T) {
         this.addStep("goToRestfulBooker", async() => {
             console.log("goToRestfulBooker");
-            await this.workingTab.goto("https://automationintesting.online/admin");
+            await this.workingTab.goto(`${this._baseUrl}admin`);
         });
         return landingpage;
     }
@@ -48,8 +39,8 @@ export default class BlankPage extends BasePage {
     goToConnectionErrorPage(errorPage: ErrorPage) {
         this.addStep("goToConnectionErrorPage", async() => {
             console.log("goToConnectionErrorPage");
-            await this.workingTab.route("http://uitestingplayground.com/", (route) => route.abort());
-            await this.workingTab.goto("http://uitestingplayground.com/");
+            await this.workingTab.route(this._baseUrl, (route) => route.abort());
+            await this.workingTab.goto(this._baseUrl);
         });
         return errorPage;
     }

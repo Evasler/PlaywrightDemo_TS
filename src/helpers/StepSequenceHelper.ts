@@ -13,7 +13,7 @@ export default class StepSequenceHelper {
 
     get stepSequence() { return this._stepSequence; }
 
-    private testFileStepCall(callstack: string) {
+    private _getTestFileStepCallOrThrowError(callstack: string) {
         const testErrorRows = callstack!.split('\n').filter(row => this._testFilePath.test(row));
         if (testErrorRows.length === 0)
             throw new Error(`Found 0 rows matching ${this._testFilePath}`);
@@ -22,15 +22,15 @@ export default class StepSequenceHelper {
         return testErrorRows[0];
     }
 
-    private populateTestFileStepCall(callstack: string) {
+    private _populateTestFileStepCall(callstack: string) {
         if (!this._testFileStepCall)
-            this._testFileStepCall = this.testFileStepCall(callstack);
+            this._testFileStepCall = this._getTestFileStepCallOrThrowError(callstack);
     }
 
-    private overwriteTestFileFunctionCall(callstack: string) {
+    private _overwriteTestFileFunctionCall(callstack: string) {
         if (!this._testFileStepCall)
             throw new Error("Test row that caused the Test failure is unknown");
-        callstack = callstack.replace(this.testFileStepCall(callstack), this._testFileStepCall);
+        callstack = callstack.replace(this._getTestFileStepCallOrThrowError(callstack), this._testFileStepCall);
         return callstack;
     }
 
@@ -38,8 +38,8 @@ export default class StepSequenceHelper {
         const myError = new Error();
         const step = async() => { await test.step(title, callback); }
         this._stepSequence = this._stepSequence.then(step).catch(error => {
-            this.populateTestFileStepCall(myError.stack!);
-            error.stack = this.overwriteTestFileFunctionCall(error.stack!);
+            this._populateTestFileStepCall(myError.stack!);
+            error.stack = this._overwriteTestFileFunctionCall(error.stack!);
             throw error;
         });
     }

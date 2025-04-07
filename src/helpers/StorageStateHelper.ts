@@ -27,7 +27,7 @@ export default class StorageStateHelper {
         return storageStateValue;
     }
 
-    private async generateStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
+    private async _generateStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
         const storageStatePath = this._storageStatePath(user);
         console.log(`Generating ${storageStatePath}`)
         const credentials = CredentialsUtils.getUserCredentials(user);
@@ -39,7 +39,7 @@ export default class StorageStateHelper {
         FileUtils.writeFile(storageStatePath, JSON.stringify(storageStateTemplate, null, 2));
     }
 
-    private async contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
+    private async _contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
         let contextIsAuthorized = false;
         const tokenCookie = (await workingRequest.storageState()).cookies.find(cookie => cookie.name === "token");
         if (tokenCookie) {
@@ -54,13 +54,13 @@ export default class StorageStateHelper {
     async generateStorageStateFileIfNeededViaAPI(workingRequest: APIRequestContext, authenticatedUser: string) {
         const storageStatePath = this._storageStatePath(authenticatedUser);
         if (FileUtils.fileExists(storageStatePath)) {
-            const workingContextIsAuthorized = await this.contextIsAuthorizedViaAPI(workingRequest);
+            const workingContextIsAuthorized = await this._contextIsAuthorizedViaAPI(workingRequest);
             if (!workingContextIsAuthorized) {
-                await this.generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
+                await this._generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
                 return true;
             }
         } else {
-            await this.generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
+            await this._generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
             return true;
         }
         return false;
@@ -68,7 +68,7 @@ export default class StorageStateHelper {
 
     //====================================================================
 
-    private async generateStorageStateFileViaUI(workingTab: Page, user: string) {
+    private async _generateStorageStateFileViaUI(workingTab: Page, user: string) {
         const storageStatePath = this._storageStatePath(user);
         console.log(`Generating ${storageStatePath}`)
         const credentials = CredentialsUtils.getUserCredentials(user);
@@ -80,8 +80,9 @@ export default class StorageStateHelper {
         await workingTab.context().storageState({ path: storageStatePath });
     }
 
-    private async contextIsAuthorizedViaUI(workingTab: Page) {
-        await workingTab.goto(this._loginPageUrl);
+    private async _contextIsAuthorizedViaUI(workingTab: Page) {
+        if (workingTab.url() !== this._loginPageUrl)
+            await workingTab.goto(this._loginPageUrl);
         try {
             await expect(workingTab.getByRole("link", {name: "Rooms", exact: true})).toBeVisible({ timeout: 5000 });
             console.log("Context is authorized");
@@ -95,13 +96,13 @@ export default class StorageStateHelper {
     async generateStorageStateFileIfNeededViaUI(workingTab: Page, authenticatedUser: string) {
         const storageStatePath = this._storageStatePath(authenticatedUser);
         if (FileUtils.fileExists(storageStatePath)) {
-            const workingContextIsAuthorized = await this.contextIsAuthorizedViaUI(workingTab);
+            const workingContextIsAuthorized = await this._contextIsAuthorizedViaUI(workingTab);
             if (!workingContextIsAuthorized) {
-                await this.generateStorageStateFileViaUI(workingTab, authenticatedUser);
+                await this._generateStorageStateFileViaUI(workingTab, authenticatedUser);
                 return true;
             }
         } else {
-            await this.generateStorageStateFileViaUI(workingTab, authenticatedUser);
+            await this._generateStorageStateFileViaUI(workingTab, authenticatedUser);
             return true;
         }
         return false;

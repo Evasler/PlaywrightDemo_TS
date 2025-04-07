@@ -5,9 +5,9 @@ import dataset from "./teardownStepsApi.data";
 apiTest.use({ teardownStepsArgsArray: dataset.teardownStepsArgsArray });
 apiTest(TestUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ api }) => {
     await api
-    .openNewContext(api.serviceHelper.authService)
+    ._openNewContext(api.serviceHelper.authService)
     .login(dataset.stepData.loginArgs)
-    .switchService(api.serviceHelper.roomService)
+    ._switchService(api.serviceHelper.roomService)
     .createRoom(dataset.stepData.createRoomArgs)
-    .execute();
+    ._execute();
 });

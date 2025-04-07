@@ -33,23 +33,23 @@ export default class BrowserHelper {
         return this._workingTab;
     }
 
-    get workingContextIndex() {
+    private get _workingContextIndex() {
         return this._workingBrowser.contexts().indexOf(this._workingContext);
     }
 
-    get workingTabIndex() {
+    private get _workingTabIndex() {
         return this._workingContext.pages().indexOf(this.workingTab);
     }
     
-    get lastContextIndex() {
+    private get _lastContextIndex() {
         return this._workingBrowser.contexts().length - 1;
     }
 
-    lastTabIndex(contextIndex: number) {
+    private _lastTabIndex(contextIndex: number) {
         return this._workingBrowser.contexts()[contextIndex].pages().length - 1;
     }
 
-    updateWorkingTab(contextIndex: number, tabIndex: number) {
+    private _updateWorkingTab(contextIndex: number, tabIndex: number) {
         this._workingTab = this._workingBrowser.contexts()[contextIndex].pages()[tabIndex];
     }
 
@@ -58,8 +58,8 @@ export default class BrowserHelper {
             console.log("openNewTabInCurrentContext");
             const newPage = await this._workingContext.newPage();
             this._errorListener.attachTo(newPage);
-            this._tabPageTypeHelper.initializeTabPageType(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
-            this.updateWorkingTab(this.workingContextIndex, this.lastTabIndex(this.workingContextIndex));
+            this._tabPageTypeHelper.initializeTabPageType(this._workingContextIndex, this._lastTabIndex(this._workingContextIndex));
+            this._updateWorkingTab(this._workingContextIndex, this._lastTabIndex(this._workingContextIndex));
         });
     }
 
@@ -79,31 +79,31 @@ export default class BrowserHelper {
             }
             this._errorListener.attachTo(newTab);
             this._tabPageTypeHelper.initializeContextPageTypes();
-            this._tabPageTypeHelper.initializeTabPageType(this.lastContextIndex, 0);
-            this.updateWorkingTab(this.lastContextIndex, 0);
+            this._tabPageTypeHelper.initializeTabPageType(this._lastContextIndex, 0);
+            this._updateWorkingTab(this._lastContextIndex, 0);
         });
     }
 
     switchWorkingTab(contextIndex: number, tabIndex: number, expectedPageType: PageType) {
         this._stepSequenceHelper.addStep("switchWorkingTab", async() => {
             console.log("switchWorkingTab");
-            expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this.lastContextIndex);
-            expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(this.lastTabIndex(contextIndex));
-            const alreadyWorkingOnTheTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
+            expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this._lastContextIndex);
+            expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(this._lastTabIndex(contextIndex));
+            const alreadyWorkingOnTheTab = contextIndex === this._workingContextIndex && tabIndex === this._workingTabIndex;
             expect(alreadyWorkingOnTheTab, `Already working on tab [${contextIndex},${tabIndex}]`).toBeFalsy();
             const actualPageType = this._tabPageTypeHelper.tabPageType(contextIndex, tabIndex);
             expect(actualPageType).toBe(expectedPageType);
-            this.updateWorkingTab(contextIndex, tabIndex);
+            this._updateWorkingTab(contextIndex, tabIndex);
         });
     }
 
     closeContext(contextIndex: number) {
         this._stepSequenceHelper.addStep("closeContext", async() => {
             console.log("closeContext");
-            expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this.lastContextIndex);
-            expect(contextIndex, `Context [${contextIndex}] is the Working Context. It cannot be closed`).not.toEqual(this.workingContextIndex);
+            expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this._lastContextIndex);
+            expect(contextIndex, `Context [${contextIndex}] is the Working Context. It cannot be closed`).not.toEqual(this._workingContextIndex);
             this._workingBrowser.contexts()[contextIndex].pages().forEach(async (page) => await page.close());
-            await expect(async () => expect(this.lastTabIndex(contextIndex)).toEqual(-1)).toPass();
+            await expect(async () => expect(this._lastTabIndex(contextIndex)).toEqual(-1)).toPass();
             await this._workingBrowser.contexts()[contextIndex].close();
             this._tabPageTypeHelper.removeContextPageTypes(contextIndex);
         });
@@ -112,9 +112,9 @@ export default class BrowserHelper {
     closeTab(contextIndex: number, tabIndex: number) {
         this._stepSequenceHelper.addStep("closeTab", async() => {
             console.log("closeTab");
-            expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this.lastContextIndex);
-            expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(this.lastTabIndex(contextIndex));
-            const attemptingToCloseWorkingTab = contextIndex === this.workingContextIndex && tabIndex === this.workingTabIndex;
+            expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(this._lastContextIndex);
+            expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(this._lastTabIndex(contextIndex));
+            const attemptingToCloseWorkingTab = contextIndex === this._workingContextIndex && tabIndex === this._workingTabIndex;
             expect(attemptingToCloseWorkingTab, `Tab [${contextIndex},${tabIndex}] is the Working Tab. It cannot be closed`).toBeFalsy();
             await this._workingBrowser.contexts()[contextIndex].pages()[tabIndex].close();
             this._tabPageTypeHelper.removeContextPageTypes(contextIndex);
@@ -127,7 +127,7 @@ export default class BrowserHelper {
             await expect(async () => expect(context.pages().length).toEqual(0)).toPass();
             await context.close();
         });
-        await expect(async () => expect(this.lastContextIndex).toEqual(-1)).toPass();
+        await expect(async () => expect(this._lastContextIndex).toEqual(-1)).toPass();
     }
 
     async closeBrowser() {

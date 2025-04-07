@@ -30,21 +30,21 @@ export default abstract class BaseService {
         return this._tempDataHelper.getTempBooleanData(key);
     }
 
-    execute() {
+    _execute() {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    openNewContext<T extends BaseService>(service: T, authenticatedUser?: string) {
+    _openNewContext<T extends BaseService>(service: T, authenticatedUser?: string) {
         this._requestHelper.openNewContext(authenticatedUser);
         return service;
     }
 
-    switchWorkingContext<T extends BaseService>(contextIndex: number, service: T) {
+    _switchWorkingContext<T extends BaseService>(contextIndex: number, service: T) {
         this._requestHelper.switchWorkingContext(contextIndex);
         return service;
     }
 
-    switchService<T extends BaseService>(service: T) {
+    _switchService<T extends BaseService>(service: T) {
         return service;
     }
 }

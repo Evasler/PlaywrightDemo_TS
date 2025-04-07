@@ -9,16 +9,16 @@ export default class ExcelReporter implements Reporter {
     private _excelReportHelper: ExcelReportHelper;
 
     constructor(private readonly _options: ExcelReporterOptions) {
-        this.throwOptionErrors();
+        this._throwOptionErrors();
         this._excelReportHelper = new ExcelReportHelper(this._options.filepath, this._options.configurations);
     }
     
-    private throwOptionErrors() {
+    private _throwOptionErrors() {
         const optionTypeErrors = [
-            ...this.optionTypeErrors("enabled", "boolean"),
-            ...this.optionTypeErrors("mandatoryReporting", "boolean"),
-            ...this.optionTypeErrors("filepath", "string"),
-            ...this.optionTypeErrors("configurations", "string[]")
+            ...this._optionTypeErrors("enabled", "boolean"),
+            ...this._optionTypeErrors("mandatoryReporting", "boolean"),
+            ...this._optionTypeErrors("filepath", "string"),
+            ...this._optionTypeErrors("configurations", "string[]")
         ];
         if (optionTypeErrors.length > 0) {
             TerminalUtils.printColoredText("Excel:", "red");
@@ -28,7 +28,7 @@ export default class ExcelReporter implements Reporter {
         }
     }
 
-    private optionTypeErrors(optionName: keyof ExcelReporterOptions, expectedPropertyType: string) {
+    private _optionTypeErrors(optionName: keyof ExcelReporterOptions, expectedPropertyType: string) {
             const optionTypeErrors = [];
             const _expectedPropertyType = Array.isArray(this._options[optionName]) ? "object" : expectedPropertyType;
             if (typeof this._options[optionName] === _expectedPropertyType) {

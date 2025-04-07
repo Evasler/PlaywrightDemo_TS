@@ -12,21 +12,21 @@ export default class AzureReporter implements Reporter {
     private _runDetails!: RunDetails;
 
     constructor(private readonly _options: AzureReporterOptions) {
-        this.throwOptionTypeErrors();
+        this._throwOptionTypeErrors();
     }
 
-    private throwOptionTypeErrors() {
+    private _throwOptionTypeErrors() {
         const optionTypeErrors = [
-            ...this.optionTypeErrors("enabled", "boolean"),
-            ...this.optionTypeErrors("mandatoryReporting", "boolean"),
-            ...this.optionTypeErrors("azureBaseUrl", "string"),
-            ...this.optionTypeErrors("organizationName", "string"),
-            ...this.optionTypeErrors("projectName", "string"),
-            ...this.optionTypeErrors("personalAccessToken", "string"),
-            ...this.optionTypeErrors("runName", "string"),
-            ...this.optionTypeErrors("planId", "number"),
-            ...this.optionTypeErrors("suiteIds", "number[]"),
-            ...this.optionTypeErrors("configurationNames", "string[]")
+            ...this._optionTypeErrors("enabled", "boolean"),
+            ...this._optionTypeErrors("mandatoryReporting", "boolean"),
+            ...this._optionTypeErrors("azureBaseUrl", "string"),
+            ...this._optionTypeErrors("organizationName", "string"),
+            ...this._optionTypeErrors("projectName", "string"),
+            ...this._optionTypeErrors("personalAccessToken", "string"),
+            ...this._optionTypeErrors("runName", "string"),
+            ...this._optionTypeErrors("planId", "number"),
+            ...this._optionTypeErrors("suiteIds", "number[]"),
+            ...this._optionTypeErrors("configurationNames", "string[]")
         ];
         if (optionTypeErrors.length > 0) {
             TerminalUtils.printColoredText("Azure:", "red");
@@ -36,7 +36,7 @@ export default class AzureReporter implements Reporter {
         }
     }
 
-    private optionTypeErrors(optionName: keyof AzureReporterOptions, expectedPropertyType: string) {
+    private _optionTypeErrors(optionName: keyof AzureReporterOptions, expectedPropertyType: string) {
         const optionTypeErrors = [];
         const _expectedPropertyType = Array.isArray(this._options[optionName]) ? "object" : expectedPropertyType;
         if (typeof this._options[optionName] === _expectedPropertyType) {

@@ -1,21 +1,21 @@
 import BrowserHelper from "./BrowserHelper";
-import BlankPage from "../pages/Blank/BlankPage";
+import BlankSteps from "../pages/Blank/BlankSteps";
 import StepSequenceHelper from "./StepSequenceHelper";
-import LoginPage from "../pages/RestfulBooker/Login/LoginPage";
-import AdminPanelPage from "../pages/RestfulBooker/AdminPanel/AdminPanelPage";
-import ErrorPage from "../pages/Error/ErrorPage";
+import LoginSteps from "../pages/RestfulBooker/Login/LoginSteps";
+import AdminPanelSteps from "../pages/RestfulBooker/AdminPanel/AdminPanelSteps";
+import ErrorSteps from "../pages/Error/ErrorSteps";
 import TempDataHelper from "./TempDataHelper";
 
 export default class PageHelper {
 
-    private _blankPage?: BlankPage;
+    private _blankPage?: BlankSteps;
 
     //https://automationintesting.online/
-    private _loginPage?: LoginPage;
-    private _adminPanelPage?: AdminPanelPage;
+    private _loginPage?: LoginSteps;
+    private _adminPanelPage?: AdminPanelSteps;
 
     //Dummy page to showcase ErrorListener
-    private _errorPage?: ErrorPage;
+    private _errorPage?: ErrorSteps;
     
     constructor(
         private readonly _browserHelper: BrowserHelper, 
@@ -26,28 +26,28 @@ export default class PageHelper {
 
     get blankPage() {
         if (this._blankPage === undefined) {
-            this._blankPage = new BlankPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper, this._baseUrl);
+            this._blankPage = new BlankSteps(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper, this._baseUrl);
         }
         return this._blankPage;
     }
 
     get loginPage() {
         if (this._loginPage === undefined) {
-            this._loginPage = new LoginPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
+            this._loginPage = new LoginSteps(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
         }
         return this._loginPage;
     }
 
     get adminPanelPage() {
         if (this._adminPanelPage === undefined) {
-            this._adminPanelPage = new AdminPanelPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
+            this._adminPanelPage = new AdminPanelSteps(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
         }
         return this._adminPanelPage;
     }
 
     get errorPage() {
         if (this._errorPage === undefined) {
-            this._errorPage = new ErrorPage(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
+            this._errorPage = new ErrorSteps(this._browserHelper, this._stepSequenceHelper, this._tempDataHelper);
         }
         return this._errorPage;
     }

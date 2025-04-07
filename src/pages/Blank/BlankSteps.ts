@@ -1,18 +1,18 @@
 import StepSequenceHelper from "../../helpers/StepSequenceHelper";
 import BrowserHelper from "../../helpers/BrowserHelper";
-import BasePage from "../Base/BasePage";
-import LoginPage from "../RestfulBooker/Login/LoginPage";
-import AdminPanelPage from "../RestfulBooker/AdminPanel/AdminPanelPage";
-import ErrorPage from "../Error/ErrorPage";
+import BasePageSteps from "../Base/BasePageSteps";
+import LoginSteps from "../RestfulBooker/Login/LoginSteps";
+import AdminPanelSteps from "../RestfulBooker/AdminPanel/AdminPanelSteps";
+import ErrorSteps from "../Error/ErrorSteps";
 import TempDataHelper from "../../helpers/TempDataHelper";
 
-export default class BlankPage extends BasePage {
+export default class BlankSteps extends BasePageSteps {
     
     constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper, private readonly _baseUrl: string) {
         super("BlankPage", browserHelper, stepSequenceHelper, tempDataHelper);
     }
 
-    goToRestfulBooker<T extends LoginPage | AdminPanelPage>(landingpage: T) {
+    goToRestfulBooker<T extends LoginSteps | AdminPanelSteps>(landingpage: T) {
         this.addStep("goToRestfulBooker", async() => {
             console.log("goToRestfulBooker");
             await this.workingTab.goto(`${this._baseUrl}admin`);
@@ -20,7 +20,7 @@ export default class BlankPage extends BasePage {
         return landingpage;
     }
 
-    goToJsErrorPage(errorPage: ErrorPage) {
+    goToJsErrorPage(errorPage: ErrorSteps) {
         this.addStep("goToJsErrorPage", async() => {
             console.log("goToJsErrorPage");
             await this.workingTab.goto("data:text/html,<script>throw new Error(\"myJavaScriptError\")</script>");
@@ -28,7 +28,7 @@ export default class BlankPage extends BasePage {
         return errorPage;
     }
 
-    goToInternalServerErrorPage(errorPage: ErrorPage) {
+    goToInternalServerErrorPage(errorPage: ErrorSteps) {
         this.addStep("goToInternalServerErrorPage", async() => {
             console.log("goToInternalServerErrorPage");
             await this.workingTab.goto("https://httpstat.us/500");
@@ -36,7 +36,7 @@ export default class BlankPage extends BasePage {
         return errorPage;
     }
 
-    goToConnectionErrorPage(errorPage: ErrorPage) {
+    goToConnectionErrorPage(errorPage: ErrorSteps) {
         this.addStep("goToConnectionErrorPage", async() => {
             console.log("goToConnectionErrorPage");
             await this.workingTab.route(this._baseUrl, (route) => route.abort());

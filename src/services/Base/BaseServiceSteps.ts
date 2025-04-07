@@ -2,7 +2,7 @@ import StepSequenceHelper from "../../helpers/StepSequenceHelper";
 import RequestHelper from "../../helpers/RequestHelper";
 import TempDataHelper from "../../helpers/TempDataHelper";
 
-export default abstract class BaseService {
+export default abstract class BaseServiceSteps {
 
     constructor(private readonly _requestHelper: RequestHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
         
@@ -34,17 +34,17 @@ export default abstract class BaseService {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    _openNewContext<T extends BaseService>(service: T, authenticatedUser?: string) {
+    _openNewContext<T extends BaseServiceSteps>(service: T, authenticatedUser?: string) {
         this._requestHelper.openNewContext(authenticatedUser);
         return service;
     }
 
-    _switchWorkingContext<T extends BaseService>(contextIndex: number, service: T) {
+    _switchWorkingContext<T extends BaseServiceSteps>(contextIndex: number, service: T) {
         this._requestHelper.switchWorkingContext(contextIndex);
         return service;
     }
 
-    _switchService<T extends BaseService>(service: T) {
+    _switchService<T extends BaseServiceSteps>(service: T) {
         return service;
     }
 }

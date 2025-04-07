@@ -1,11 +1,11 @@
 import { expect } from "@playwright/test";
 import BrowserHelper from "../../../helpers/BrowserHelper";
 import StepSequenceHelper from "../../../helpers/StepSequenceHelper";
-import BasePage from "../../Base/BasePage";
+import BasePageSteps from "../../Base/BasePageSteps";
 import AdminPanelLocators from "./AdminPanelLocators";
 import TempDataHelper from "../../../helpers/TempDataHelper";
 
-export default class AdminPanelPage extends BasePage {
+export default class AdminPanelSteps extends BasePageSteps {
 
     private readonly _adminPanelLocators: AdminPanelLocators;
 

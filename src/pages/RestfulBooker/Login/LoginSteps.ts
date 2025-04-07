@@ -1,13 +1,13 @@
 import { expect } from "@playwright/test";
 import BrowserHelper from "../../../helpers/BrowserHelper";
 import StepSequenceHelper from "../../../helpers/StepSequenceHelper";
-import BasePage from "../../Base/BasePage";
+import BasePageSteps from "../../Base/BasePageSteps";
 import LoginLocators from "./LoginLocators";
 import TempDataHelper from "../../../helpers/TempDataHelper";
 import CredentialsUtils from "../../../utils/CredentialsUtils";
-import AdminPanelPage from "../AdminPanel/AdminPanelPage";
+import AdminPanelSteps from "../AdminPanel/AdminPanelSteps";
 
-export default class LoginPage extends BasePage {
+export default class LoginSteps extends BasePageSteps {
     
     private readonly _loginLocators: LoginLocators;
 
@@ -34,7 +34,7 @@ export default class LoginPage extends BasePage {
         return this;
     }
 
-    clickLogin(adminPanelPage: AdminPanelPage) {
+    clickLogin(adminPanelPage: AdminPanelSteps) {
         this.addStep("clickLogin", async() => {
             console.log("clickLogin");
             await this._loginLocators.loginButton.click();

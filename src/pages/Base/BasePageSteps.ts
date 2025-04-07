@@ -3,7 +3,7 @@ import StepSequenceHelper from "../../helpers/StepSequenceHelper";
 import BrowserHelper from "../../helpers/BrowserHelper";
 import TempDataHelper from "../../helpers/TempDataHelper";
 
-export default abstract class BasePage {
+export default abstract class BasePageSteps {
 
     constructor(private readonly _pageType: PageType, private readonly _browserHelper: BrowserHelper, private readonly _stepSequenceHelper: StepSequenceHelper, private readonly _tempDataHelper: TempDataHelper) { }
 
@@ -33,17 +33,17 @@ export default abstract class BasePage {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    _openNewTabInNewContext<T extends BasePage>(page: T, authenticatedUser?: string): T {
+    _openNewTabInNewContext<T extends BasePageSteps>(page: T, authenticatedUser?: string): T {
         this._browserHelper.openNewTabInNewContext(authenticatedUser);
         return page;
     }
 
-    _openNewTabInCurrentContext<T extends BasePage>(page: T): T {
+    _openNewTabInCurrentContext<T extends BasePageSteps>(page: T): T {
         this._browserHelper.openNewTabInCurrentContext();
         return page;
     }
 
-    _switchWorkingTab<T extends BasePage>(contextIndex: number, pageIndex: number, page: T): T {
+    _switchWorkingTab<T extends BasePageSteps>(contextIndex: number, pageIndex: number, page: T): T {
         this._browserHelper.switchWorkingTab(contextIndex, pageIndex, page._pageType);
         return page;
     }

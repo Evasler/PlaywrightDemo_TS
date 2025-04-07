@@ -1,13 +1,13 @@
 import { expect } from "@playwright/test";
 import RequestHelper from "../../helpers/RequestHelper";
 import StepSequenceHelper from "../../helpers/StepSequenceHelper";
-import BaseService from "../Base/BaseService";
+import BaseServiceSteps from "../Base/BaseServiceSteps";
 import RoomRequests from "./RoomRequests";
 import TempDataHelper from "../../helpers/TempDataHelper";
 import { CreateRoomResponse, GetRoomResponse } from "../../customTypes/ApiResponseTypes";
 import { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../customTypes/StepArgsTypes";
 
-export default class RoomService extends BaseService {
+export default class RoomSteps extends BaseServiceSteps {
     
     private readonly _roomRequests;
 

@@ -3,12 +3,12 @@ import CredentialsUtils from "../../utils/CredentialsUtils";
 import RequestHelper from "../../helpers/RequestHelper";
 import StepSequenceHelper from "../../helpers/StepSequenceHelper";
 import AuthRequests from "./AuthRequests";
-import BaseService from "../Base/BaseService";
+import BaseServiceSteps from "../Base/BaseServiceSteps";
 import TempDataHelper from "../../helpers/TempDataHelper";
 import { LoginResponse, ValidateResponse } from "../../customTypes/ApiResponseTypes";
 import { LoginArgs } from "../../customTypes/StepArgsTypes";
 
-export default class AuthService extends BaseService {
+export default class AuthSteps extends BaseServiceSteps {
     
     private readonly _authRequests;
 

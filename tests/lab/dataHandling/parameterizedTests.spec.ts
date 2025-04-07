@@ -1,6 +1,6 @@
 import apiTest from "../../../src/fixtures/apiFixture";
 import TestUtils from "../../../src/utils/TestUtils";
-import datasets from "../../../resources/testData/datasets/parameterizedTestsDataset";
+import datasets from "./parameterizedTests.data";
 
 for (const dataset of datasets) {
     apiTest(TestUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ api }) => {

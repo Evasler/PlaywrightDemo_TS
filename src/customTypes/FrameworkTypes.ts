@@ -41,3 +41,32 @@ export type ExcelReporterOptions = {
     filepath: string;
     configurations: string[];
 }
+export type AzureReporterOptions = {
+    enabled: boolean;
+    mandatoryReporting: boolean;
+    azureBaseUrl: string;
+    organizationName: string;
+    projectName: string;
+    personalAccessToken: string;
+    runName: string;
+    planId: number;
+    suiteIds: number[];
+    configurationNames: string[];
+}
+type AzureTestRunState = "Unspecified" | "NotStarted" | "InProgress" | "Completed" | "Aborted" | "Waiting" | "NeedsInvestigation";
+export type RunDetails = {
+    name: string;
+    automated: boolean;
+    plan: { id: number };
+    pointIds: number[];
+    state: AzureTestRunState;
+    startedDate: string;
+}
+export type ResultDetails = {
+    id: number;
+    outcome: "Unspecified" | "None" | "Passed" | "Failed" | "Inconclusive" | "Timeout" | "Aborted" | "Blocked" | "NotExecuted" | "Warning" | "Error" | "NotApplicable" | "Paused" | "InProgress" | "NotImpacted";
+    state: AzureTestRunState;
+    startedDate: string;
+    durationInMs: number;
+    errorMessage: string | undefined;
+}

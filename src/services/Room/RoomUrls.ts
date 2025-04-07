@@ -4,5 +4,6 @@ export class RoomUrls extends BaseUrls {
 
     constructor(baseUrl: string) { super(baseUrl, "room/")}
     
-    roomUrl(roomId: number) { return `${this.serviceBaseUrl}${roomId}`}
+    room() { return this.serviceBaseUrl }
+    roomUrl(roomId: number) { return `${this.serviceBaseUrl}${roomId}` }
 }

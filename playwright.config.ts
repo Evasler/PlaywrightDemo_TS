@@ -31,7 +31,21 @@ export default defineConfig<ErrorListenerOptionsObj>({
         enabled: true,
         mandatoryReporting: false,
         filepath: "./excel-report/PlaywrightDemo_TS.xlsx",
-        configurations: ["configuration1", "configuration2"]
+        configurations: [ "configuration1", "configuration2" ]
+      }
+    ],
+    ['./src/reporters/AzureReporter.ts',
+      {
+        enabled: false,
+        mandatoryReporting: false,
+        azureBaseUrl: "https://dev.azure.com/",
+        organizationName: "",
+        projectName: "",
+        personalAccessToken: "",
+        runName: "PlaywrightDemo_TS Run",
+        planId: 0,
+        suiteIds: [ 0 ],
+        configurationNames: [ "" ]
       }
     ]
     //'./src/reporters/ExecOrderReporter.ts'

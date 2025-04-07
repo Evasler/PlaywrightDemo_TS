@@ -9,7 +9,7 @@ export class ExcelReportHelper {
 
     private readonly _unreportedTestTitles: string[] = [];
 
-    constructor(private readonly _filepath: string | undefined, private readonly _configurations: string[]) {}
+    constructor(private readonly _filepath: string, private readonly _configurations: string[]) {}
 
     private worksheetName(testType: "API" | "UI") {
         return `FullScope (${testType})`;
@@ -25,7 +25,7 @@ export class ExcelReportHelper {
             _testId = TestUtils.id(test);
             _projectConfiguration = TestUtils.projectConfiguration(test, this._configurations);
             _testType = TestUtils.type(test);
-            workbook = await new Excel.Workbook().xlsx.readFile(this._filepath!);
+            workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
             const worksheetName = this.worksheetName(_testType);
             const worksheetErrors = await this.worksheetErrors(worksheetName);
             if (worksheetErrors.length > 0)
@@ -59,7 +59,7 @@ export class ExcelReportHelper {
         try {
             if (!testPointExists)
                 throw new Error();
-            await workbook.xlsx.writeFile(this._filepath!);
+            await workbook.xlsx.writeFile(this._filepath);
         } catch (error) {
             this._unreportedTestTitles.push(test.title);
         }
@@ -67,15 +67,15 @@ export class ExcelReportHelper {
 
     printUnreportedTestResultsWarning() {
         if (this._unreportedTestTitles.length > 0)
-            TerminalUtils.printColoredText("The following Tests' result was not added to the Excel Report", "yellow");
+            TerminalUtils.printColoredText("\nExcel: The following Tests' result was not reported", "yellow");
         for (const unreportedTestTitle of this._unreportedTestTitles)
             TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
     }
 
     private async excelIsWritable() {
         try {
-            const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath!);
-            await workbook.xlsx.writeFile(this._filepath!);
+            const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
+            await workbook.xlsx.writeFile(this._filepath);
             return true;
         } catch {
             return false;
@@ -84,9 +84,7 @@ export class ExcelReportHelper {
 
     private async excelFileErrors() {
         const excelFileErrors = [];
-        if (!this._filepath)
-            excelFileErrors.push(`Excel Report's filepath is not specified`);
-        else if (!fileExists(this._filepath))
+        if (!fileExists(this._filepath))
             excelFileErrors.push(`Filepath \"${this._filepath}\" not found`);
         else if (!await this.excelIsWritable())
             excelFileErrors.push(`Excel Report is locked or not writable`);
@@ -161,7 +159,7 @@ export class ExcelReportHelper {
     }
 
     private async worksheet(worksheetName: string) {
-        const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath!);
+        const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
         const worksheet = workbook.getWorksheet(worksheetName);
         return worksheet;
     }
@@ -192,22 +190,21 @@ export class ExcelReportHelper {
 
     async throwReportingErrors(rootSuite: Suite) {
         const excelFileErrors: string[] = [];
-        const configurationsErrors: string[] = [];
         const projectErrors: string[] = [];
         const testErrors: string[] = [];
         excelFileErrors.push(...await this.excelFileErrors());
-        if (!this._configurations || this._configurations.length === 0)
-            configurationsErrors.push(`Excel Report's configurations are not specified`);
         for (const projectSuite of rootSuite.suites) {
             const projectName = projectSuite.project()!.name;
             projectErrors.push(...this.projectErrors(projectName));
             for (const test of projectSuite.allTests())
                 testErrors.push(...await this.testErrors(test, projectName, excelFileErrors.length === 0));
         }
-        const reportingErrors = [...excelFileErrors, ...configurationsErrors, ...projectErrors, ...testErrors];
-        for (const reportingError of reportingErrors)
-            TerminalUtils.printColoredText(reportingError, "red");
-        if (reportingErrors.length > 0)
+        const uniqueReportingErrors = [...new Set([...excelFileErrors, ...projectErrors, ...testErrors])];
+        if (uniqueReportingErrors.length > 0) {
+            TerminalUtils.printColoredText("\nExcel:", "red");
+            for (const reportingError of uniqueReportingErrors)
+                TerminalUtils.printColoredText(`  ${reportingError}`, "red");
             process.exit();
+        }
     }
 }

@@ -1,9 +1,9 @@
 import { expect } from "@playwright/test";
-import BrowserHelper from "../../../helpers/BrowserHelper";
-import StepSequenceHelper from "../../../helpers/StepSequenceHelper";
+import BrowserHelper from "../../../helpers/channel/BrowserHelper";
+import StepSequenceHelper from "../../../helpers/chaining/StepSequenceHelper";
 import BasePageSteps from "../../Base/BasePageSteps";
 import LoginLocators from "./LoginLocators";
-import TempDataHelper from "../../../helpers/TempDataHelper";
+import TempDataHelper from "../../../helpers/chaining/TempDataHelper";
 import CredentialsUtils from "../../../utils/CredentialsUtils";
 import AdminPanelSteps from "../AdminPanel/AdminPanelSteps";
 

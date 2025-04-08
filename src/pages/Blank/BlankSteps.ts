@@ -1,10 +1,10 @@
-import StepSequenceHelper from "../../helpers/StepSequenceHelper";
-import BrowserHelper from "../../helpers/BrowserHelper";
+import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
+import BrowserHelper from "../../helpers/channel/BrowserHelper";
 import BasePageSteps from "../Base/BasePageSteps";
 import LoginSteps from "../RestfulBooker/Login/LoginSteps";
 import AdminPanelSteps from "../RestfulBooker/AdminPanel/AdminPanelSteps";
 import ErrorSteps from "../Error/ErrorSteps";
-import TempDataHelper from "../../helpers/TempDataHelper";
+import TempDataHelper from "../../helpers/chaining/TempDataHelper";
 
 export default class BlankSteps extends BasePageSteps {
     

@@ -1,18 +1,18 @@
 import { Suite, TestCase, TestResult } from "@playwright/test/reporter";
 import { request } from "@playwright/test";
-import TerminalUtils from "../utils/TerminalUtils";
-import TestUtils from "../utils/TestUtils";
+import TerminalUtils from "../../utils/TerminalUtils";
+import TestUtils from "../../utils/TestUtils";
 import { APIRequestContext } from "@playwright/test";
-import RunsService from "../azureServices/Test/Runs/RunsService";
-import PlansService from "../azureServices/Test/Plans/PlansService";
-import { ResultDetails, RunDetails } from "../customTypes/FrameworkTypes";
+import RunsSteps from "../../azureServices/Test/Runs/RunsSteps";
+import PlansSteps from "../../azureServices/Test/Plans/PlansSteps";
+import { ResultDetails, RunDetails } from "../../customTypes/FrameworkTypes";
 
 export default class AzureReportHelper {
 
     private readonly _unreportedTestTitles: string[] = [];
     private _authorizedContext!: APIRequestContext;
-    private _runsService!: RunsService;
-    private _plansService!: PlansService;
+    private _runsSteps!: RunsSteps;
+    private _plansSteps!: PlansSteps;
 
     constructor(
         private readonly _projectBaseUrl: string,
@@ -28,8 +28,8 @@ export default class AzureReportHelper {
                 Authorization: 'Basic ' + Buffer.from(`:${this._personalAccessToken}`).toString('base64')
             }
         });
-        this._runsService = new RunsService(this._authorizedContext, this._projectBaseUrl);
-        this._plansService = new PlansService(this._authorizedContext, this._projectBaseUrl);
+        this._runsSteps = new RunsSteps(this._authorizedContext, this._projectBaseUrl);
+        this._plansSteps = new PlansSteps(this._authorizedContext, this._projectBaseUrl);
     }
 
     async updateResult(runId: number, test: TestCase, result: TestResult) {
@@ -43,10 +43,10 @@ export default class AzureReportHelper {
         }
         if (!this._unreportedTestTitles.includes(_testId)) {
             for (const suiteId of this._suiteIds) {
-                const testPointId = await this._plansService.getTestPointId(this._planId, suiteId, parseInt(_testId), _projectConfiguration);
+                const testPointId = await this._plansSteps.getTestPointId(this._planId, suiteId, parseInt(_testId), _projectConfiguration);
                 if (!testPointId)
                     return;
-                const testResultId = await this._runsService.getResultId(runId, String(testPointId));
+                const testResultId = await this._runsSteps.getResultId(runId, String(testPointId));
                 if (!testResultId)
                     return;
                 const outcome = result.status === "passed" ? "Passed" : (result.status === 'skipped' ? "NotExecuted" : "Failed");
@@ -58,7 +58,7 @@ export default class AzureReportHelper {
                     durationInMs: result.duration,
                     errorMessage: result.error?.message
                 }
-                await this._runsService.updateResult(runId, testResultDetails)
+                await this._runsSteps.updateResult(runId, testResultDetails)
             }
         }
     }
@@ -75,7 +75,7 @@ export default class AzureReportHelper {
         try {
             _testId = TestUtils.id(test);
             for (const suiteId of this._suiteIds) {
-                const requestError = await this._plansService.getRequestError(this._planId, suiteId, parseInt(_testId));
+                const requestError = await this._plansSteps.getRequestError(this._planId, suiteId, parseInt(_testId));
                 if (requestError)
                     return [ requestError ];
             }
@@ -146,7 +146,7 @@ export default class AzureReportHelper {
             _testId= TestUtils.id(test);
             _projectConfiguration = TestUtils.projectConfiguration(test, this._configurations);
             for (const suiteId of this._suiteIds) {
-                const testPointId = await this._plansService.getTestPointId(this._planId, suiteId, parseInt(_testId), _projectConfiguration);
+                const testPointId = await this._plansSteps.getTestPointId(this._planId, suiteId, parseInt(_testId), _projectConfiguration);
                 if (testPointId)
                     return true;
             }
@@ -170,7 +170,7 @@ export default class AzureReportHelper {
             }
             let reported = false;
             for (const suiteId of this._suiteIds) {
-                const testPointId = await this._plansService.getTestPointId(this._planId, suiteId, parseInt(_testId), _projectConfiguration);
+                const testPointId = await this._plansSteps.getTestPointId(this._planId, suiteId, parseInt(_testId), _projectConfiguration);
                 if (testPointId) {
                     pointIds.push(testPointId);
                     reported = true;
@@ -183,11 +183,11 @@ export default class AzureReportHelper {
     }
 
     async createRunAndCatchUserError(runDetails: RunDetails) {
-        const runIdAndUserError = await this._runsService.createRunAndCatchUserError(runDetails);
+        const runIdAndUserError = await this._runsSteps.createRunAndCatchUserError(runDetails);
         return runIdAndUserError;
     }
 
     async updateRun(runId: number, runDetails: RunDetails) {
-        await this._runsService.updateRun(runId, runDetails);
+        await this._runsSteps.updateRun(runId, runDetails);
     }
 }

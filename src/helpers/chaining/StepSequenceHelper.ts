@@ -1,5 +1,5 @@
 import test from "@playwright/test";
-import config from "../../playwright.config";
+import config from "../../../playwright.config";
 
 export default class StepSequenceHelper {
     

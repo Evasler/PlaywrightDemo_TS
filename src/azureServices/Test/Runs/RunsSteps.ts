@@ -2,7 +2,7 @@ import { APIRequestContext } from "@playwright/test";
 import RunsRequests from "./RunsRequests";
 import { ResultDetails, RunDetails } from "../../../customTypes/FrameworkTypes";
 
-export default class RunsService {
+export default class RunsSteps {
     
     private readonly _runsRequests;
 

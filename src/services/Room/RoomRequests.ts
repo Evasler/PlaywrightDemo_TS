@@ -1,5 +1,5 @@
 import BaseRequests from "../Base/BaseRequests";
-import RequestHelper from "../../helpers/RequestHelper";
+import RequestHelper from "../../helpers/channel/RequestHelper";
 import RoomUrls from "./RoomUrls";
 import { CreateRoomPayload } from "../../customTypes/ApiPayloadTypes";
 

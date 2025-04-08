@@ -1,8 +1,8 @@
 import { Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import GeneralUtils from "../utils/GeneralUtils";
-import TerminalUtils from "../utils/TerminalUtils";
-import FileUtils from "../utils/FileUtils";
-import TestUtils from "../utils/TestUtils";
+import GeneralUtils from "../../utils/GeneralUtils";
+import TerminalUtils from "../../utils/TerminalUtils";
+import FileUtils from "../../utils/FileUtils";
+import TestUtils from "../../utils/TestUtils";
 import Excel from "exceljs";
 
 export default class ExcelReportHelper {

@@ -1,9 +1,9 @@
 import { expect } from "@playwright/test";
-import RequestHelper from "../../helpers/RequestHelper";
-import StepSequenceHelper from "../../helpers/StepSequenceHelper";
+import RequestHelper from "../../helpers/channel/RequestHelper";
+import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
 import BaseServiceSteps from "../Base/BaseServiceSteps";
 import RoomRequests from "./RoomRequests";
-import TempDataHelper from "../../helpers/TempDataHelper";
+import TempDataHelper from "../../helpers/chaining/TempDataHelper";
 import { CreateRoomResponse, GetRoomResponse } from "../../customTypes/ApiResponseTypes";
 import { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../customTypes/StepArgsTypes";
 

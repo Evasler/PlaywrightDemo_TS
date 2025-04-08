@@ -1,10 +1,10 @@
 import { expect } from "@playwright/test";
 import CredentialsUtils from "../../utils/CredentialsUtils";
-import RequestHelper from "../../helpers/RequestHelper";
-import StepSequenceHelper from "../../helpers/StepSequenceHelper";
+import RequestHelper from "../../helpers/channel/RequestHelper";
+import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
 import AuthRequests from "./AuthRequests";
 import BaseServiceSteps from "../Base/BaseServiceSteps";
-import TempDataHelper from "../../helpers/TempDataHelper";
+import TempDataHelper from "../../helpers/chaining/TempDataHelper";
 import { LoginResponse, ValidateResponse } from "../../customTypes/ApiResponseTypes";
 import { LoginArgs } from "../../customTypes/StepArgsTypes";
 

@@ -1,9 +1,9 @@
 import { expect } from "@playwright/test";
-import BrowserHelper from "../../../helpers/BrowserHelper";
-import StepSequenceHelper from "../../../helpers/StepSequenceHelper";
+import BrowserHelper from "../../../helpers/channel/BrowserHelper";
+import StepSequenceHelper from "../../../helpers/chaining/StepSequenceHelper";
 import BasePageSteps from "../../Base/BasePageSteps";
 import AdminPanelLocators from "./AdminPanelLocators";
-import TempDataHelper from "../../../helpers/TempDataHelper";
+import TempDataHelper from "../../../helpers/chaining/TempDataHelper";
 
 export default class AdminPanelSteps extends BasePageSteps {
 

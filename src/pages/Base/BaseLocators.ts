@@ -1,4 +1,4 @@
-import BrowserHelper from "../../helpers/BrowserHelper";
+import BrowserHelper from "../../helpers/channel/BrowserHelper";
 
 export default abstract class BaseLocators {
 

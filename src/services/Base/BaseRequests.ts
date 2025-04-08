@@ -1,4 +1,4 @@
-import RequestHelper from "../../helpers/RequestHelper";
+import RequestHelper from "../../helpers/channel/RequestHelper";
 
 export default abstract class BaseRequests {
 

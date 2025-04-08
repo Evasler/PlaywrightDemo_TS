@@ -3,9 +3,9 @@ import TestUtils from "../../../src/utils/TestUtils";
 
 apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
     await api
-    ._openNewContext(api.serviceHelper.authService)
+    ._openNewContext(api.serviceStepsHelper.authSteps)
     .login({ user: "administrator" })
-    ._switchService(api.serviceHelper.roomService)
+    ._switchService(api.serviceStepsHelper.roomSteps)
     .createRoom({
         payload: {
             roomName: "998",

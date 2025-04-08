@@ -1,6 +1,6 @@
-import UiHelper from "../helpers/UiHelper";
-import ApiHelper from "../helpers/ApiHelper";
-import { StepsArgsArray } from "./StepArgsTypes";
+import UiHelper from "../helpers/testInitiation/UiHelper";
+import ApiHelper from "../helpers/testInitiation/ApiHelper";
+import { ExtraStepsArgs } from "./StepArgsTypes";
 
 export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
 export type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
@@ -33,8 +33,8 @@ export type TestDetailsObj = {
         suiteTags?: SuiteTag[];
     };
 }
-export type SetupStepsArgsObj = { setupStepsArgsArray?: StepsArgsArray };
-export type TeardownStepsArgsObj = { teardownStepsArgsArray?: StepsArgsArray };
+export type SetupStepsArgsObj = { setupStepsArgsArray?: ExtraStepsArgs[] };
+export type TeardownStepsArgsObj = { teardownStepsArgsArray?: ExtraStepsArgs[] };
 export type ExcelReporterOptions = {
     enabled: boolean;
     mandatoryReporting: boolean;

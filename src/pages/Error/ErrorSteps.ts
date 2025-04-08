@@ -1,6 +1,6 @@
-import BrowserHelper from "../../helpers/BrowserHelper";
-import TempDataHelper from "../../helpers/TempDataHelper";
-import StepSequenceHelper from "../../helpers/StepSequenceHelper";
+import BrowserHelper from "../../helpers/channel/BrowserHelper";
+import TempDataHelper from "../../helpers/chaining/TempDataHelper";
+import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
 import BasePageSteps from "../Base/BasePageSteps";
 
 export default class ErrorSteps extends BasePageSteps {

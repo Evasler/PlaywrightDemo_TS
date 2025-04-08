@@ -1,11 +1,11 @@
 import { test as base } from "@playwright/test";
-import ServiceHelper from "../helpers/ServiceHelper";
-import RequestHelper from "../helpers/RequestHelper";
-import TempDataHelper from "../helpers/TempDataHelper";
-import StepSequenceHelper from "../helpers/StepSequenceHelper";
-import ApiHelper from "../helpers/ApiHelper";
+import ServiceStepsHelper from "../helpers/steps/ServiceStepsHelper";
+import RequestHelper from "../helpers/channel/RequestHelper";
+import TempDataHelper from "../helpers/chaining/TempDataHelper";
+import StepSequenceHelper from "../helpers/chaining/StepSequenceHelper";
+import ApiHelper from "../helpers/testInitiation/ApiHelper";
 import { ApiHelperObj } from "../customTypes/FrameworkTypes";
-import ExtraStepsHelper from "../helpers/ExtraStepsHelper";
+import ExtraStepsHelper from "../helpers/steps/ExtraStepsHelper";
 import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
 
 const apiTest = base.extend<ApiHelperObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
@@ -17,9 +17,9 @@ const apiTest = base.extend<ApiHelperObj & SetupStepsArgsObj & TeardownStepsArgs
         const tempDataHelper = new TempDataHelper();
         const stepSequenceHelper = new StepSequenceHelper();
         const requestHelper = new RequestHelper(playwright.request, stepSequenceHelper, baseURL);
-        const serviceHelper = new ServiceHelper(requestHelper, stepSequenceHelper, tempDataHelper, baseURL);
-        const apiHelper = new ApiHelper(requestHelper, serviceHelper);
-        const extraStepsHelper = new ExtraStepsHelper(requestHelper, serviceHelper);
+        const serviceStepsHelper = new ServiceStepsHelper(requestHelper, stepSequenceHelper, tempDataHelper, baseURL);
+        const apiHelper = new ApiHelper(requestHelper, serviceStepsHelper);
+        const extraStepsHelper = new ExtraStepsHelper(requestHelper, serviceStepsHelper);
         if (setupStepsArgsArray)
             await extraStepsHelper.execute("setupSteps", setupStepsArgsArray);
         await use(apiHelper);

@@ -1,9 +1,9 @@
 import { APIRequestContext, expect, Page } from "@playwright/test";
-import AuthUrls from "../services/Auth/AuthUrls";
-import CredentialsUtils from "../utils/CredentialsUtils";
-import { StorageState } from "../customTypes/FrameworkTypes";
-import { LoginResponse } from "../customTypes/ApiResponseTypes";
-import FileUtils from "../utils/FileUtils";
+import AuthUrls from "../../services/Auth/AuthUrls";
+import CredentialsUtils from "../../utils/CredentialsUtils";
+import { StorageState } from "../../customTypes/FrameworkTypes";
+import { LoginResponse } from "../../customTypes/ApiResponseTypes";
+import FileUtils from "../../utils/FileUtils";
 
 export default class StorageStateHelper {
 

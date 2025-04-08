@@ -1,5 +1,5 @@
 import { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import AzureReportHelper from "../helpers/AzureReportHelper";
+import AzureReportHelper from "../helpers/reporting/AzureReportHelper";
 import { AzureReporterOptions, RunDetails } from "../customTypes/FrameworkTypes";
 import GlobalReporter from "./GlobalReporter";
 import TerminalUtils from "../utils/TerminalUtils";

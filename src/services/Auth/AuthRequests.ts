@@ -1,5 +1,5 @@
 import BaseRequests from "../Base/BaseRequests";
-import RequestHelper from "../../helpers/RequestHelper";
+import RequestHelper from "../../helpers/channel/RequestHelper";
 import AuthUrls from "./AuthUrls";
 
 export default class AuthRequests extends BaseRequests {

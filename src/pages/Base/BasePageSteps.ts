@@ -1,7 +1,7 @@
 import { PageType } from "../../customTypes/FrameworkTypes";
-import StepSequenceHelper from "../../helpers/StepSequenceHelper";
-import BrowserHelper from "../../helpers/BrowserHelper";
-import TempDataHelper from "../../helpers/TempDataHelper";
+import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
+import BrowserHelper from "../../helpers/channel/BrowserHelper";
+import TempDataHelper from "../../helpers/chaining/TempDataHelper";
 
 export default abstract class BasePageSteps {
 
@@ -33,18 +33,18 @@ export default abstract class BasePageSteps {
         return this._stepSequenceHelper.stepSequence;
     }
 
-    _openNewTabInNewContext<T extends BasePageSteps>(page: T, authenticatedUser?: string): T {
+    _openNewTabInNewContext<T extends BasePageSteps>(pageSteps: T, authenticatedUser?: string): T {
         this._browserHelper.openNewTabInNewContext(authenticatedUser);
-        return page;
+        return pageSteps;
     }
 
-    _openNewTabInCurrentContext<T extends BasePageSteps>(page: T): T {
+    _openNewTabInCurrentContext<T extends BasePageSteps>(pageSteps: T): T {
         this._browserHelper.openNewTabInCurrentContext();
-        return page;
+        return pageSteps;
     }
 
-    _switchWorkingTab<T extends BasePageSteps>(contextIndex: number, pageIndex: number, page: T): T {
-        this._browserHelper.switchWorkingTab(contextIndex, pageIndex, page._pageType);
-        return page;
+    _switchWorkingTab<T extends BasePageSteps>(contextIndex: number, pageIndex: number, pageSteps: T): T {
+        this._browserHelper.switchWorkingTab(contextIndex, pageIndex, pageSteps._pageType);
+        return pageSteps;
     }
 }

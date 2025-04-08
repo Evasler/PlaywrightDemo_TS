@@ -5,8 +5,8 @@ uiTest.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionErro
 uiTest.describe("Initial Tab without storageState", () => {
     uiTest(TestUtils.fullTitle(0, "Login page displayed, when initial tab is instantiated without a storageState"), async({ ui }) => {
         await ui
-        ._openNewTabInNewContext(ui.pageHelper.blankPage)
-        .goToRestfulBooker(ui.pageHelper.loginPage)
+        ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps)
+        .goToRestfulBooker(ui.pageStepsHelper.loginSteps)
         .verifyLoginIsVisible()
         ._execute();
     });
@@ -15,8 +15,8 @@ uiTest.describe("Initial Tab without storageState", () => {
 uiTest.describe("Initial Tab with storageState", () => {
     uiTest(TestUtils.fullTitle(1, "Admin Panel displayed, when initial tab is instantiated with a storageState"), async({ ui }) => {
         await ui
-        ._openNewTabInNewContext(ui.pageHelper.blankPage, "administrator")
-        .goToRestfulBooker(ui.pageHelper.adminPanelPage)
+        ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps, "administrator")
+        .goToRestfulBooker(ui.pageStepsHelper.adminPanelSteps)
         .verifyLinkIsVisible("Rooms")
         ._execute();
     });

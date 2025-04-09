@@ -1,5 +1,5 @@
 import { APIRequest, APIRequestContext, expect } from "@playwright/test";
-import StorageStateHelper from "./StorageStateHelper";
+import StorageStateHelper from "../chaining/StorageStateHelper";
 import StepSequenceHelper from "../chaining/StepSequenceHelper";
 
 export default class RequestHelper {

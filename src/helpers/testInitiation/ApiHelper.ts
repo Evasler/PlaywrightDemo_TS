@@ -1,6 +1,6 @@
 import BaseServiceSteps from "../../services/Base/BaseServiceSteps";
 import RequestHelper from "../channel/RequestHelper";
-import ServiceStepsHelper from "../steps/ServiceStepsHelper";
+import ServiceStepsHelper from "../objectInstantiation/ServiceStepsHelper";
 
 export default class ApiHelper {
 

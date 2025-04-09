@@ -1,14 +1,14 @@
 import { test as base } from "@playwright/test";
 import BrowserHelper from "../helpers/channel/BrowserHelper";
-import PageStepsHelper from "../helpers/steps/PageStepsHelper";
+import PageStepsHelper from "../helpers/objectInstantiation/PageStepsHelper";
 import { UiHelperObj, ErrorListenerOptionsObj } from "../customTypes/FrameworkTypes";
 import TempDataHelper from "../helpers/chaining/TempDataHelper";
 import StepSequenceHelper from "../helpers/chaining/StepSequenceHelper";
 import UiHelper from "../helpers/testInitiation/UiHelper";
 import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
-import ExtraStepsHelper from "../helpers/steps/ExtraStepsHelper";
+import ExtraStepsHelper from "../helpers/ExtraStepsHelper";
 import RequestHelper from "../helpers/channel/RequestHelper";
-import ServiceStepsHelper from "../helpers/steps/ServiceStepsHelper";
+import ServiceStepsHelper from "../helpers/objectInstantiation/ServiceStepsHelper";
 
 const uiTest = base.extend<UiHelperObj & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
     setupStepsArgsArray: [ undefined, { option: true }],

@@ -1,6 +1,6 @@
 import BasePageSteps from "../../pages/Base/BasePageSteps";
 import BrowserHelper from "../channel/BrowserHelper";
-import PageStepsHelper from "../steps/PageStepsHelper";
+import PageStepsHelper from "../objectInstantiation/PageStepsHelper";
 
 export default class UiHelper {
 

@@ -1,11 +1,11 @@
 import { test as base } from "@playwright/test";
-import ServiceStepsHelper from "../helpers/steps/ServiceStepsHelper";
+import ServiceStepsHelper from "../helpers/objectInstantiation/ServiceStepsHelper";
 import RequestHelper from "../helpers/channel/RequestHelper";
 import TempDataHelper from "../helpers/chaining/TempDataHelper";
 import StepSequenceHelper from "../helpers/chaining/StepSequenceHelper";
 import ApiHelper from "../helpers/testInitiation/ApiHelper";
 import { ApiHelperObj } from "../customTypes/FrameworkTypes";
-import ExtraStepsHelper from "../helpers/steps/ExtraStepsHelper";
+import ExtraStepsHelper from "../helpers/ExtraStepsHelper";
 import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
 
 const apiTest = base.extend<ApiHelperObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({

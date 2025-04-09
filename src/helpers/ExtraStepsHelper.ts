@@ -1,15 +1,15 @@
-import { ExtraStepsArgs } from "../../customTypes/StepArgsTypes";
-import RequestHelper from "../channel/RequestHelper";
-import ServiceStepsHelper from "../steps/ServiceStepsHelper";
+import { ExtraStepsArgs } from "../customTypes/StepArgsTypes";
+import RequestHelper from "./channel/RequestHelper";
+import ServiceStepsHelper from "./objectInstantiation/ServiceStepsHelper";
 import test from "@playwright/test";
 
 export default class ExtraStepsHelper {
 
     constructor(private readonly _requestHelper: RequestHelper, private readonly _serviceStepsHelper: ServiceStepsHelper) { }
 
-    execute(steps: "setupSteps" | "teardownSteps", stepsArgsArray: ExtraStepsArgs[]) {
+    execute(steps: "setupSteps" | "teardownSteps", extraStepsArgsArray: ExtraStepsArgs[]) {
         return test.step(steps, async() => {
-            for (const stepsArgs of stepsArgsArray) {
+            for (const stepsArgs of extraStepsArgsArray) {
                 this._requestHelper.openNewThrowAwayContext();
                 if (stepsArgs.loginArgs)
                     this._serviceStepsHelper.authSteps.login(stepsArgs.loginArgs);

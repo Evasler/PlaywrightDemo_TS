@@ -24,16 +24,16 @@ export default class AuthSteps extends BaseServiceSteps {
             const response = await this._authRequests.login(userCredentialsObj);
             expect(response.status()).toEqual(200);
             const token = (await response.json() as LoginResponse).token;
-            this.setTempData("token", token)
+            this.pushTempData("token", token);
             this.putExtraHeader("Cookie", `token=${token}`);
         });
         return this;
     }
 
-    validate() {
+    validate(tempDataIndex: number) {
         this.addStep("validate", async() => {
             console.log("validate");
-            const tokenObj = { token: this.getTempStringData("token") };
+            const tokenObj = { token: this.getTempData("token", tempDataIndex) };
             const response = await this._authRequests.validate(tokenObj);
             const valid = (await response.json() as ValidateResponse).valid;
             expect(valid).toBeTruthy();

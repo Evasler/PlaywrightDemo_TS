@@ -3,6 +3,7 @@ import ApiHelper from "../helpers/testInitiation/ApiHelper";
 import { ExtraStepsArgs } from "./StepArgsTypes";
 
 export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
+export type TempDataKeys = "token" | "roomId";
 export type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
 export type SuiteTag = "@smoke" | "@regression" | "@fullScope";
 export type StorageState = {

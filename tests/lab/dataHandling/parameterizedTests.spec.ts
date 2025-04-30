@@ -9,8 +9,8 @@ for (const dataset of datasets) {
         .login({ user: "administrator" })
         ._switchService(api.serviceStepsHelper.roomSteps)
         .createRoom({ payload: dataset.stepData.roomDetails })
-        .getRoomId({ roomName: dataset.stepData.roomDetails.roomName, tempDataKeyPrefix: dataset.stepData.roomTempDataKeyPrefix })
-        .deleteRoom({ tempDataKeyPrefix: dataset.stepData.roomTempDataKeyPrefix })
+        .getRoomId({ roomName: dataset.stepData.roomDetails.roomName })
+        .deleteRoom({ tempDataIndex: dataset.stepData.roomTempDataIndex })
         ._execute();
     });
 }

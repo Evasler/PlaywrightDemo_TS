@@ -4,7 +4,7 @@ import { TestDetailsObj } from "../../../src/customTypes/FrameworkTypes";
 type ParameterizedTestsDataset = TestDetailsObj & {
     stepData: {
         roomDetails: CreateRoomPayload;
-        roomTempDataKeyPrefix: string;
+        roomTempDataIndex: number;
     }
 };
 
@@ -25,7 +25,7 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
                 roomPrice: 350,
                 features: ["TV"]
             } as CreateRoomPayload,
-            roomTempDataKeyPrefix: "room998"
+            roomTempDataIndex: 0
         }
     },
     {
@@ -44,7 +44,7 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
                 features: ["Views"],
                 thisIsWrong: ""
             } as CreateRoomPayload,
-            roomTempDataKeyPrefix: "room999"
+            roomTempDataIndex: 0
         }
     }
 ];

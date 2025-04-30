@@ -1,6 +1,7 @@
 import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
 import RequestHelper from "../../helpers/channel/RequestHelper";
 import TempDataHelper from "../../helpers/chaining/TempDataHelper";
+import { TempDataKeys } from "../../customTypes/FrameworkTypes";
 
 /**
  * Provides basic functionality shared across all ServiceSteps classes.
@@ -31,20 +32,22 @@ export default abstract class BaseServiceSteps {
      */
     protected putExtraHeader(key: string, value: string) { this._requestHelper.putExtraHeader(key, value); }
 
-    protected setTempData<T extends string | number | boolean>(key: string, value: T) {
-        this._tempDataHelper.setTempData(key, value);
+    /**
+     * Stores the value in the Array of values of the specified key.
+     * @param key 
+     * @param value 
+     */
+    protected pushTempData(key: TempDataKeys, value: string) {
+        this._tempDataHelper.pushTempData(key, value);
     }
     
-    protected getTempStringData(key: string) {
-        return this._tempDataHelper.getTempStringData(key);
-    }
-
-    protected getTempNumberData(key: string) {
-        return this._tempDataHelper.getTempNumberData(key);
-    }
-
-    protected getTempBooleanData(key: string) {
-        return this._tempDataHelper.getTempBooleanData(key);
+    /**
+     * @param key 
+     * @param index 
+     * @returns The value at index location of the Array of specified key.
+     */
+    protected getTempData(key: TempDataKeys, index: number) {
+        return this._tempDataHelper.getTempData(key, index);
     }
 
     /**

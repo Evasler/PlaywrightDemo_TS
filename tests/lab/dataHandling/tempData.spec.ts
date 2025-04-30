@@ -17,7 +17,7 @@ apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
             features: ["TV"]
         }
     })
-    .getRoomId({ roomName: "998", tempDataKeyPrefix: "myFirstRoom" })
+    .getRoomId({ roomName: "998" })
     .createRoom({
         payload: {
             roomName: "999",
@@ -29,8 +29,8 @@ apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
             features: ["Views"]
         }
     })
-    .getRoomId({ roomName: "999", tempDataKeyPrefix: "mySecondRoom" })
-    .deleteRoom({ tempDataKeyPrefix: "myFirstRoom" })
-    .deleteRoom({ tempDataKeyPrefix: "mySecondRoom" })
+    .getRoomId({ roomName: "999" })
+    .deleteRoom({ tempDataIndex: 0 })
+    .deleteRoom({ tempDataIndex: 1 })
     ._execute();
 });

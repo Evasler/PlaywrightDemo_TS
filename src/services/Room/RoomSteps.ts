@@ -36,7 +36,7 @@ export default class RoomSteps extends BaseServiceSteps {
         return this;
     }
 
-    getRoomId({ roomName, tempDataKeyPrefix }: GetRoomIdArgs) {
+    getRoomId({ roomName }: GetRoomIdArgs) {
         this.addStep("getRoomId", async() => {
             console.log("getRoomId");
             const response = await this._roomRequests.getRoom();
@@ -44,15 +44,15 @@ export default class RoomSteps extends BaseServiceSteps {
             const responseJson = await response.json() as GetRoomResponse;
             const room = responseJson.rooms.find(room => room.roomName === roomName);
             expect(room).toBeDefined();
-            this.setTempData(`${tempDataKeyPrefix}_roomId`, room!.roomid);
+            this.pushTempData("roomId", String(room!.roomid));
         });
         return this;
     }
 
-    deleteRoom({ tempDataKeyPrefix }: DeleteRoomArgs) {
+    deleteRoom({ tempDataIndex }: DeleteRoomArgs) {
         this.addStep("deleteRoom", async () => {
             console.log("deleteRoom");
-            const response = await this._roomRequests.deleteRoom(this.getTempNumberData(`${tempDataKeyPrefix}_roomId`));
+            const response = await this._roomRequests.deleteRoom(+this.getTempData("roomId", tempDataIndex));
             expect(response.status()).toEqual(200);
         });
         return this;

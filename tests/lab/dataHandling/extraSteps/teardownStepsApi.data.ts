@@ -34,13 +34,12 @@ const teardownStepsApiDataset: TestData = {
             loginArgs: { user: "administrator" },
             getRoomIdArgsArray: [
                 {
-                    roomName: "initialRoom",
-                    tempDataKeyPrefix: "myInitialRoom"
+                    roomName: "initialRoom"
                 }
             ],
             deleteRoomArgsArray: [
                 {
-                    tempDataKeyPrefix: "myInitialRoom"
+                    tempDataIndex: 0
                 }
             ]
         }

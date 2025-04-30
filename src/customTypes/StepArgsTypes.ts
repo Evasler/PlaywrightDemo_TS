@@ -8,8 +8,5 @@ export type ExtraStepsArgs = {
 };
 export type LoginArgs = { user: string };
 export type CreateRoomArgs = { payload: CreateRoomPayload };
-export type GetRoomIdArgs = {
-    roomName: string;
-    tempDataKeyPrefix: string;
-};
-export type DeleteRoomArgs = { tempDataKeyPrefix: string };
+export type GetRoomIdArgs = { roomName: string; };
+export type DeleteRoomArgs = { tempDataIndex: number };

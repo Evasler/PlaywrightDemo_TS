@@ -1,4 +1,4 @@
-import { PageType } from "../../customTypes/FrameworkTypes";
+import { PageType, TempDataKeys } from "../../customTypes/FrameworkTypes";
 import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
 import BrowserHelper from "../../helpers/channel/BrowserHelper";
 import TempDataHelper from "../../helpers/chaining/TempDataHelper";
@@ -25,20 +25,22 @@ export default abstract class BasePageSteps {
      */
     protected get workingTab() { return this._browserHelper.workingTab; }
 
-    protected setTempData<T extends string | number | boolean>(key: string, value: T) {
-        this._tempDataHelper.setTempData(key, value);
+    /**
+     * Stores the value in the Array of values of the specified key.
+     * @param key 
+     * @param value 
+     */
+    protected pushTempData(key: TempDataKeys, value: string) {
+        this._tempDataHelper.pushTempData(key, value);
     }
     
-    protected getTempStringData(key: string) {
-        return this._tempDataHelper.getTempStringData(key);
-    }
-
-    protected getTempNumberData(key: string) {
-        return this._tempDataHelper.getTempNumberData(key);
-    }
-
-    protected getTempBooleanData(key: string) {
-        return this._tempDataHelper.getTempBooleanData(key);
+    /**
+     * @param key 
+     * @param index 
+     * @returns The value at index location of the Array of specified key.
+     */
+    protected getTempData(key: TempDataKeys, index: number) {
+        return this._tempDataHelper.getTempData(key, index);
     }
 
     /**

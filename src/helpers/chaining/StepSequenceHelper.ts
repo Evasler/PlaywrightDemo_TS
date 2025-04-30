@@ -13,7 +13,7 @@ export default class StepSequenceHelper {
     private _stepSequence = Promise.resolve();
     
     constructor() {
-        this._testFilePath = new RegExp(`${config.testDir!.replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+\.spec\.ts:[0-9]+:[0-9]+$`);
+        this._testFilePath = new RegExp(`${config.testDir!.replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+\.spec\.ts:[0-9]+:[0-9]+`);
     }
 
     /**
@@ -67,8 +67,10 @@ export default class StepSequenceHelper {
         const myError = new Error();
         const step = async() => { await test.step(title, callback); }
         this._stepSequence = this._stepSequence.then(step).catch(error => {
-            this._populateTestFileStepCall(myError.stack!);
-            error.stack = this._overwriteTestFileFunctionCall(error.stack!);
+            if (this._testFilePath.test(myError.stack!)) {
+                this._populateTestFileStepCall(myError.stack!);
+                error.stack = this._overwriteTestFileFunctionCall(error.stack!);
+            }
             throw error;
         });
     }

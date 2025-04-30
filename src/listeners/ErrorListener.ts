@@ -1,10 +1,17 @@
 import { Page } from "@playwright/test";
 import { ErrorListenerOptions } from "../customTypes/FrameworkTypes";
 
+/**
+ * Facilitates attaching listeners.
+ */
 export default class ErrorListener {
 
     constructor(private readonly _errorListenerOptions: ErrorListenerOptions) { }
 
+    /**
+     * Attaches different error listeners to the page, based on the provided ErrorListenerOptions.
+     * @param page 
+     */
     attachTo(page: Page) {
         if (this._errorListenerOptions.failOnJsError)
             page.on("pageerror", (error) => {

@@ -2,6 +2,11 @@ import { APIRequest, APIRequestContext, expect } from "@playwright/test";
 import StorageStateHelper from "../chaining/StorageStateHelper";
 import StepSequenceHelper from "../chaining/StepSequenceHelper";
 
+/**
+ * Manages all actions related to the Request Context.
+ * Holds a reference to the focused Request Context and all Request Contexts created by openNewContext and openNewThrowAwayContext.
+ * A set of extra headers is stored for each Request Context and can be applied to its requests. 
+ */
 export default class RequestHelper {
 
     private readonly _storageStateHelper;
@@ -16,14 +21,25 @@ export default class RequestHelper {
         this._storageStateHelper = new StorageStateHelper(baseUrl);
     }
 
+    /**
+     * The focused Request Context.
+     */
     get workingRequestContext() {
         return this._workingRequestContext;
     }
 
+    /**
+     * The index of the focused Request Context.
+     */
     get workingRequestContextIndex() {
         return this._requestContexts.indexOf(this.workingRequestContext);
     }
 
+    /**
+     * Stores extra headers, for the focused Request Context.
+     * @param key 
+     * @param value 
+     */
     putExtraHeader(key: string, value: string) {
         const contextIndex = this._requestContexts.indexOf(this.workingRequestContext);
         if (contextIndex >= 0) {
@@ -40,6 +56,10 @@ export default class RequestHelper {
         }
     }
 
+    /**
+     * Throws error if the focused Request Context is not stored.
+     * @returns The extra headers for the focused Request Context.
+     */
     getExtraHeaders() {
         const contextIndex = this._requestContexts.indexOf(this.workingRequestContext);
         if (contextIndex >= 0)
@@ -50,16 +70,24 @@ export default class RequestHelper {
         throw new Error("Could not find workingRequestContext's Extra Headers")
     }
 
+    /**
+     * Sets the focused Request Context.
+     * @param requestContextIndex 
+     */
     private _updateWorkingRequestContext(requestContextIndex: number) {
         this._workingRequestContext = this._requestContexts[requestContextIndex];
     }
     
+    /**
+     * Opens a new Request Context. The new Request Context is focused. If needed it can be focused again by switchWorkingContext.
+     * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Request Context.
+     */
     openNewContext(authenticatedUser?: string) {
         this._stepSequenceHelper.addStep("openNewContext", async () => {
             console.log("openNewContext");
             let newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             if (authenticatedUser) {
-                const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
+                const generatedFile = await this._storageStateHelper.createStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
                 if (generatedFile)
                     newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             }
@@ -68,12 +96,16 @@ export default class RequestHelper {
         });
     }
     
+    /**
+     * Opens a new Request Context. The new Request Context is focused. It cannot be focused again.
+     * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Request Context.
+     */
     openNewThrowAwayContext(authenticatedUser?: string) {
         this._stepSequenceHelper.addStep("openNewThrowAwayContext", async () => {
             console.log("openNewThrowAwayContext");
             let newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             if (authenticatedUser) {
-                const generatedFile = await this._storageStateHelper.generateStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
+                const generatedFile = await this._storageStateHelper.createStorageStateFileIfNeededViaAPI(newContext, authenticatedUser);
                 if (generatedFile)
                     newContext = await this._apiRequest.newContext({ storageState: this._storageStateHelper.storageStateValue(authenticatedUser) });
             }
@@ -82,6 +114,10 @@ export default class RequestHelper {
         });
     }
 
+    /**
+     * Sets the focused Request Context.
+     * @param requestContextIndex 
+     */
     switchWorkingContext(requestContextIndex: number) {
         this._stepSequenceHelper.addStep("switchWorkingContext", async () => {
             console.log("switchWorkingContext");

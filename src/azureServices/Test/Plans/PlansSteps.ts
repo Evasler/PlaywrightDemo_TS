@@ -9,6 +9,13 @@ export default class PlansSteps {
         this._plansRequests = new PlansRequests(authorizedContext, baseUrl);
     }
 
+    /**
+     * Gets a Test Point by Test Case ID.
+     * @param planId 
+     * @param suiteId 
+     * @param testCaseId 
+     * @returns The appropriate error message, if there was a failure. Otherwise, undefined.
+     */
     async getRequestError(planId: number, suiteId: number, testCaseId: number) {
         try {
             const response = await this._plansRequests.getPointsFilteredByTestCaseId(planId, suiteId, testCaseId);
@@ -30,6 +37,14 @@ export default class PlansSteps {
         return undefined;
     }
 
+    /**
+     * Gets a Test Point.
+     * @param planId 
+     * @param suiteId 
+     * @param testCaseId 
+     * @param configurationName 
+     * @returns The Test Point's ID, if a single Test Point is retrieved. Otherwise, undefined.
+     */
     async getTestPointId(planId: number, suiteId: number, testCaseId: number, configurationName: string) {
         try {
             const response = await this._plansRequests.getPointsFilteredByTestCaseId(planId, suiteId, testCaseId);

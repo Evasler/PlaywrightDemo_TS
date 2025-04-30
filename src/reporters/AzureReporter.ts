@@ -15,6 +15,9 @@ export default class AzureReporter implements Reporter {
         this._throwOptionTypeErrors();
     }
 
+    /**
+     * Checks if all of AzureReporter's options inside playwright.config are defined properly.
+     */
     private _throwOptionTypeErrors() {
         const optionTypeErrors = [
             ...this._optionTypeErrors("enabled", "boolean"),
@@ -36,6 +39,11 @@ export default class AzureReporter implements Reporter {
         }
     }
 
+    /**
+     * @param optionName 
+     * @param expectedPropertyType 
+     * @returns An array containing the error message, if the option was not defined properly. Otherwise, an empty array.
+     */
     private _optionTypeErrors(optionName: keyof AzureReporterOptions, expectedPropertyType: string) {
         const optionTypeErrors = [];
         const _expectedPropertyType = Array.isArray(this._options[optionName]) ? "object" : expectedPropertyType;
@@ -54,6 +62,12 @@ export default class AzureReporter implements Reporter {
         return optionTypeErrors;
     }
     
+    /**
+     * Before the execution, if reporting is enabled, a Test Run is created on Azure.
+     * If reporting is mandatory and errors occur, they are printed and the execution is stopped.
+     * @param config 
+     * @param rootSuite 
+     */
     onBegin(config: FullConfig, rootSuite: Suite): void {
         if (this._options.enabled) {
             const projectBaseUrl = encodeURI(`${this._options.azureBaseUrl}${this._options.organizationName}/${this._options.projectName}/`);
@@ -64,7 +78,7 @@ export default class AzureReporter implements Reporter {
                 this._options.suiteIds,
                 this._options.configurationNames
             );
-            GlobalReporter.addReportingStep(async() => await this._azureReportHelper.createAuthorizedContext());
+            GlobalReporter.addReportingStep(async() => await this._azureReportHelper.openAuthorizedContext());
             if (this._options.mandatoryReporting)
                 GlobalReporter.addReportingStep(async() => { await this._azureReportHelper.throwReportingErrors(rootSuite); } );
             GlobalReporter.addReportingStep(async() => {
@@ -78,17 +92,22 @@ export default class AzureReporter implements Reporter {
                         state: "Waiting",
                         startedDate: new Date(Date.now()).toISOString()
                     };
-                    const runIdAndUserError = await this._azureReportHelper.createRunAndCatchUserError(this._runDetails);
-                    if (this._options.mandatoryReporting && runIdAndUserError.userError) {
-                        TerminalUtils.printColoredText(runIdAndUserError.userError, "red");
+                    const runIdOrError = await this._azureReportHelper.createRunAndCatchUserError(this._runDetails);
+                    if (this._options.mandatoryReporting && typeof runIdOrError === "string") {
+                        TerminalUtils.printColoredText(runIdOrError, "red");
                         process.exit();
-                    } else
-                        this._runId = runIdAndUserError.runId;
+                    } else if (typeof runIdOrError === "number")
+                        this._runId = runIdOrError;
                 }
             });
         }
     }
 
+    /**
+     * At the end of the test, if reporting is enabled, its result is updated in Azure's Test Run.
+     * @param test 
+     * @param result 
+     */
     onTestEnd(test: TestCase, result: TestResult): void {
         if (this._options.enabled)
             GlobalReporter.addReportingStep(async() => {
@@ -97,6 +116,11 @@ export default class AzureReporter implements Reporter {
             });
     }
 
+    /**
+     * At the end of the execution, if reporting is enabled, Azure's Test Run's state is updated.
+     * A list of the tests, which were not reported, is printed.
+     * @param result 
+     */
     onEnd(result: FullResult): Promise<{ status?: FullResult["status"]; } | undefined | void> | void {
         GlobalReporter.addReportingStep(async() => {
             if (this._options.enabled) {

@@ -7,6 +7,9 @@ import RunsSteps from "../../azureServices/Test/Runs/RunsSteps";
 import PlansSteps from "../../azureServices/Test/Plans/PlansSteps";
 import { ResultDetails, RunDetails } from "../../customTypes/FrameworkTypes";
 
+/**
+ * Facilitates all Azure actions performed by AzureReporter.
+ */
 export default class AzureReportHelper {
 
     private readonly _unreportedTestTitles: string[] = [];
@@ -22,7 +25,10 @@ export default class AzureReportHelper {
         private readonly _configurations: string[]
     ) { }
 
-    async createAuthorizedContext() {
+    /**
+     * Opens a new Request Context, which is authorized to perform API calls to Azure.
+     */
+    async openAuthorizedContext() {
         this._authorizedContext = await request.newContext({
             extraHTTPHeaders: {
                 Authorization: 'Basic ' + Buffer.from(`:${this._personalAccessToken}`).toString('base64')
@@ -32,6 +38,12 @@ export default class AzureReportHelper {
         this._plansSteps = new PlansSteps(this._authorizedContext, this._projectBaseUrl);
     }
 
+    /**
+     * Updates the result of the test run, based on Playwright's test result.
+     * @param runId 
+     * @param test 
+     * @param result 
+     */
     async updateResult(runId: number, test: TestCase, result: TestResult) {
         let _testId;
         let _projectConfiguration;
@@ -63,6 +75,9 @@ export default class AzureReportHelper {
         }
     }
     
+    /**
+     * Lists the title of all tests, which weren't reported.
+     */
     printUnreportedTestResultsWarning() {
         if (this._unreportedTestTitles.length > 0)
             TerminalUtils.printColoredText("\nAzure: The following Tests' result was not reported", "yellow");
@@ -70,6 +85,11 @@ export default class AzureReportHelper {
             TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
     }
 
+    /**
+     * Gets a Test Point by Test Case ID.
+     * @param test 
+     * @returns An array containing the error message, if there was an error. Otherwise, an empty array.
+     */
     private async _requestErrors(test: TestCase) {
         let _testId;
         try {
@@ -85,6 +105,11 @@ export default class AzureReportHelper {
         }
     }
 
+    /**
+     * Gets the configurations specified by projectName.
+     * @param projectName 
+     * @returns An array containing the error message, if there was an error. Otherwise, an empty array.
+     */
     private _projectErrors(projectName: string) {
         const projectErrors = [];
         if (this._configurations) {
@@ -98,6 +123,13 @@ export default class AzureReportHelper {
         return projectErrors;
     }
     
+    /**
+     * Checks if a test point exists.
+     * @param test 
+     * @param projectName 
+     * @param requestWasSuccessful 
+     * @returns An array containing the error message, if there was an error or if the test point doesn't exist. Otherwise, an empty array.
+     */
     private async _testErrors(test: TestCase, projectName: string, requestWasSuccessful: boolean) {
         const titleErrors: string[] = [];
         const testPointErrors: string[] = [];
@@ -117,6 +149,11 @@ export default class AzureReportHelper {
         return [...titleErrors, ...testPointErrors];
     }
 
+    /**
+     * Checks if all tests of rootSuite can be reported on Azure.
+     * Lists all error messages and stops the execution, if there are any errors.
+     * @param rootSuite 
+     */
     async throwReportingErrors(rootSuite: Suite) {
         const requestErrors: string[] = [];
         const projectErrors: string[] = [];
@@ -139,6 +176,10 @@ export default class AzureReportHelper {
         }
     }
     
+    /**
+     * @param test 
+     * @returns False if there was an error or if the test point doesn't exist. Otherwise, true.
+     */
     private async _testPointExists(test: TestCase) {
         let _testId;
         let _projectConfiguration
@@ -156,6 +197,12 @@ export default class AzureReportHelper {
         }
     }
 
+    /**
+     * Gets the test point IDs for all tests of rootSuite.
+     * The title of a test is added to the unreportedTestTitles array, if there was an error or if no test point exists for that test.
+     * @param rootSuite 
+     * @returns An array containing all existing test point IDs for all tests of rootSuite.
+     */
     async getPointIds(rootSuite: Suite) {
         const pointIds = [];
         for (const test of rootSuite.allTests()) {
@@ -182,11 +229,21 @@ export default class AzureReportHelper {
         return pointIds;
     }
 
+    /**
+     * Creates a test run.
+     * @param runDetails  
+     * @returns The error message, if there was an error. Otherwise, the test run ID.
+     */
     async createRunAndCatchUserError(runDetails: RunDetails) {
         const runIdAndUserError = await this._runsSteps.createRunAndCatchUserError(runDetails);
         return runIdAndUserError;
     }
 
+    /**
+     * Updates the test run.
+     * @param runId 
+     * @param runDetails 
+     */
     async updateRun(runId: number, runDetails: RunDetails) {
         await this._runsSteps.updateRun(runId, runDetails);
     }

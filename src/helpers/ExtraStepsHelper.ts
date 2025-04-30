@@ -3,10 +3,20 @@ import RequestHelper from "./channel/RequestHelper";
 import ServiceStepsHelper from "./objectInstantiation/ServiceStepsHelper";
 import test from "@playwright/test";
 
+/**
+ * Better used in a fixture.
+ * Facilitates the BeforeTest and AfterTest actions, which should be performed on the application via API.
+ */
 export default class ExtraStepsHelper {
 
     constructor(private readonly _requestHelper: RequestHelper, private readonly _serviceStepsHelper: ServiceStepsHelper) { }
 
+    /**
+     * Executes actions via API, based on the provided ExtraStepsArgs array.
+     * @param steps 
+     * @param extraStepsArgsArray 
+     * @returns A playwright step, which wraps all performed actions.
+     */
     execute(steps: "setupSteps" | "teardownSteps", extraStepsArgsArray: ExtraStepsArgs[]) {
         return test.step(steps, async() => {
             for (const stepsArgs of extraStepsArgsArray) {

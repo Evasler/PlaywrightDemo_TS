@@ -5,6 +5,10 @@ import { StorageState } from "../../customTypes/FrameworkTypes";
 import { LoginResponse } from "../../customTypes/ApiResponseTypes";
 import FileUtils from "../../utils/FileUtils";
 
+/**
+ * Facilitates the creation of storageState files.
+ * Furthemore, ensures the validity of said storageState files.
+ */
 export default class StorageStateHelper {
 
     private readonly _authUrls;
@@ -15,8 +19,16 @@ export default class StorageStateHelper {
         this._loginPageUrl = `${_baseUrl}admin`;
     }
 
+    /**
+     * @param user 
+     * @returns The relative path to the user's storageState file.
+     */
     private _storageStatePath(user: string) { return `.auth/${user}.json`; }
 
+    /**
+     * @param user 
+     * @returns The relative path to the user's storageState file, if it exists. Otherwise, undefined.
+     */
     storageStateValue(user?: string) {
         let storageStateValue: string | undefined = undefined;
         if (user) {
@@ -27,7 +39,12 @@ export default class StorageStateHelper {
         return storageStateValue;
     }
 
-    private async _generateStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
+    /**
+     * Saves the user's token in a storageState file, based on ./resources/other/restfulBookerStorageStateTemplate.json.
+     * @param workingRequest 
+     * @param user 
+     */
+    private async _createStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
         const storageStatePath = this._storageStatePath(user);
         console.log(`Generating ${storageStatePath}`)
         const credentials = CredentialsUtils.getUserCredentials(user);
@@ -39,6 +56,10 @@ export default class StorageStateHelper {
         FileUtils.writeFile(storageStatePath, JSON.stringify(storageStateTemplate, null, 2));
     }
 
+    /**
+     * @param workingRequest 
+     * @returns True, if the context's cookies include a valid token. Otherwise, false.
+     */
     private async _contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
         let contextIsAuthorized = false;
         const tokenCookie = (await workingRequest.storageState()).cookies.find(cookie => cookie.name === "token");
@@ -51,16 +72,23 @@ export default class StorageStateHelper {
         return contextIsAuthorized;
     }
 
-    async generateStorageStateFileIfNeededViaAPI(workingRequest: APIRequestContext, authenticatedUser: string) {
+    /**
+     * If authenticatedUser's storageState file doesn't exist, it is created.
+     * If authenticatedUser's storageState file contains invalid cookies, it is refreshed.
+     * @param workingRequest 
+     * @param authenticatedUser 
+     * @returns True if a storageState file was created. Otherwise, false.
+     */
+    async createStorageStateFileIfNeededViaAPI(workingRequest: APIRequestContext, authenticatedUser: string) {
         const storageStatePath = this._storageStatePath(authenticatedUser);
         if (FileUtils.fileExists(storageStatePath)) {
             const workingContextIsAuthorized = await this._contextIsAuthorizedViaAPI(workingRequest);
             if (!workingContextIsAuthorized) {
-                await this._generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
+                await this._createStorageStateFileViaAPI(workingRequest, authenticatedUser);
                 return true;
             }
         } else {
-            await this._generateStorageStateFileViaAPI(workingRequest, authenticatedUser);
+            await this._createStorageStateFileViaAPI(workingRequest, authenticatedUser);
             return true;
         }
         return false;
@@ -68,7 +96,12 @@ export default class StorageStateHelper {
 
     //====================================================================
 
-    private async _generateStorageStateFileViaUI(workingTab: Page, user: string) {
+    /**
+     * The user is logged in via UI and their storageState file is created.
+     * @param workingTab 
+     * @param user 
+     */
+    private async _createStorageStateFileViaUI(workingTab: Page, user: string) {
         const storageStatePath = this._storageStatePath(user);
         console.log(`Generating ${storageStatePath}`)
         const credentials = CredentialsUtils.getUserCredentials(user);
@@ -80,6 +113,11 @@ export default class StorageStateHelper {
         await workingTab.context().storageState({ path: storageStatePath });
     }
 
+    /**
+     * Visits the login page.
+     * @param workingTab 
+     * @returns True, if the context's cookies are valid. Otherwise, false.
+     */
     private async _contextIsAuthorizedViaUI(workingTab: Page) {
         if (workingTab.url() !== this._loginPageUrl)
             await workingTab.goto(this._loginPageUrl);
@@ -93,16 +131,23 @@ export default class StorageStateHelper {
         }
     }
 
-    async generateStorageStateFileIfNeededViaUI(workingTab: Page, authenticatedUser: string) {
+    /**
+     * If authenticatedUser's storageState file doesn't exist, it is created.
+     * If authenticatedUser's storageState file contains invalid cookies, it is refreshed.
+     * @param workingTab 
+     * @param authenticatedUser 
+     * @returns True if a storageState file was created. Otherwise, false.
+     */
+    async createStorageStateFileIfNeededViaUI(workingTab: Page, authenticatedUser: string) {
         const storageStatePath = this._storageStatePath(authenticatedUser);
         if (FileUtils.fileExists(storageStatePath)) {
             const workingContextIsAuthorized = await this._contextIsAuthorizedViaUI(workingTab);
             if (!workingContextIsAuthorized) {
-                await this._generateStorageStateFileViaUI(workingTab, authenticatedUser);
+                await this._createStorageStateFileViaUI(workingTab, authenticatedUser);
                 return true;
             }
         } else {
-            await this._generateStorageStateFileViaUI(workingTab, authenticatedUser);
+            await this._createStorageStateFileViaUI(workingTab, authenticatedUser);
             return true;
         }
         return false;

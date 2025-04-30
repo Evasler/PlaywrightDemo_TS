@@ -4,6 +4,10 @@ import StepSequenceHelper from "../chaining/StepSequenceHelper";
 import RequestHelper from "../channel/RequestHelper";
 import TempDataHelper from "../chaining/TempDataHelper";
 
+/**
+ * Instantiates all Steps objects used by the API Tests.
+ * Holds a reference for all of those objects.
+ */
 export default class ServiceStepsHelper {
 
     private _authSteps?: AuthSteps;

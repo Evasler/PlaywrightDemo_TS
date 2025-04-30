@@ -5,6 +5,9 @@ import FileUtils from "../../utils/FileUtils";
 import TestUtils from "../../utils/TestUtils";
 import Excel from "exceljs";
 
+/**
+ * Facilitates all Excel actions performed by ExcelReporter.
+ */
 export default class ExcelReportHelper {
 
     private readonly _unreportedTestTitles: string[] = [];
@@ -15,6 +18,12 @@ export default class ExcelReportHelper {
         return `FullScope (${testType})`;
     }
 
+    /**
+     * Updates the result of the test, based on Playwright's test result.
+     * The title of a test is added to the unreportedTestTitles array, if there was an error or if no test point exists for that test.
+     * @param test 
+     * @param result 
+     */
     async updateResult(test: TestCase, result: TestResult) {
         let _testId;
         let _projectConfiguration;
@@ -56,15 +65,15 @@ export default class ExcelReportHelper {
                 break;
             }
         }
-        try {
-            if (!testPointExists)
-                throw new Error();
+        if (testPointExists)
             await workbook.xlsx.writeFile(this._filepath);
-        } catch (error) {
+        else
             this._unreportedTestTitles.push(test.title);
-        }
     }
 
+    /**
+     * Lists the title of all tests, which weren't reported.
+     */
     printUnreportedTestResultsWarning() {
         if (this._unreportedTestTitles.length > 0)
             TerminalUtils.printColoredText("\nExcel: The following Tests' result was not reported", "yellow");
@@ -72,6 +81,10 @@ export default class ExcelReportHelper {
             TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
     }
 
+    /**
+     * Performs a write operation on the Excel Report.
+     * @returns True, if the operation was successful. Otherwise, false.
+     */
     private async _excelIsWritable() {
         try {
             const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
@@ -82,6 +95,12 @@ export default class ExcelReportHelper {
         }
     }
 
+    /**
+     * Checks that the excel file exists and is writable.
+     * It, also, checks that "FullScope (UI)" and "FullScope (API)" worksheets exist and have the proper structure.
+     * @param projectName 
+     * @returns An array containing the error messages, if there were errors. Otherwise, an empty array.
+     */
     private async _excelFileErrors() {
         const excelFileErrors = [];
         if (!FileUtils.fileExists(this._filepath))
@@ -95,6 +114,11 @@ export default class ExcelReportHelper {
         return excelFileErrors;
     }
 
+    /**
+     * Checks that worksheetName exist and has the proper structure.
+     * @param worksheetName 
+     * @returns An array containing the error messages, if there were errors. Otherwise, an empty array.
+     */
     private async _worksheetErrors(worksheetName: string) {
         const worksheetErrors = [];
         const worksheet = await this._worksheet(worksheetName);
@@ -112,6 +136,11 @@ export default class ExcelReportHelper {
         return worksheetErrors;
     }
 
+    /**
+     * Gets the configurations specified by projectName.
+     * @param projectName 
+     * @returns An array containing the error message, if there was an error. Otherwise, an empty array.
+     */
     private _projectErrors(projectName: string) {
         const projectErrors = [];
         if (this._configurations) {
@@ -126,6 +155,13 @@ export default class ExcelReportHelper {
         return projectErrors;
     }
 
+    /**
+     * Checks if a test point exists.
+     * @param test 
+     * @param projectName 
+     * @param excelFileIsValid 
+     * @returns An array containing the error message, if there was an error or if the test point doesn't exist. Otherwise, an empty array.
+     */
     private async _testErrors(test: TestCase, projectName: string, excelFileIsValid: boolean) {
         const testFileErrors: string[] = [];
         const titleErrors: string[] = [];
@@ -158,12 +194,20 @@ export default class ExcelReportHelper {
         return [...testFileErrors, ...titleErrors, ...testPointErrors];
     }
 
+    /**
+     * @param worksheetName 
+     * @returns The worksheet.
+     */
     private async _worksheet(worksheetName: string) {
         const workbook = await new Excel.Workbook().xlsx.readFile(this._filepath);
         const worksheet = workbook.getWorksheet(worksheetName);
         return worksheet;
     }
 
+    /**
+     * @param test 
+     * @returns True if the test point exists. Otherwise, false.
+     */
     private async _testPointExists(test: TestCase) {
         let _testId;
         let _projectConfiguration
@@ -188,6 +232,11 @@ export default class ExcelReportHelper {
         return false;
     }
 
+    /**
+     * Checks if all tests of rootSuite can be reported on Excel.
+     * Lists all error messages and stops the execution, if there are any errors.
+     * @param rootSuite 
+     */
     async throwReportingErrors(rootSuite: Suite) {
         const excelFileErrors: string[] = [];
         const projectErrors: string[] = [];

@@ -6,6 +6,10 @@ import AdminPanelSteps from "../../pages/RestfulBooker/AdminPanel/AdminPanelStep
 import ErrorSteps from "../../pages/Error/ErrorSteps";
 import TempDataHelper from "../chaining/TempDataHelper";
 
+/**
+ * Instantiates all Steps objects used by the UI Tests.
+ * Holds a reference for all of those objects.
+ */
 export default class PageStepsHelper {
 
     private _blankSteps?: BlankSteps;

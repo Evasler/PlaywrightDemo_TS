@@ -68,7 +68,7 @@ export default class AzureReportHelper {
                     state: "Completed",
                     startedDate: result.startTime.toISOString(),
                     durationInMs: result.duration,
-                    errorMessage: result.error?.message
+                    errorMessage: result.error?.message ? TerminalUtils.clearOutput(result.error.message) : undefined
                 }
                 await this._runsSteps.updateResult(runId, testResultDetails)
             }

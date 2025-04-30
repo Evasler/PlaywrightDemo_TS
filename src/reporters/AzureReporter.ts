@@ -90,7 +90,8 @@ export default class AzureReporter implements Reporter {
                         plan: { id: this._options.planId },
                         pointIds: pointIds,
                         state: "Waiting",
-                        startedDate: new Date(Date.now()).toISOString()
+                        startedDate: new Date(Date.now()).toISOString(),
+                        completedDate: undefined
                     };
                     const runIdOrError = await this._azureReportHelper.createRunAndCatchUserError(this._runDetails);
                     if (this._options.mandatoryReporting && typeof runIdOrError === "string") {
@@ -126,6 +127,9 @@ export default class AzureReporter implements Reporter {
             if (this._options.enabled) {
                 if (this._runId) {
                     this._runDetails.startedDate = result.startTime.toISOString();
+                    const completedDate = new Date();
+                    completedDate.setTime(result.startTime.getTime() + result.duration);
+                    this._runDetails.completedDate = completedDate.toISOString();
                     switch(result.status) {
                         case "passed":
                             this._runDetails.state = "Completed";

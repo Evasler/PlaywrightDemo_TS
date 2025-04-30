@@ -61,6 +61,7 @@ export type RunDetails = {
     pointIds: number[];
     state: AzureTestRunState;
     startedDate: string;
+    completedDate?: string;
 }
 export type ResultDetails = {
     id: number;
@@ -68,5 +69,5 @@ export type ResultDetails = {
     state: AzureTestRunState;
     startedDate: string;
     durationInMs: number;
-    errorMessage: string | undefined;
+    errorMessage?: string;
 }

@@ -2,7 +2,7 @@ import type { FullConfig, Reporter, Suite, TestCase, TestResult } from '@playwri
 import { ExcelReporterOptions } from '../customTypes/FrameworkTypes';
 import ExcelReportHelper from '../helpers/reporting/ExcelReportHelper';
 import GlobalReporter from './GlobalReporter';
-import TerminalUtils from '../utils/TerminalUtils';
+import ErrorHandlingUtils from '../utils/ErrorHandlingUtils';
 
 export default class ExcelReporter implements Reporter {
 
@@ -23,12 +23,8 @@ export default class ExcelReporter implements Reporter {
             ...this._optionTypeErrors("filepath", "string"),
             ...this._optionTypeErrors("configurations", "string[]")
         ];
-        if (optionTypeErrors.length > 0) {
-            TerminalUtils.printColoredText("Excel:", "red");
-            for (const optionTypeError of optionTypeErrors)
-                TerminalUtils.printColoredText(`  ${optionTypeError}`, "red");
-            process.exit();
-        }
+        if (optionTypeErrors.length > 0)
+            ErrorHandlingUtils.reportErrors("Excel", optionTypeErrors);
     }
 
     /**

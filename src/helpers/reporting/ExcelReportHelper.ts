@@ -3,6 +3,7 @@ import GeneralUtils from "../../utils/GeneralUtils";
 import TerminalUtils from "../../utils/TerminalUtils";
 import FileUtils from "../../utils/FileUtils";
 import TestUtils from "../../utils/TestUtils";
+import ErrorHandlingUtils from "../../utils/ErrorHandlingUtils";
 import Excel from "exceljs";
 
 /**
@@ -76,9 +77,7 @@ export default class ExcelReportHelper {
      */
     printUnreportedTestResultsWarning() {
         if (this._unreportedTestTitles.length > 0)
-            TerminalUtils.printColoredText("\nExcel: The following Tests' result was not reported", "yellow");
-        for (const unreportedTestTitle of this._unreportedTestTitles)
-            TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
+            ErrorHandlingUtils.reportWarnings("Excel", this._unreportedTestTitles.map(title => `Test result not reported: ${title}`));
     }
 
     /**
@@ -249,11 +248,7 @@ export default class ExcelReportHelper {
                 testErrors.push(...await this._testErrors(test, projectName, excelFileErrors.length === 0));
         }
         const uniqueReportingErrors = [...new Set([...excelFileErrors, ...projectErrors, ...testErrors])];
-        if (uniqueReportingErrors.length > 0) {
-            TerminalUtils.printColoredText("\nExcel:", "red");
-            for (const reportingError of uniqueReportingErrors)
-                TerminalUtils.printColoredText(`  ${reportingError}`, "red");
-            process.exit();
-        }
+        if (uniqueReportingErrors.length > 0)
+            ErrorHandlingUtils.reportErrors("Excel", uniqueReportingErrors);
     }
 }

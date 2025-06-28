@@ -2,7 +2,7 @@ import { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from "@
 import AzureReportHelper from "../helpers/reporting/AzureReportHelper";
 import { AzureReporterOptions, RunDetails } from "../customTypes/FrameworkTypes";
 import GlobalReporter from "./GlobalReporter";
-import TerminalUtils from "../utils/TerminalUtils";
+import ErrorHandlingUtils from "../utils/ErrorHandlingUtils";
 
 export default class AzureReporter implements Reporter {
 
@@ -31,12 +31,8 @@ export default class AzureReporter implements Reporter {
             ...this._optionTypeErrors("suiteIds", "number[]"),
             ...this._optionTypeErrors("configurationNames", "string[]")
         ];
-        if (optionTypeErrors.length > 0) {
-            TerminalUtils.printColoredText("Azure:", "red");
-            for (const optionTypeError of optionTypeErrors)
-                TerminalUtils.printColoredText(`  ${optionTypeError}`, "red");
-            process.exit();
-        }
+        if (optionTypeErrors.length > 0)
+            ErrorHandlingUtils.reportErrors("Azure", optionTypeErrors);
     }
 
     /**
@@ -95,8 +91,7 @@ export default class AzureReporter implements Reporter {
                     };
                     const runIdOrError = await this._azureReportHelper.createRunAndCatchUserError(this._runDetails);
                     if (this._options.mandatoryReporting && typeof runIdOrError === "string") {
-                        TerminalUtils.printColoredText(runIdOrError, "red");
-                        process.exit();
+                        ErrorHandlingUtils.reportErrors("Azure", [runIdOrError]);
                     } else if (typeof runIdOrError === "number")
                         this._runId = runIdOrError;
                 }

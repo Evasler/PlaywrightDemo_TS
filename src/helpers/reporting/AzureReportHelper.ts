@@ -2,6 +2,7 @@ import { Suite, TestCase, TestResult } from "@playwright/test/reporter";
 import { request } from "@playwright/test";
 import TerminalUtils from "../../utils/TerminalUtils";
 import TestUtils from "../../utils/TestUtils";
+import ErrorHandlingUtils from "../../utils/ErrorHandlingUtils";
 import { APIRequestContext } from "@playwright/test";
 import RunsSteps from "../../azureServices/Test/Runs/RunsSteps";
 import PlansSteps from "../../azureServices/Test/Plans/PlansSteps";
@@ -80,9 +81,7 @@ export default class AzureReportHelper {
      */
     printUnreportedTestResultsWarning() {
         if (this._unreportedTestTitles.length > 0)
-            TerminalUtils.printColoredText("\nAzure: The following Tests' result was not reported", "yellow");
-        for (const unreportedTestTitle of this._unreportedTestTitles)
-            TerminalUtils.printColoredText(`  ${unreportedTestTitle}`, "yellow");
+            ErrorHandlingUtils.reportWarnings("Azure", this._unreportedTestTitles.map(title => `Test result not reported: ${title}`));
     }
 
     /**
@@ -168,12 +167,8 @@ export default class AzureReportHelper {
             }
         }
         const uniqueReportingErrors = [...new Set([...requestErrors, ...projectErrors, ...testErrors])];
-        if (uniqueReportingErrors.length > 0) {
-            TerminalUtils.printColoredText("\nAzure:", "red");
-            for (const reportingError of uniqueReportingErrors)
-                TerminalUtils.printColoredText(`  ${reportingError}`, "red");
-            process.exit();
-        }
+        if (uniqueReportingErrors.length > 0)
+            ErrorHandlingUtils.reportErrors("Azure", uniqueReportingErrors);
     }
     
     /**

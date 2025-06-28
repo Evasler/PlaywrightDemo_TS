@@ -13,6 +13,7 @@ export default class StorageStateHelper {
 
     private readonly _authUrls;
     private readonly _loginPageUrl;
+    private readonly _authDirectory = ".auth";
 
     constructor(_baseUrl: string) {
         this._authUrls = new AuthUrls(_baseUrl);
@@ -23,7 +24,7 @@ export default class StorageStateHelper {
      * @param user 
      * @returns The relative path to the user's storageState file.
      */
-    private _storageStatePath(user: string) { return `.auth/${user}.json`; }
+    private _storageStatePath(user: string) { return `${this._authDirectory}/${user}.json`; }
 
     /**
      * @param user 
@@ -53,6 +54,8 @@ export default class StorageStateHelper {
         const responseJson = await response.json() as LoginResponse;
         const storageStateTemplate = JSON.parse(FileUtils.readFile("./resources/other/restfulBookerStorageStateTemplate.json")) as StorageState;
         storageStateTemplate.cookies[0].value = responseJson.token;
+        if (!FileUtils.fileExists(this._authDirectory))
+            FileUtils.makeDirectory(this._authDirectory);
         FileUtils.writeFile(storageStatePath, JSON.stringify(storageStateTemplate, null, 2));
     }
 

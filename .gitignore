@@ -1,4 +1,4 @@
-.auth/
+.auth/*
 node_modules/
 /test-results/
 /playwright-report/

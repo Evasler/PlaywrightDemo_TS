@@ -13,4 +13,8 @@ export default abstract class FileUtils {
     static writeFile(filePath: string, content: string) {
         fs.writeFileSync(filePath, content);
     }
+
+    static makeDirectory(directoryPath: string) {
+        fs.mkdirSync(directoryPath);
+    }
 }

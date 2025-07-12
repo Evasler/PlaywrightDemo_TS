@@ -1,23 +1,26 @@
 import uiTest from "../../../src/fixtures/uiFixtures";
-import TestUtils from "../../../src/utils/TestUtils";
+import stepSequenceHelper from "../../../src/helpers/chaining/StepSequenceHelper";
+import browserHelper from "../../../src/helpers/channel/BrowserHelper";
+import blankSteps from "../../../src/pages/Blank/BlankSteps";
+import testUtils from "../../../src/utils/TestUtils";
 
-uiTest(TestUtils.fullTitle(0, "Test failure, because ErrorListener catches a JS error"), async({ ui }) => {
-    await ui
-    ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps)
-    .goToJsErrorPage(ui.pageStepsHelper.errorSteps)
-    ._execute();
+uiTest(testUtils.fullTitle(0, "Test failure, because errorListener catches a JS error"), async() => {
+    browserHelper.openNewTabInNewContext();
+    blankSteps
+    .goToJsErrorPage();
+    await stepSequenceHelper.stepSequence;
 });
 
-uiTest(TestUtils.fullTitle(1, "Test failure, because ErrorListener catches an Error Status code"), async({ ui }) => {
-    await ui
-    ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps)
-    .goToInternalServerErrorPage(ui.pageStepsHelper.errorSteps)
-    ._execute();
+uiTest(testUtils.fullTitle(1, "Test failure, because errorListener catches an Error Status code"), async() => {
+    browserHelper.openNewTabInNewContext();
+    blankSteps
+    .goToInternalServerErrorPage();
+    await stepSequenceHelper.stepSequence;
 });
 
-uiTest(TestUtils.fullTitle(2, "Test failure, because ErrorListener catches a Connection Error"), async({ ui }) => {
-    await ui
-    ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps)
-    .goToConnectionErrorPage(ui.pageStepsHelper.errorSteps)
-    ._execute();
+uiTest(testUtils.fullTitle(2, "Test failure, because errorListener catches a Connection Error"), async() => {
+    browserHelper.openNewTabInNewContext();
+    blankSteps
+    .goToConnectionErrorPage();
+    await stepSequenceHelper.stepSequence;
 });

@@ -1,37 +1,34 @@
 import { test as base } from "@playwright/test";
-import BrowserHelper from "../helpers/channel/BrowserHelper";
-import PageStepsHelper from "../helpers/objectInstantiation/PageStepsHelper";
-import { UiHelperObj, ErrorListenerOptionsObj } from "../customTypes/FrameworkTypes";
-import TempDataHelper from "../helpers/chaining/TempDataHelper";
-import StepSequenceHelper from "../helpers/chaining/StepSequenceHelper";
-import UiHelper from "../helpers/testInitiation/UiHelper";
+import { ErrorListenerOptionsObj } from "../customTypes/FrameworkTypes";
 import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
-import ExtraStepsHelper from "../helpers/ExtraStepsHelper";
-import RequestHelper from "../helpers/channel/RequestHelper";
-import ServiceStepsHelper from "../helpers/objectInstantiation/ServiceStepsHelper";
+import extraStepsHelper from "../helpers/ExtraStepsHelper";
+import browserHelper from "../helpers/channel/BrowserHelper";
+import frameworkDataHelper from "../helpers/data/FrameworkDataHelper";
+import tabDataHelper from "../helpers/data/TabDataHelper";
+import testDataHelper from "../helpers/data/TestDataHelper";
 
-const uiTest = base.extend<UiHelperObj & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
+const uiTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
     errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
-    ui: [ async ({ playwright, browser, baseURL, setupStepsArgsArray, teardownStepsArgsArray, errorListenerOptions }, use) => {
+    extraSteps: [ async ({ playwright, browser, baseURL, setupStepsArgsArray, teardownStepsArgsArray, errorListenerOptions }, use) => {
         if (!baseURL)
             throw new Error("baseURL not defined in playwright.config.ts");
-        const tempDataHelper = new TempDataHelper();
-        const stepSequenceHelper = new StepSequenceHelper();
-        const browserHelper = new BrowserHelper(browser, stepSequenceHelper, baseURL, errorListenerOptions);
-        const pageStepsHelper = new PageStepsHelper(browserHelper, stepSequenceHelper, tempDataHelper, baseURL);
-        const uiHelper = new UiHelper(browserHelper, pageStepsHelper);
-        const requestHelper = new RequestHelper(playwright.request, stepSequenceHelper, baseURL);
-        const serviceStepsHelper = new ServiceStepsHelper(requestHelper, stepSequenceHelper, tempDataHelper, baseURL);
-        const extraStepsHelper = new ExtraStepsHelper(requestHelper, serviceStepsHelper);
+        tabDataHelper.resetPageTypes();
+        testDataHelper.resetTestData();
+        frameworkDataHelper.init({ 
+            apiRequest: playwright.request, 
+            baseUrl: baseURL, 
+            browser: browser, 
+            errorListenerOptions: errorListenerOptions
+        });
         if (setupStepsArgsArray)
             await extraStepsHelper.execute("setupSteps", setupStepsArgsArray);
-        await use(uiHelper);
+        await use();
         if (teardownStepsArgsArray)
             await extraStepsHelper.execute("teardownSteps", teardownStepsArgsArray);
         await browserHelper.closeAllContexts();
-    }, { scope: "test", box: true }]
+    }, { scope: "test", box: true, auto: true }]
 });
 
 export default uiTest;

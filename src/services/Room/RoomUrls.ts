@@ -1,9 +1,8 @@
-import BaseUrls from "../Base/BaseUrls";
+import frameworkDataHelper from "../../helpers/data/FrameworkDataHelper";
 
-export default class RoomUrls extends BaseUrls {
+const roomUrls = {
+    room() { return `${frameworkDataHelper.apiUrl}room/` },
+    roomUrl(roomId: number) { return `${this.room()}${roomId}` }
+};
 
-    constructor(baseUrl: string) { super(baseUrl, "room/")}
-    
-    room() { return this.serviceBaseUrl }
-    roomUrl(roomId: number) { return `${this.serviceBaseUrl}${roomId}` }
-}
+export default roomUrls;

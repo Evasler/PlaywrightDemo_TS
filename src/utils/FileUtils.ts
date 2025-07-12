@@ -1,20 +1,22 @@
 import fs from "fs";
 
-export default abstract class FileUtils {
+const fileUtils = {
 
-    static fileExists(filePath: string) {
+    fileExists(filePath: string) {
         return fs.existsSync(filePath);
-    }
+    },
     
-    static readFile(filePath: string) {
+    readFile(filePath: string) {
         return fs.readFileSync(filePath).toString();
-    }
+    },
     
-    static writeFile(filePath: string, content: string) {
+    writeFile(filePath: string, content: string) {
         fs.writeFileSync(filePath, content);
-    }
+    },
 
-    static makeDirectory(directoryPath: string) {
+    makeDirectory(directoryPath: string) {
         fs.mkdirSync(directoryPath);
     }
-}
+};
+
+export default fileUtils;

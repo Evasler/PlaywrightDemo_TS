@@ -1,47 +1,51 @@
-import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
-import BrowserHelper from "../../helpers/channel/BrowserHelper";
-import BasePageSteps from "../Base/BasePageSteps";
-import LoginSteps from "../RestfulBooker/Login/LoginSteps";
-import AdminPanelSteps from "../RestfulBooker/AdminPanel/AdminPanelSteps";
-import ErrorSteps from "../Error/ErrorSteps";
-import TempDataHelper from "../../helpers/chaining/TempDataHelper";
+import errorSteps from "../Error/ErrorSteps";
+import frameworkDataHelper from "../../helpers/data/FrameworkDataHelper";
+import stepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
+import browserHelper from "../../helpers/channel/BrowserHelper";
+import adminPanelSteps from "../RestfulBooker/AdminPanel/AdminPanelSteps";
+import loginSteps from "../RestfulBooker/Login/LoginSteps";
 
-export default class BlankSteps extends BasePageSteps {
-    
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper, private readonly _baseUrl: string) {
-        super("BlankPage", browserHelper, stepSequenceHelper, tempDataHelper);
-    }
+const blankSteps = {
 
-    goToRestfulBooker<T extends LoginSteps | AdminPanelSteps>(landingpage: T) {
-        this.addStep("goToRestfulBooker", async() => {
+    goToRestfulBookerAdminPage<T extends typeof loginSteps | typeof adminPanelSteps>(landingPage: T) {
+        stepSequenceHelper.addStep("goToRestfulBooker", async() => {
             console.log("goToRestfulBooker");
-            await this.workingTab.goto(`${this._baseUrl}admin`);
+            await browserHelper.workingTab.goto(`${frameworkDataHelper.baseUrl}admin`);
         });
-        return landingpage;
-    }
+        return landingPage;
+    },
 
-    goToJsErrorPage(errorPage: ErrorSteps) {
-        this.addStep("goToJsErrorPage", async() => {
+    goToJsErrorPage() {
+        stepSequenceHelper.addStep("goToJsErrorPage", async() => {
             console.log("goToJsErrorPage");
-            await this.workingTab.goto("data:text/html,<script>throw new Error(\"myJavaScriptError\")</script>");
+            await browserHelper.workingTab.goto("data:text/html,<script>throw new Error(\"myJavaScriptError\")</script>");
         });
-        return errorPage;
-    }
+        return errorSteps;
+    },
 
-    goToInternalServerErrorPage(errorPage: ErrorSteps) {
-        this.addStep("goToInternalServerErrorPage", async() => {
+    goToInternalServerErrorPage() {
+        stepSequenceHelper.addStep("goToInternalServerErrorPage", async() => {
             console.log("goToInternalServerErrorPage");
-            await this.workingTab.goto("https://httpstat.us/500");
+            await browserHelper.workingTab.route(frameworkDataHelper.baseUrl, async (route) => {
+                const response = await route.fetch();
+                await route.fulfill({
+                    response: response,
+                    status: 500
+                })
+            });
+            await browserHelper.workingTab.goto(frameworkDataHelper.baseUrl);
         });
-        return errorPage;
-    }
+        return errorSteps;
+    },
 
-    goToConnectionErrorPage(errorPage: ErrorSteps) {
-        this.addStep("goToConnectionErrorPage", async() => {
+    goToConnectionErrorPage() {
+        stepSequenceHelper.addStep("goToConnectionErrorPage", async() => {
             console.log("goToConnectionErrorPage");
-            await this.workingTab.route(this._baseUrl, (route) => route.abort());
-            await this.workingTab.goto(this._baseUrl);
+            await browserHelper.workingTab.route(frameworkDataHelper.baseUrl, (route) => route.abort());
+            await browserHelper.workingTab.goto(frameworkDataHelper.baseUrl);
         });
-        return errorPage;
+        return errorSteps;
     }
 }
+
+export default blankSteps;

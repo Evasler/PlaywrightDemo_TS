@@ -1,9 +1,7 @@
-import UiHelper from "../helpers/testInitiation/UiHelper";
-import ApiHelper from "../helpers/testInitiation/ApiHelper";
 import { ExtraStepsArgs } from "./StepArgsTypes";
 
 export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
-export type TempDataKeys = "token" | "roomId";
+export type TestDataKeys = "token" | "roomId";
 export type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
 export type SuiteTag = "@smoke" | "@regression" | "@fullScope";
 export type StorageState = {
@@ -25,8 +23,6 @@ export type ErrorListenerOptions = {
     failOnRequestError: boolean;
 };
 export type ErrorListenerOptionsObj = { errorListenerOptions: ErrorListenerOptions };
-export type UiHelperObj = { ui: UiHelper; };
-export type ApiHelperObj = { api: ApiHelper };
 export type TestDetailsObj = {
     testDetails: {
         id: number;
@@ -40,7 +36,7 @@ export type ExcelReporterOptions = {
     enabled: boolean;
     mandatoryReporting: boolean;
     filepath: string;
-    configurations: string[];
+    configurationNames: string[];
 }
 export type AzureReporterOptions = {
     enabled: boolean;

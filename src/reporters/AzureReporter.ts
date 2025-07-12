@@ -1,14 +1,12 @@
 import { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import AzureReportHelper from "../helpers/reporting/AzureReportHelper";
+import azureReportHelper from "../helpers/reporting/AzureReportHelper";
 import { AzureReporterOptions, RunDetails } from "../customTypes/FrameworkTypes";
 import GlobalReporter from "./GlobalReporter";
-import ErrorHandlingUtils from "../utils/ErrorHandlingUtils";
+import errorHandlingUtils from "../utils/ErrorHandlingUtils";
 
 export default class AzureReporter implements Reporter {
 
-    private _azureReportHelper!: AzureReportHelper;
-
-    private _runId: number | undefined = undefined;
+    private _runId?: number;
     private _runDetails!: RunDetails;
 
     constructor(private readonly _options: AzureReporterOptions) {
@@ -32,7 +30,7 @@ export default class AzureReporter implements Reporter {
             ...this._optionTypeErrors("configurationNames", "string[]")
         ];
         if (optionTypeErrors.length > 0)
-            ErrorHandlingUtils.reportErrors("Azure", optionTypeErrors);
+            errorHandlingUtils.reportErrors("Azure", optionTypeErrors);
     }
 
     /**
@@ -67,18 +65,20 @@ export default class AzureReporter implements Reporter {
     onBegin(config: FullConfig, rootSuite: Suite): void {
         if (this._options.enabled) {
             const projectBaseUrl = encodeURI(`${this._options.azureBaseUrl}${this._options.organizationName}/${this._options.projectName}/`);
-            this._azureReportHelper = new AzureReportHelper(
-                projectBaseUrl,
-                this._options.personalAccessToken,
-                this._options.planId,
-                this._options.suiteIds,
-                this._options.configurationNames
+            azureReportHelper.init(
+                {
+                    projectBaseUrl: projectBaseUrl,
+                    personalAccessToken: this._options.personalAccessToken,
+                    planId: this._options.planId,
+                    suiteIds: this._options.suiteIds,
+                    configurationNames: this._options.configurationNames
+                }
             );
-            GlobalReporter.addReportingStep(async() => await this._azureReportHelper.openAuthorizedContext());
+            GlobalReporter.addReportingStep(async() => await azureReportHelper.openAuthorizedContext());
             if (this._options.mandatoryReporting)
-                GlobalReporter.addReportingStep(async() => { await this._azureReportHelper.throwReportingErrors(rootSuite); } );
+                GlobalReporter.addReportingStep(async() => { await azureReportHelper.throwReportingErrors(rootSuite); } );
             GlobalReporter.addReportingStep(async() => {
-                const pointIds = await this._azureReportHelper.getPointIds(rootSuite);
+                const pointIds = await azureReportHelper.getPointIds(rootSuite);
                 if (pointIds.length > 0) {
                     this._runDetails = {
                         name: this._options.runName,
@@ -89,9 +89,9 @@ export default class AzureReporter implements Reporter {
                         startedDate: new Date(Date.now()).toISOString(),
                         completedDate: undefined
                     };
-                    const runIdOrError = await this._azureReportHelper.createRunAndCatchUserError(this._runDetails);
+                    const runIdOrError = await azureReportHelper.createRunAndCatchUserError(this._runDetails);
                     if (this._options.mandatoryReporting && typeof runIdOrError === "string") {
-                        ErrorHandlingUtils.reportErrors("Azure", [runIdOrError]);
+                        errorHandlingUtils.reportErrors("Azure", [runIdOrError]);
                     } else if (typeof runIdOrError === "number")
                         this._runId = runIdOrError;
                 }
@@ -108,7 +108,7 @@ export default class AzureReporter implements Reporter {
         if (this._options.enabled)
             GlobalReporter.addReportingStep(async() => {
                 if (this._runId)
-                    await this._azureReportHelper.updateResult(this._runId, test, result);
+                    await azureReportHelper.updateResult(this._runId, test, result);
             });
     }
 
@@ -137,9 +137,9 @@ export default class AzureReporter implements Reporter {
                             this._runDetails.state = "Aborted";
                             break;
                     }
-                    await this._azureReportHelper.updateRun(this._runId, this._runDetails);
+                    await azureReportHelper.updateRun(this._runId, this._runDetails);
                 }
-                this._azureReportHelper.printUnreportedTestResultsWarning();
+                azureReportHelper.printUnreportedTestResultsWarning();
             }
         });
     }

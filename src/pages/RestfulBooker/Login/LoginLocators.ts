@@ -1,12 +1,9 @@
-import BaseLocators from "../../Base/BaseLocators";
-import BrowserHelper from "../../../helpers/channel/BrowserHelper";
+import browserHelper from "../../../helpers/channel/BrowserHelper";
 
-export default class LoginLocators extends BaseLocators {
+const loginLocators = {
+    loginHeading() { return browserHelper.workingTab.getByRole("heading", { name: "Login", exact: true }); },
+    loginButton() { return browserHelper.workingTab.getByRole("button", { name: "Login", exact: true }); },
+    textbox(name: string) { return browserHelper.workingTab.getByRole("textbox", { name: name, exact: true }); }
+};
 
-    constructor(browserHelper: BrowserHelper) { super(browserHelper) }
-
-    get loginHeading() { return this.workingTab.getByRole("heading", { name: "Login", exact: true }); }
-    get loginButton() { return this.workingTab.getByRole("button", { name: "Login", exact: true }); }
-
-    textbox(name: string) { return this.workingTab.getByRole("textbox", { name: name, exact: true }); }
-}
+export default loginLocators;

@@ -1,15 +1,15 @@
 import { ExtraStepsArgs } from "../customTypes/StepArgsTypes";
-import RequestHelper from "./channel/RequestHelper";
-import ServiceStepsHelper from "./objectInstantiation/ServiceStepsHelper";
+import authSteps from "../services/Auth/AuthSteps";
+import roomSteps from "../services/Room/RoomSteps";
+import stepSequenceHelper from "./chaining/StepSequenceHelper";
+import requestHelper from "./channel/RequestHelper";
 import test from "@playwright/test";
 
 /**
  * Better used in a fixture.
  * Facilitates the BeforeTest and AfterTest actions, which should be performed on the application via API.
  */
-export default class ExtraStepsHelper {
-
-    constructor(private readonly _requestHelper: RequestHelper, private readonly _serviceStepsHelper: ServiceStepsHelper) { }
+const extraStepsHelper = {
 
     /**
      * Executes actions via API, based on the provided ExtraStepsArgs array.
@@ -20,20 +20,22 @@ export default class ExtraStepsHelper {
     execute(steps: "setupSteps" | "teardownSteps", extraStepsArgsArray: ExtraStepsArgs[]) {
         return test.step(steps, async() => {
             for (const stepsArgs of extraStepsArgsArray) {
-                this._requestHelper.openNewThrowAwayContext();
+                requestHelper.openNewThrowAwayContext();
                 if (stepsArgs.loginArgs)
-                    this._serviceStepsHelper.authSteps.login(stepsArgs.loginArgs);
+                    authSteps.login(stepsArgs.loginArgs);
                 if (stepsArgs.createRoomArgsArray)
                     for (const createRoomArgs of stepsArgs.createRoomArgsArray)
-                        this._serviceStepsHelper.roomSteps.createRoom(createRoomArgs);
+                        roomSteps.createRoom(createRoomArgs);
                 if (stepsArgs.getRoomIdArgsArray)
                     for (const getRoomIdArgs of stepsArgs.getRoomIdArgsArray)
-                        this._serviceStepsHelper.roomSteps.getRoomId(getRoomIdArgs);
+                        roomSteps.getRoomId(getRoomIdArgs);
                 if (stepsArgs.deleteRoomArgsArray)
                     for (const deleteRoomArgs of stepsArgs.deleteRoomArgsArray)
-                        this._serviceStepsHelper.roomSteps.deleteRoom(deleteRoomArgs);
+                        roomSteps.deleteRoom(deleteRoomArgs);
             }
-            await this._serviceStepsHelper.authSteps._execute();
+            await stepSequenceHelper.stepSequence;
         });
     }
 }
+
+export default extraStepsHelper;

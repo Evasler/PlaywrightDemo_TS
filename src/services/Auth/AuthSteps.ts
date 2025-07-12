@@ -1,53 +1,47 @@
 import { expect } from "@playwright/test";
-import CredentialsUtils from "../../utils/CredentialsUtils";
-import RequestHelper from "../../helpers/channel/RequestHelper";
-import StepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
-import AuthRequests from "./AuthRequests";
-import BaseServiceSteps from "../Base/BaseServiceSteps";
-import TempDataHelper from "../../helpers/chaining/TempDataHelper";
+import credentialsUtils from "../../utils/CredentialsUtils";
 import { LoginResponse, ValidateResponse } from "../../customTypes/ApiResponseTypes";
 import { LoginArgs } from "../../customTypes/StepArgsTypes";
+import authRequests from "./AuthRequests";
+import stepSequenceHelper from "../../helpers/chaining/StepSequenceHelper";
+import requestHelper from "../../helpers/channel/RequestHelper";
+import testDataHelper from "../../helpers/data/TestDataHelper";
 
-export default class AuthSteps extends BaseServiceSteps {
-    
-    private readonly _authRequests;
-
-    constructor(requestHelper: RequestHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper, baseUrl: string) {
-        super(requestHelper, stepSequenceHelper, tempDataHelper);
-        this._authRequests = new AuthRequests(requestHelper, baseUrl);
-    }
+const authSteps = {
 
     login({ user }: LoginArgs) {
-        this.addStep("login", async() => {
+        stepSequenceHelper.addStep("login", async() => {
             console.log("login");
-            const userCredentialsObj = CredentialsUtils.getUserCredentials(user);
-            const response = await this._authRequests.login(userCredentialsObj);
+            const userCredentialsObj = credentialsUtils.getUserCredentials(user);
+            const response = await authRequests.login(userCredentialsObj);
             expect(response.status()).toEqual(200);
             const token = (await response.json() as LoginResponse).token;
-            this.pushTempData("token", token);
-            this.putExtraHeader("Cookie", `token=${token}`);
+            testDataHelper.pushTestData("token", token);
+            requestHelper.putExtraHeader("Cookie", `token=${token}`);
         });
         return this;
-    }
+    },
 
     validate(tempDataIndex: number) {
-        this.addStep("validate", async() => {
+        stepSequenceHelper.addStep("validate", async() => {
             console.log("validate");
-            const tokenObj = { token: this.getTempData("token", tempDataIndex) };
-            const response = await this._authRequests.validate(tokenObj);
+            const tokenObj = { token: testDataHelper.getTestData("token", tempDataIndex) };
+            const response = await authRequests.validate(tokenObj);
             const valid = (await response.json() as ValidateResponse).valid;
             expect(valid).toBeTruthy();
         });
         return this;
-    }
+    },
 
     logout(token: string) {
-        this.addStep("logout", async() => {
+        stepSequenceHelper.addStep("logout", async() => {
             console.log("logout");
             const tokenObj = { token: token };
-            const response = await this._authRequests.logout(tokenObj);
+            const response = await authRequests.logout(tokenObj);
             expect(response.status()).toEqual(200);
         });
         return this;
     }
-}
+};
+
+export default authSteps;

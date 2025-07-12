@@ -15,7 +15,7 @@ import { ErrorListenerOptionsObj } from './src/customTypes/FrameworkTypes';
 export default defineConfig<ErrorListenerOptionsObj>({
   testDir: './tests',
   /* Run tests in files in parallel */
-  fullyParallel: false,
+  fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
@@ -31,7 +31,7 @@ export default defineConfig<ErrorListenerOptionsObj>({
         enabled: false,
         mandatoryReporting: false,
         filepath: "./excel-report/PlaywrightDemo_TS.xlsx",
-        configurations: [ "configuration1", "configuration2" ]
+        configurationNames: [ "configuration1", "configuration2" ]
       }
     ],
     ['./src/reporters/AzureReporter.ts',

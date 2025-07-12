@@ -1,10 +1,10 @@
-import BaseUrls from "../Base/BaseUrls";
+import frameworkDataHelper from "../../helpers/data/FrameworkDataHelper";
 
-export default class AuthUrls extends BaseUrls {
+const authUrls = {
+    auth() { return `${frameworkDataHelper.apiUrl}auth/` },
+    login() { return `${this.auth()}login` },
+    validate() { return `${this.auth()}validate` },
+    logout() { return `${this.auth()}logout` }
+};
 
-    constructor(baseUrl: string) { super(baseUrl, "auth/") }
-
-    get login() { return `${this.serviceBaseUrl}login` }
-    get validate() { return `${this.serviceBaseUrl}validate` }
-    get logout() { return `${this.serviceBaseUrl}logout` }
-}
+export default authUrls;

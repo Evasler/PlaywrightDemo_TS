@@ -1,16 +1,16 @@
 import { TestCase, TestResult } from "@playwright/test/reporter";
 import { SuiteTag } from "../customTypes/FrameworkTypes";
 
-export default abstract class TestUtils {
+const testUtils = {
 
-    static fullTitle(id: number, title: string, suiteTags?: SuiteTag[]) {
+    fullTitle(id: number, title: string, suiteTags?: SuiteTag[]) {
         let testTitle = `${id}: ${title}`;
         if (suiteTags)
             testTitle += ` | ${suiteTags.join(" ")}`;
         return testTitle;
-    }
+    },
     
-    static id(test: TestCase) {
+    id(test: TestCase) {
         const colonIndex = test.title.indexOf(":");
         if (colonIndex < 0)
             throw new Error(`Test Title \"${test.title}\" should follow the format "testId: testTitle (| @tag)?"`);
@@ -18,16 +18,16 @@ export default abstract class TestUtils {
         if (!/\d+/.test(id))
             throw new Error(`Test Id \"${id}\" should be a number`);
         return id;
-    }
+    },
     
-    static project(test: TestCase) {
+    project(test: TestCase) {
         let projectSuite = test.parent;
         while (projectSuite.type !== "project")
             projectSuite = projectSuite.parent!;
         return projectSuite.project()!;
-    }
+    },
     
-    static projectConfiguration(test: TestCase, configurations: string[]) {
+    projectConfiguration(test: TestCase, configurations: string[]) {
         const _project = this.project(test);
         const projectName = _project.name;
         const projectConfiguration = configurations.filter(configuration => projectName.includes(configuration));
@@ -36,9 +36,9 @@ export default abstract class TestUtils {
         else if (projectConfiguration.length > 1)
             throw new Error(`Project \"${projectName}\" specifies multiple configurations (${configurations.join("|")})`);
         return configurations.filter(configuration => projectName.includes(configuration))[0];
-    }
+    },
     
-    static type(test: TestCase) {
+    type(test: TestCase) {
         const testFilepathSpecifiesUi = /(\\|\/)ui(\\|\/)/.test(test.location.file);
         const testFilepathSpecifiesApi = /(\\|\/)api(\\|\/)/.test(test.location.file);
         if (testFilepathSpecifiesUi && !testFilepathSpecifiesApi)
@@ -49,9 +49,9 @@ export default abstract class TestUtils {
             throw new Error(`Filepath \"${test.location.file}\" specifies multiple Test Types (api|ui)`);
         else
             throw new Error(`Filepath \"${test.location.file}\" should include a directory that specifies the Test Type (api|ui)`);
-    }
+    },
     
-    static status(result: TestResult) {
+    status(result: TestResult) {
         if (result.status === "passed")
             return "Passed";
         else if (["failed", "timedOut", "interrupted"].includes(result.status))
@@ -59,4 +59,6 @@ export default abstract class TestUtils {
         else if (result.status === "skipped")
             throw new Error(`Test Result should not be \"skipped\"`);
     }
-}
+};
+
+export default testUtils;

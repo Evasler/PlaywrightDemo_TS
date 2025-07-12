@@ -1,8 +1,8 @@
 import { userCredentials } from "../../resources/userCredentials";
 
-export default abstract class CredentialsUtils {
+const credentialsUtils = {
 
-    static getUserCredentials(user: string) {
+    getUserCredentials(user: string) {
         if (!Object.keys(userCredentials).includes(user))
             throw new Error(`${user} doesn't exist in userCredentials.ts`);
         return {
@@ -10,4 +10,6 @@ export default abstract class CredentialsUtils {
             password: userCredentials[user].password
         }
     }
-}
+};
+
+export default credentialsUtils;

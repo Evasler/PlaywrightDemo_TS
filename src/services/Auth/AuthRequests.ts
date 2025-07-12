@@ -1,25 +1,16 @@
-import BaseRequests from "../Base/BaseRequests";
-import RequestHelper from "../../helpers/channel/RequestHelper";
-import AuthUrls from "./AuthUrls";
+import requestHelper from "../../helpers/channel/RequestHelper";
+import authUrls from "./AuthUrls";
 
-export default class AuthRequests extends BaseRequests {
-
-    private readonly _authUrls;
-
-    constructor(requestHelper: RequestHelper, baseUrl: string) { 
-        super(requestHelper);
-        this._authUrls = new AuthUrls(baseUrl);
-    }
-
+const authRequests = {
     login(payload: { username: string; password: string; }) {
-        return this.workingRequest.post(this._authUrls.login, { data: payload, headers: this.extraHeaders });
-    }
-
+        return requestHelper.workingRequestContext.post(authUrls.login(), { data: payload, headers: requestHelper.getExtraHeaders() });
+    },
     validate(payload: { token: string })  {
-        return this.workingRequest.post(this._authUrls.validate, { data: payload, headers: this.extraHeaders });
-    }
-
+        return requestHelper.workingRequestContext.post(authUrls.validate(), { data: payload, headers: requestHelper.getExtraHeaders() });
+    },
     logout(payload: { token: string })  {
-        return this.workingRequest.post(this._authUrls.logout, { data: payload, headers: this.extraHeaders });
+        return requestHelper.workingRequestContext.post(authUrls.logout(), { data: payload, headers: requestHelper.getExtraHeaders() });
     }
-}
+};
+
+export default authRequests;

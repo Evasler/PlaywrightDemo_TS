@@ -1,16 +1,21 @@
 import uiTest from "../../../src/fixtures/uiFixtures";
-import TestUtils from "../../../src/utils/TestUtils";
+import stepSequenceHelper from "../../../src/helpers/chaining/StepSequenceHelper";
+import browserHelper from "../../../src/helpers/channel/BrowserHelper";
+import blankSteps from "../../../src/pages/Blank/BlankSteps";
+import loginSteps from "../../../src/pages/RestfulBooker/Login/LoginSteps";
+import testUtils from "../../../src/utils/TestUtils";
 
-uiTest(TestUtils.fullTitle(0, "Chained Page Object Model | StepSequenceBuilder"), async({ ui }) => {
-    await ui
-    ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps)
-    ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps)
-    .goToRestfulBooker(ui.pageStepsHelper.loginSteps)
+uiTest(testUtils.fullTitle(0, "Chained Page Object Model | StepSequenceBuilder"), async() => {
+    browserHelper.openNewTabInNewContext();
+    browserHelper.openNewTabInNewContext();
+    blankSteps
+    .goToRestfulBookerAdminPage(loginSteps)
     .populateCredentials("administrator")
-    .clickLogin(ui.pageStepsHelper.adminPanelSteps)
-    .verifyLinkIsVisible("Rooms")
-    ._switchWorkingTab(0, 0, ui.pageStepsHelper.blankSteps)
-    .goToRestfulBooker(ui.pageStepsHelper.loginSteps)
-    .verifyLoginIsVisible()
-    ._execute();
+    .clickLogin()
+    .verifyLinkIsVisible("Rooms");
+    browserHelper.switchWorkingTab(0, 0, "BlankPage");
+    blankSteps
+    .goToRestfulBookerAdminPage(loginSteps)
+    .verifyLoginIsVisible();
+    await stepSequenceHelper.stepSequence;
 });

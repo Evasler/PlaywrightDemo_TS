@@ -1,10 +1,14 @@
 import uiTest from "../../../../src/fixtures/uiFixtures";
-import TestUtils from "../../../../src/utils/TestUtils";
+import stepSequenceHelper from "../../../../src/helpers/chaining/StepSequenceHelper";
+import browserHelper from "../../../../src/helpers/channel/BrowserHelper";
+import blankSteps from "../../../../src/pages/Blank/BlankSteps";
+import adminPanelSteps from "../../../../src/pages/RestfulBooker/AdminPanel/AdminPanelSteps";
+import testUtils from "../../../../src/utils/TestUtils";
 
-uiTest(TestUtils.fullTitle(1, "This Test should fail"), async({ ui }) => {
-    await ui
-    ._openNewTabInNewContext(ui.pageStepsHelper.blankSteps)
-    .goToRestfulBooker(ui.pageStepsHelper.adminPanelSteps)
-    .verifyLinkIsVisible("Rooms")
-    ._execute();
+uiTest(testUtils.fullTitle(1, "This Test should fail"), async() => {
+    browserHelper.openNewTabInNewContext();
+    blankSteps
+    .goToRestfulBookerAdminPage(adminPanelSteps)
+    .verifyLinkIsVisible("Rooms");
+    await stepSequenceHelper.stepSequence;
 });

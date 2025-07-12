@@ -1,14 +1,16 @@
 import apiTest from "../../../src/fixtures/apiFixture";
-import TestUtils from "../../../src/utils/TestUtils";
+import stepSequenceHelper from "../../../src/helpers/chaining/StepSequenceHelper";
+import requestHelper from "../../../src/helpers/channel/RequestHelper";
+import authSteps from "../../../src/services/Auth/AuthSteps";
+import roomSteps from "../../../src/services/Room/RoomSteps";
+import testUtils from "../../../src/utils/TestUtils";
 
-apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
-    await api
-    ._openNewContext(api.serviceStepsHelper.authSteps)
-    .login({ user: "administrator" })
-    ._switchService(api.serviceStepsHelper.roomSteps)
-    .createRoom({
+apiTest(testUtils.fullTitle(1, "Temporary Data"), async() => {
+    requestHelper.openNewContext();
+    authSteps.login({ user: "administrator" });
+    roomSteps.createRoom({
         payload: {
-            roomName: "998",
+            roomName: "996",
             type: "Double",
             accessible: false,
             description: "Double room description",
@@ -16,11 +18,11 @@ apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
             roomPrice: 350,
             features: ["TV"]
         }
-    })
-    .getRoomId({ roomName: "998" })
-    .createRoom({
+    });
+    roomSteps.getRoomId({ roomName: "996" });
+    roomSteps.createRoom({
         payload: {
-            roomName: "999",
+            roomName: "997",
             type: "Family",
             accessible: false,
             description: "Family room description",
@@ -28,9 +30,9 @@ apiTest(TestUtils.fullTitle(1, "Temporary Data"), async({ api }) => {
             roomPrice: 400,
             features: ["Views"]
         }
-    })
-    .getRoomId({ roomName: "999" })
-    .deleteRoom({ tempDataIndex: 0 })
-    .deleteRoom({ tempDataIndex: 1 })
-    ._execute();
+    });
+    roomSteps.getRoomId({ roomName: "997" });
+    roomSteps.deleteRoom({ tempDataIndex: 0 });
+    roomSteps.deleteRoom({ tempDataIndex: 1 });
+    await stepSequenceHelper.stepSequence;
 });

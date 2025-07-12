@@ -1,44 +1,36 @@
 import { expect } from "@playwright/test";
-import BrowserHelper from "../../../helpers/channel/BrowserHelper";
-import StepSequenceHelper from "../../../helpers/chaining/StepSequenceHelper";
-import BasePageSteps from "../../Base/BasePageSteps";
-import LoginLocators from "./LoginLocators";
-import TempDataHelper from "../../../helpers/chaining/TempDataHelper";
-import CredentialsUtils from "../../../utils/CredentialsUtils";
-import AdminPanelSteps from "../AdminPanel/AdminPanelSteps";
+import credentialsUtils from "../../../utils/CredentialsUtils";
+import adminPanelSteps from "../AdminPanel/AdminPanelSteps";
+import stepSequenceHelper from "../../../helpers/chaining/StepSequenceHelper";
+import loginLocators from "./LoginLocators";
 
-export default class LoginSteps extends BasePageSteps {
-    
-    private readonly _loginLocators: LoginLocators;
-
-    constructor(browserHelper: BrowserHelper, stepSequenceHelper: StepSequenceHelper, tempDataHelper: TempDataHelper) {
-        super("LoginPage", browserHelper, stepSequenceHelper, tempDataHelper);
-        this._loginLocators = new LoginLocators(browserHelper);
-    }
+const loginSteps = {
 
     verifyLoginIsVisible() {
-        this.addStep("verifyLoginIsVisible", async() => {
+        stepSequenceHelper.addStep("verifyLoginIsVisible", async() => {
             console.log("Verifying \"Login\" is visible");
-            await expect(this._loginLocators.loginHeading).toBeVisible();
+            await expect(loginLocators.loginHeading()).toBeVisible();
         });
         return this;
-    }
+    },
 
     populateCredentials(user: string) {
-        this.addStep("populateCredentials", async() => {
+        stepSequenceHelper.addStep("populateCredentials", async() => {
             console.log("populateCredentials");
-            const userCredentials = CredentialsUtils.getUserCredentials(user);
-            await this._loginLocators.textbox("Username").fill(userCredentials.username);
-            await this._loginLocators.textbox("Password").fill(userCredentials.password);
+            const userCredentials = credentialsUtils.getUserCredentials(user);
+            await loginLocators.textbox("Username").fill(userCredentials.username);
+            await loginLocators.textbox("Password").fill(userCredentials.password);
         });
         return this;
-    }
+    },
 
-    clickLogin(adminPanelPage: AdminPanelSteps) {
-        this.addStep("clickLogin", async() => {
+    clickLogin() {
+        stepSequenceHelper.addStep("clickLogin", async() => {
             console.log("clickLogin");
-            await this._loginLocators.loginButton.click();
+            await loginLocators.loginButton().click();
         });
-        return adminPanelPage;
+        return adminPanelSteps;
     }
 }
+
+export default loginSteps;

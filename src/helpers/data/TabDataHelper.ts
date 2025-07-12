@@ -1,47 +1,46 @@
 import { PageType } from "../../customTypes/FrameworkTypes";
 
-export const defaultTabPageType: PageType = "BlankPage";
+const defaultPageType: PageType = "BlankPage";
+const pageTypes: Array<Array<PageType>> = [];
 
 /**
  * Stores the PageType of each tab for all contexts.
  * Allows providing feedback, in case of erroneous tab-switching, while writting Tests in a method-chaining manner.
  */
-export default class TabPageTypeHelper {
-
-    private readonly _tabPageType: Array<Array<PageType>> = [];
+const tabDataHelper = {
 
     /**
      * @param contextIndex 
      * @param tabIndex 
      * @returns The pageType of the tab.
      */
-    tabPageType(contextIndex: number, tabIndex: number) {
-        return this._tabPageType[contextIndex][tabIndex];
-    }
+    pageType(contextIndex: number, tabIndex: number) {
+        return pageTypes[contextIndex][tabIndex];
+    },
 
     /**
      * Initializes the array of PageTypes for a new context.
      */
     initializeContextPageTypes() {
-        this._tabPageType.push(new Array<PageType>());
-    }
+        pageTypes.push(new Array<PageType>());
+    },
 
     /**
-     * Sets defaultTabPageType as the pageType of the tab.
+     * Sets defaultPageType as the pageType of the tab.
      * @param contextIndex 
      * @param tabIndex 
      */
-    initializeTabPageType(contextIndex: number, tabIndex: number) {
-        this.updateTabPageType(contextIndex, tabIndex, defaultTabPageType);
-    }
+    initializePageType(contextIndex: number, tabIndex: number) {
+        this.updatePageType(contextIndex, tabIndex, defaultPageType);
+    },
 
     /**
      * Deletes the context's array of PageTypes. 
      * @param contextIndex 
      */
     removeContextPageTypes(contextIndex: number) {
-        this._tabPageType.splice(contextIndex, 1);
-    }
+        pageTypes.splice(contextIndex, 1);
+    },
 
     /**
      * Sets the pageType of the tab.
@@ -49,7 +48,13 @@ export default class TabPageTypeHelper {
      * @param tabIndex 
      * @param pageType 
      */
-    updateTabPageType(contextIndex: number, tabIndex: number, pageType: PageType) {
-        this._tabPageType[contextIndex][tabIndex] = pageType;
+    updatePageType(contextIndex: number, tabIndex: number, pageType: PageType) {
+        pageTypes[contextIndex][tabIndex] = pageType;
+    },
+
+    resetPageTypes() {
+        pageTypes.length = 0;
     }
 }
+
+export default tabDataHelper;

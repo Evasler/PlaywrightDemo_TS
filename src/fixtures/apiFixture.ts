@@ -1,31 +1,31 @@
 import { test as base } from "@playwright/test";
-import ServiceStepsHelper from "../helpers/objectInstantiation/ServiceStepsHelper";
-import RequestHelper from "../helpers/channel/RequestHelper";
-import TempDataHelper from "../helpers/chaining/TempDataHelper";
-import StepSequenceHelper from "../helpers/chaining/StepSequenceHelper";
-import ApiHelper from "../helpers/testInitiation/ApiHelper";
-import { ApiHelperObj } from "../customTypes/FrameworkTypes";
-import ExtraStepsHelper from "../helpers/ExtraStepsHelper";
-import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
+import { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
+import extraStepsHelper from "../helpers/ExtraStepsHelper";
+import frameworkDataHelper from "../helpers/data/FrameworkDataHelper";
+import tabDataHelper from "../helpers/data/TabDataHelper";
+import testDataHelper from "../helpers/data/TestDataHelper";
 
-const apiTest = base.extend<ApiHelperObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
+const apiTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
-    api: [ async ({ playwright, baseURL, setupStepsArgsArray, teardownStepsArgsArray }, use) => {
+    errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
+    extraSteps: [ async ({ playwright, browser, baseURL, setupStepsArgsArray, teardownStepsArgsArray, errorListenerOptions }, use) => {
         if (!baseURL)
             throw new Error("baseURL not defined in playwright.config.ts");
-        const tempDataHelper = new TempDataHelper();
-        const stepSequenceHelper = new StepSequenceHelper();
-        const requestHelper = new RequestHelper(playwright.request, stepSequenceHelper, baseURL);
-        const serviceStepsHelper = new ServiceStepsHelper(requestHelper, stepSequenceHelper, tempDataHelper, baseURL);
-        const apiHelper = new ApiHelper(requestHelper, serviceStepsHelper);
-        const extraStepsHelper = new ExtraStepsHelper(requestHelper, serviceStepsHelper);
+        tabDataHelper.resetPageTypes();
+        testDataHelper.resetTestData();
+        frameworkDataHelper.init({ 
+            apiRequest: playwright.request, 
+            baseUrl: baseURL, 
+            browser: browser, 
+            errorListenerOptions: errorListenerOptions
+        });
         if (setupStepsArgsArray)
             await extraStepsHelper.execute("setupSteps", setupStepsArgsArray);
-        await use(apiHelper);
+        await use();
         if (teardownStepsArgsArray)
             await extraStepsHelper.execute("teardownSteps", teardownStepsArgsArray);
-    }, { scope: "test", box: true }]
+    }, { scope: "test", box: true, auto: true }]
 });
 
 export default apiTest;

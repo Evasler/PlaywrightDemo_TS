@@ -1,26 +1,17 @@
-import BaseRequests from "../Base/BaseRequests";
-import RequestHelper from "../../helpers/channel/RequestHelper";
-import RoomUrls from "./RoomUrls";
 import { CreateRoomPayload } from "../../customTypes/ApiPayloadTypes";
+import requestHelper from "../../helpers/channel/RequestHelper";
+import roomUrls from "./RoomUrls";
 
-export default class RoomRequests extends BaseRequests {
-
-    private readonly _roomUrls;
-
-    constructor(requestHelper: RequestHelper, baseUrl: string) {
-        super(requestHelper);
-        this._roomUrls = new RoomUrls(baseUrl);
+const roomRequests = {
+    getRoom() {
+        return requestHelper.workingRequestContext.get(roomUrls.room(), { headers: requestHelper.getExtraHeaders() });
+    },
+    postRoom(payload: CreateRoomPayload) {
+        return requestHelper.workingRequestContext.post(roomUrls.room(), { data: payload, headers: requestHelper.getExtraHeaders() });
+    },
+    deleteRoom(roomId: number) {
+        return requestHelper.workingRequestContext.delete(roomUrls.roomUrl(roomId), { headers: requestHelper.getExtraHeaders() });
     }
+};
 
-    async getRoom() {
-        return this.workingRequest.get(this._roomUrls.room(), { headers: this.extraHeaders });
-    }
-
-    async postRoom(payload: CreateRoomPayload) {
-        return this.workingRequest.post(this._roomUrls.room(), { data: payload, headers: this.extraHeaders });
-    }
-
-    async deleteRoom(roomId: number) {
-        return this.workingRequest.delete(this._roomUrls.roomUrl(roomId), { headers: this.extraHeaders });
-    }
-}
+export default roomRequests;

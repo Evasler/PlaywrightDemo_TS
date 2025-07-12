@@ -1,12 +1,14 @@
 import apiTest from "../../../src/fixtures/apiFixture";
-import TestUtils from "../../../src/utils/TestUtils";
+import stepSequenceHelper from "../../../src/helpers/chaining/StepSequenceHelper";
+import requestHelper from "../../../src/helpers/channel/RequestHelper";
+import authSteps from "../../../src/services/Auth/AuthSteps";
+import roomSteps from "../../../src/services/Room/RoomSteps";
+import testUtils from "../../../src/utils/TestUtils";
 
-apiTest(TestUtils.fullTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async({ api }) => {
-    await api
-    ._openNewContext(api.serviceStepsHelper.authSteps)
-    .login({ user: "administrator" })
-    ._switchService(api.serviceStepsHelper.roomSteps)
-    .createRoom({
+apiTest(testUtils.fullTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async() => {
+    requestHelper.openNewContext();
+    authSteps.login({ user: "administrator" });
+    roomSteps.createRoom({
         payload: {
             roomName: "998",
             type: "Double",
@@ -16,11 +18,10 @@ apiTest(TestUtils.fullTitle(1, "Chained Function Object Model | StepSequenceBuil
             roomPrice: 350,
             features: ["TV"]
         }
-    })
-    ._openNewContext(api.serviceStepsHelper.authSteps)
-    .login({ user: "administrator" })
-    ._switchService(api.serviceStepsHelper.roomSteps)
-    .createRoom({
+    });
+    requestHelper.openNewContext();
+    authSteps.login({ user: "administrator" });
+    roomSteps.createRoom({
         payload: {
             roomName: "999",
             type: "Family",
@@ -30,6 +31,6 @@ apiTest(TestUtils.fullTitle(1, "Chained Function Object Model | StepSequenceBuil
             roomPrice: 400,
             features: ["Views"]
         }
-    })
-    ._execute();
+    });
+    await stepSequenceHelper.stepSequence;
 });

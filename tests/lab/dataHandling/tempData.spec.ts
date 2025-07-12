@@ -1,9 +1,9 @@
 import apiTest from "../../../src/fixtures/apiFixture";
-import stepSequenceHelper from "../../../src/helpers/chaining/StepSequenceHelper";
-import requestHelper from "../../../src/helpers/channel/RequestHelper";
-import authSteps from "../../../src/services/Auth/AuthSteps";
-import roomSteps from "../../../src/services/Room/RoomSteps";
-import testUtils from "../../../src/utils/TestUtils";
+import stepSequenceHelper from "../../../src/helpers/chaining/stepSequenceHelper";
+import requestHelper from "../../../src/helpers/channel/requestHelper";
+import authSteps from "../../../src/services/auth/authSteps";
+import roomSteps from "../../../src/services/room/roomSteps";
+import testUtils from "../../../src/utils/testUtils";
 
 apiTest(testUtils.fullTitle(1, "Temporary Data"), async() => {
     requestHelper.openNewContext();

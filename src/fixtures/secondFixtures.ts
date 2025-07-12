@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import terminalUtils from "../utils/TerminalUtils";
+import terminalUtils from "../utils/terminalUtils";
 import path from "path";
 
 type TestFixtures = {

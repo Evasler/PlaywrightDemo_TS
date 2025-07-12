@@ -1,5 +1,5 @@
-import { CreateRoomPayload } from "../../../src/customTypes/ApiPayloadTypes";
-import { TestDetailsObj } from "../../../src/customTypes/FrameworkTypes";
+import { CreateRoomPayload } from "../../../src/customTypes/apiPayloadTypes";
+import { TestDetailsObj } from "../../../src/customTypes/frameworkTypes";
 
 type ParameterizedTestsDataset = TestDetailsObj & {
     stepData: {

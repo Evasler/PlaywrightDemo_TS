@@ -1,8 +1,8 @@
 import { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import azureReportHelper from "../helpers/reporting/AzureReportHelper";
-import { AzureReporterOptions, RunDetails } from "../customTypes/FrameworkTypes";
+import azureReportHelper from "../helpers/reporting/azureReportHelper";
+import { AzureReporterOptions, RunDetails } from "../customTypes/frameworkTypes";
 import GlobalReporter from "./GlobalReporter";
-import errorHandlingUtils from "../utils/ErrorHandlingUtils";
+import errorHandlingUtils from "../utils/errorHandlingUtils";
 
 export default class AzureReporter implements Reporter {
 

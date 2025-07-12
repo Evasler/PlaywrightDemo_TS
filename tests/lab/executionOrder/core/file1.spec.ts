@@ -1,5 +1,5 @@
 import test from "../../../../src/fixtures/firstFixtures";
-import terminalUtils from "../../../../src/utils/TerminalUtils";
+import terminalUtils from "../../../../src/utils/terminalUtils";
 
 test.beforeAll("fileBeforeAll", ({}, testInfo) => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "specFile", "beforeAll") });
 test.afterAll("fileAfterAll", ({}, testInfo) => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "specFile", "afterAll") });

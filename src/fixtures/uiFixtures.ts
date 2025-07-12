@@ -1,11 +1,10 @@
 import { test as base } from "@playwright/test";
-import { ErrorListenerOptionsObj } from "../customTypes/FrameworkTypes";
-import { SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/FrameworkTypes";
-import extraStepsHelper from "../helpers/ExtraStepsHelper";
-import browserHelper from "../helpers/channel/BrowserHelper";
-import frameworkDataHelper from "../helpers/data/FrameworkDataHelper";
-import tabDataHelper from "../helpers/data/TabDataHelper";
-import testDataHelper from "../helpers/data/TestDataHelper";
+import { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/frameworkTypes";
+import extraStepsHelper from "../helpers/extraStepsHelper";
+import browserHelper from "../helpers/channel/browserHelper";
+import frameworkDataHelper from "../helpers/data/frameworkDataHelper";
+import tabDataHelper from "../helpers/data/tabDataHelper";
+import testDataHelper from "../helpers/data/testDataHelper";
 
 const uiTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
     setupStepsArgsArray: [ undefined, { option: true }],

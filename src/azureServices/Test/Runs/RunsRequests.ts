@@ -1,6 +1,6 @@
 import { APIRequestContext } from "@playwright/test";
 import RunsUrls from "./RunsUrls";
-import { ResultDetails, RunDetails } from "../../../customTypes/FrameworkTypes";
+import { ResultDetails, RunDetails } from "../../../customTypes/frameworkTypes";
 
 export default class RunsRequests {
 

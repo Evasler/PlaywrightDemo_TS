@@ -1,5 +1,5 @@
-import { CreateRoomPayload } from "../../../../src/customTypes/ApiPayloadTypes";
-import { SetupStepsArgsObj, TeardownStepsArgsObj, TestDetailsObj } from "../../../../src/customTypes/FrameworkTypes";
+import { CreateRoomPayload } from "../../../../src/customTypes/apiPayloadTypes";
+import { SetupStepsArgsObj, TeardownStepsArgsObj, TestDetailsObj } from "../../../../src/customTypes/frameworkTypes";
 
 type TestData = TestDetailsObj & SetupStepsArgsObj & TeardownStepsArgsObj & {
     stepData: { roomInfo: { roomName: string, type: string, accessible: string, price: string, roomDetails: string }; };

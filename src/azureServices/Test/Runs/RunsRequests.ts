@@ -1,13 +1,13 @@
 import { APIRequestContext } from "@playwright/test";
-import RunsUrls from "./RunsUrls";
+import RunsEndpoints from "./RunsEndpoints";
 import { ResultDetails, RunDetails } from "../../../customTypes/frameworkTypes";
 
 export default class RunsRequests {
 
-    private readonly _runsUrls;
+    private readonly _runsEndpoints;
 
     constructor(private readonly _authorizedContext: APIRequestContext, baseUrl: string) { 
-        this._runsUrls = new RunsUrls(baseUrl);
+        this._runsEndpoints = new RunsEndpoints(baseUrl);
     }
 
     /**
@@ -16,7 +16,7 @@ export default class RunsRequests {
      * @returns 
      */
     postRun(payload: RunDetails) {
-        return this._authorizedContext.post(this._runsUrls.runs(), { data: payload });
+        return this._authorizedContext.post(this._runsEndpoints.runs(), { data: payload });
     }
 
     /**
@@ -26,7 +26,7 @@ export default class RunsRequests {
      * @returns 
      */
     patchRun(runId: number, payload: RunDetails) {
-        return this._authorizedContext.patch(this._runsUrls.run(runId), { data: payload });
+        return this._authorizedContext.patch(this._runsEndpoints.run(runId), { data: payload });
     }
 
     /**
@@ -35,7 +35,7 @@ export default class RunsRequests {
      * @returns 
      */
     getResults(runId: number) {
-        return this._authorizedContext.get(this._runsUrls.results(runId));
+        return this._authorizedContext.get(this._runsEndpoints.results(runId));
     }
 
     /**
@@ -45,6 +45,6 @@ export default class RunsRequests {
      * @returns 
      */
     patchResult(runId: number, payload: ResultDetails) {
-        return this._authorizedContext.patch(this._runsUrls.results(runId), { data: [payload] });
+        return this._authorizedContext.patch(this._runsEndpoints.results(runId), { data: [payload] });
     }
 }

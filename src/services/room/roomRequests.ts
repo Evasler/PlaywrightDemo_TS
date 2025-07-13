@@ -1,16 +1,16 @@
 import { CreateRoomPayload } from "../../customTypes/apiPayloadTypes";
 import requestHelper from "../../helpers/channel/requestHelper";
-import roomUrls from "./roomUrls";
+import roomEndpoints from "./roomEndpoints";
 
 const roomRequests = {
     getRoom() {
-        return requestHelper.workingRequestContext.get(roomUrls.room(), { headers: requestHelper.getExtraHeaders() });
+        return requestHelper.workingRequestContext.get(roomEndpoints.room(), { headers: requestHelper.getExtraHeaders() });
     },
     postRoom(payload: CreateRoomPayload) {
-        return requestHelper.workingRequestContext.post(roomUrls.room(), { data: payload, headers: requestHelper.getExtraHeaders() });
+        return requestHelper.workingRequestContext.post(roomEndpoints.room(), { data: payload, headers: requestHelper.getExtraHeaders() });
     },
     deleteRoom(roomId: number) {
-        return requestHelper.workingRequestContext.delete(roomUrls.roomUrl(roomId), { headers: requestHelper.getExtraHeaders() });
+        return requestHelper.workingRequestContext.delete(roomEndpoints.roomId(roomId), { headers: requestHelper.getExtraHeaders() });
     }
 };
 

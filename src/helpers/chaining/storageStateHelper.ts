@@ -1,5 +1,5 @@
 import { APIRequestContext, expect, Page } from "@playwright/test";
-import AuthUrls from "../../services/Auth/AuthUrls";
+import authEndpoints from "../../services/auth/authEndpoints";
 import credentialsUtils from "../../utils/credentialsUtils";
 import { StorageState } from "../../customTypes/frameworkTypes";
 import { LoginResponse } from "../../customTypes/apiResponseTypes";
@@ -22,7 +22,7 @@ function storageStatePath(user: string) { return `${authDirectory}/${user}.json`
 async function createStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
     console.log(`Generating ${storageStatePath(user)}`)
     const credentials = credentialsUtils.getUserCredentials(user);
-    const response = await workingRequest.post(AuthUrls.login(), { data: credentials });
+    const response = await workingRequest.post(authEndpoints.login(), { data: credentials });
     expect(response.status()).toEqual(200);
     const responseJson = await response.json() as LoginResponse;
     const storageStateTemplate = JSON.parse(fileUtils.readFile("./resources/other/restfulBookerStorageStateTemplate.json")) as StorageState;
@@ -41,7 +41,7 @@ async function contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
     const tokenCookie = (await workingRequest.storageState()).cookies.find(cookie => cookie.name === "token");
     if (tokenCookie) {
         const token = tokenCookie.value;
-        const response = await workingRequest.post(AuthUrls.validate(), { data: { token: token } });
+        const response = await workingRequest.post(authEndpoints.validate(), { data: { token: token } });
         contextIsAuthorized = response.ok();
     }
     console.log(`Context is ${contextIsAuthorized ? "authorized" : "unauthorized"}`);

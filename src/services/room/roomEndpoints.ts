@@ -1,8 +1,8 @@
 import frameworkDataHelper from "../../helpers/data/frameworkDataHelper";
 
-const roomUrls = {
+const roomEndpoints = {
     room() { return `${frameworkDataHelper.apiUrl}room/` },
-    roomUrl(roomId: number) { return `${this.room()}${roomId}` }
+    roomId(roomId: number) { return `${this.room()}${roomId}` }
 };
 
-export default roomUrls;
+export default roomEndpoints;

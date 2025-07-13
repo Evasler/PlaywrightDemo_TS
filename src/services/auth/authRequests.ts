@@ -1,15 +1,15 @@
 import requestHelper from "../../helpers/channel/requestHelper";
-import authUrls from "./authUrls";
+import authEndpoints from "./authEndpoints";
 
 const authRequests = {
     login(payload: { username: string; password: string; }) {
-        return requestHelper.workingRequestContext.post(authUrls.login(), { data: payload, headers: requestHelper.getExtraHeaders() });
+        return requestHelper.workingRequestContext.post(authEndpoints.login(), { data: payload, headers: requestHelper.getExtraHeaders() });
     },
     validate(payload: { token: string })  {
-        return requestHelper.workingRequestContext.post(authUrls.validate(), { data: payload, headers: requestHelper.getExtraHeaders() });
+        return requestHelper.workingRequestContext.post(authEndpoints.validate(), { data: payload, headers: requestHelper.getExtraHeaders() });
     },
     logout(payload: { token: string })  {
-        return requestHelper.workingRequestContext.post(authUrls.logout(), { data: payload, headers: requestHelper.getExtraHeaders() });
+        return requestHelper.workingRequestContext.post(authEndpoints.logout(), { data: payload, headers: requestHelper.getExtraHeaders() });
     }
 };
 

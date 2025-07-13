@@ -6,7 +6,7 @@ import frameworkDataHelper from "../helpers/data/frameworkDataHelper";
 import tabDataHelper from "../helpers/data/tabDataHelper";
 import testDataHelper from "../helpers/data/testDataHelper";
 
-const uiTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
+const extendedTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
     errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
@@ -30,4 +30,4 @@ const uiTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj & Setu
     }, { scope: "test", box: true, auto: true }]
 });
 
-export default uiTest;
+export default extendedTest;

@@ -1,10 +1,10 @@
-import apiTest from "../../../src/fixtures/apiFixture";
+import extendedTest from "../../../src/fixtures/extendedTest";
 import requestHelper from "../../../src/helpers/channel/requestHelper";
 import authSteps from "../../../src/services/auth/authSteps";
 import roomSteps from "../../../src/services/room/roomSteps";
 import testUtils from "../../../src/utils/testUtils";
 
-apiTest(testUtils.fullTitle(1, "Temporary Data"), async() => {
+extendedTest(testUtils.fullTitle(1, "Temporary Data"), async() => {
     await requestHelper.openNewContext();
     await authSteps.login({ user: "administrator" });
     await roomSteps.createRoom({

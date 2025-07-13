@@ -1,14 +1,14 @@
-import uiTest from "../../../src/fixtures/uiFixtures";
+import extendedTest from "../../../src/fixtures/extendedTest";
 import stepSequenceHelper from "../../../src/helpers/chaining/stepSequenceHelper";
 import browserHelper from "../../../src/helpers/channel/browserHelper";
-import blankSteps from "../../../src/pages/Blank/BlankSteps";
+import blankSteps from "../../../src/pages/blank/blankSteps";
 import adminPanelSteps from "../../../src/pages/restfulBooker/adminPanel/adminPanelSteps";
 import loginSteps from "../../../src/pages/restfulBooker/login/loginSteps";
 import testUtils from "../../../src/utils/testUtils";
 
-uiTest.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false } });
-uiTest.describe("Initial Page without storageState", () => {
-    uiTest(testUtils.fullTitle(0, "Login page displayed, when the new tab is instantiated in the current context, which was instantiated without storageState"), async() => {
+extendedTest.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false } });
+extendedTest.describe("Initial Page without storageState", () => {
+    extendedTest(testUtils.fullTitle(0, "Login page displayed, when the new tab is instantiated in the current context, which was instantiated without storageState"), async() => {
         browserHelper.openNewTabInNewContext();
         blankSteps
         .goToRestfulBookerAdminPage(loginSteps)
@@ -19,7 +19,7 @@ uiTest.describe("Initial Page without storageState", () => {
         .verifyLoginIsVisible();
         await stepSequenceHelper.stepSequence;
     });
-    uiTest(testUtils.fullTitle(1, "Login page displayed, when the new tab is instantiated in a new context without storageState"), async() => {
+    extendedTest(testUtils.fullTitle(1, "Login page displayed, when the new tab is instantiated in a new context without storageState"), async() => {
         browserHelper.openNewTabInNewContext();
         blankSteps
         .goToRestfulBookerAdminPage(loginSteps)
@@ -30,7 +30,7 @@ uiTest.describe("Initial Page without storageState", () => {
         .verifyLoginIsVisible();
         await stepSequenceHelper.stepSequence;
     });
-    uiTest(testUtils.fullTitle(2, "Admin Panel page displayed, when the new tab is instantiated in a new context with storageState"), async() => {
+    extendedTest(testUtils.fullTitle(2, "Admin Panel page displayed, when the new tab is instantiated in a new context with storageState"), async() => {
         browserHelper.openNewTabInNewContext();
         blankSteps
         .goToRestfulBookerAdminPage(loginSteps)
@@ -43,8 +43,8 @@ uiTest.describe("Initial Page without storageState", () => {
     });
 });
 
-uiTest.describe("Starting Page with storageState", () => {
-    uiTest(testUtils.fullTitle(3, "Admin Panel page displayed, when the new tab is instantiated in the current context, which was instantiated with storageState"), async() => {
+extendedTest.describe("Starting Page with storageState", () => {
+    extendedTest(testUtils.fullTitle(3, "Admin Panel page displayed, when the new tab is instantiated in the current context, which was instantiated with storageState"), async() => {
         browserHelper.openNewTabInNewContext("administrator");
         blankSteps
         .goToRestfulBookerAdminPage(adminPanelSteps)
@@ -55,7 +55,7 @@ uiTest.describe("Starting Page with storageState", () => {
         .verifyLinkIsVisible("Rooms");
         await stepSequenceHelper.stepSequence;
     });
-    uiTest(testUtils.fullTitle(4, "Login page displayed, when the new tab is instantiated in a new context without storageState"), async() => {
+    extendedTest(testUtils.fullTitle(4, "Login page displayed, when the new tab is instantiated in a new context without storageState"), async() => {
         browserHelper.openNewTabInNewContext("administrator");
         blankSteps
         .goToRestfulBookerAdminPage(adminPanelSteps)
@@ -66,7 +66,7 @@ uiTest.describe("Starting Page with storageState", () => {
         .verifyLoginIsVisible();
         await stepSequenceHelper.stepSequence;
     });
-    uiTest(testUtils.fullTitle(5, "Admin Panel page displayed, when the new tab is instantiated in a new context with storageState"), async() => {
+    extendedTest(testUtils.fullTitle(5, "Admin Panel page displayed, when the new tab is instantiated in a new context with storageState"), async() => {
         browserHelper.openNewTabInNewContext("administrator");
         blankSteps
         .goToRestfulBookerAdminPage(adminPanelSteps)

@@ -1,5 +1,4 @@
-import { APIRequestContext, expect } from "@playwright/test";
-import stepSequenceHelper from "../chaining/stepSequenceHelper";
+import test, { APIRequestContext, expect } from "@playwright/test";
 import frameworkDataHelper from "../data/frameworkDataHelper";
 import storageStateHelper from "../chaining/storageStateHelper";
 
@@ -78,8 +77,8 @@ const requestHelper = {
      * Opens a new Request Context. The new Request Context is focused. If needed it can be focused again by switchWorkingContext.
      * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Request Context.
      */
-    openNewContext(authenticatedUser?: string) {
-        stepSequenceHelper.addStep("openNewContext", async () => {
+    async openNewContext(authenticatedUser?: string) {
+        await test.step("openNewContext", async () => {
             console.log("openNewContext");
             let newContext = await frameworkDataHelper.apiRequest.newContext({ storageState: storageStateHelper.storageStatePath(authenticatedUser) });
             if (authenticatedUser) {
@@ -96,8 +95,8 @@ const requestHelper = {
      * Opens a new Request Context. The new Request Context is focused. It cannot be focused again.
      * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Request Context.
      */
-    openNewThrowAwayContext(authenticatedUser?: string) {
-        stepSequenceHelper.addStep("openNewThrowAwayContext", async () => {
+    async openNewThrowAwayContext(authenticatedUser?: string) {
+        await test.step("openNewThrowAwayContext", async () => {
             console.log("openNewThrowAwayContext");
             let newContext = await frameworkDataHelper.apiRequest.newContext({ storageState: storageStateHelper.storageStatePath(authenticatedUser) });
             if (authenticatedUser) {
@@ -114,8 +113,8 @@ const requestHelper = {
      * Sets the focused Request Context.
      * @param requestContextIndex 
      */
-    switchWorkingContext(requestContextIndex: number) {
-        stepSequenceHelper.addStep("switchWorkingContext", async () => {
+    async switchWorkingContext(requestContextIndex: number) {
+        await test.step("switchWorkingContext", async () => {
             console.log("switchWorkingContext");
             expect(requestContextIndex, `Context [${requestContextIndex}] not found`).toBeLessThan(requestContexts.length);
             expect(requestContextIndex, `Already working on context [${requestContextIndex}]`).not.toEqual(this.workingRequestContextIndex);

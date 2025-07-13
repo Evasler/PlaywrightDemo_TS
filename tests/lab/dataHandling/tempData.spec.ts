@@ -1,14 +1,13 @@
 import apiTest from "../../../src/fixtures/apiFixture";
-import stepSequenceHelper from "../../../src/helpers/chaining/stepSequenceHelper";
 import requestHelper from "../../../src/helpers/channel/requestHelper";
 import authSteps from "../../../src/services/auth/authSteps";
 import roomSteps from "../../../src/services/room/roomSteps";
 import testUtils from "../../../src/utils/testUtils";
 
 apiTest(testUtils.fullTitle(1, "Temporary Data"), async() => {
-    requestHelper.openNewContext();
-    authSteps.login({ user: "administrator" });
-    roomSteps.createRoom({
+    await requestHelper.openNewContext();
+    await authSteps.login({ user: "administrator" });
+    await roomSteps.createRoom({
         payload: {
             roomName: "996",
             type: "Double",
@@ -19,8 +18,8 @@ apiTest(testUtils.fullTitle(1, "Temporary Data"), async() => {
             features: ["TV"]
         }
     });
-    roomSteps.getRoomId({ roomName: "996" });
-    roomSteps.createRoom({
+    await roomSteps.getRoomId({ roomName: "996" });
+    await roomSteps.createRoom({
         payload: {
             roomName: "997",
             type: "Family",
@@ -31,8 +30,7 @@ apiTest(testUtils.fullTitle(1, "Temporary Data"), async() => {
             features: ["Views"]
         }
     });
-    roomSteps.getRoomId({ roomName: "997" });
-    roomSteps.deleteRoom({ tempDataIndex: 0 });
-    roomSteps.deleteRoom({ tempDataIndex: 1 });
-    await stepSequenceHelper.stepSequence;
+    await roomSteps.getRoomId({ roomName: "997" });
+    await roomSteps.deleteRoom({ tempDataIndex: 0 });
+    await roomSteps.deleteRoom({ tempDataIndex: 1 });
 });

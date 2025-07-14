@@ -108,9 +108,10 @@ const browserHelper = {
      * Verifies the target Tab's pageType and sets the focused Tab.
      * @param contextIndex 
      * @param tabIndex 
-     * @param expectedPageType 
+     * @param currentPageType 
+     * @param nextPageType 
      */
-    switchWorkingTab(contextIndex: number, tabIndex: number, expectedPageType: PageType) {
+    switchWorkingTab(contextIndex: number, tabIndex: number, currentPageType: PageType, nextPageType: PageType) {
         stepSequenceHelper.addStep("switchWorkingTab", async() => {
             console.log("switchWorkingTab");
             expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(latestContextIndex());
@@ -118,7 +119,8 @@ const browserHelper = {
             const alreadyWorkingOnTheTab = contextIndex === workingContextIndex() && tabIndex === workingTabIndex();
             expect(alreadyWorkingOnTheTab, `Already working on tab [${contextIndex},${tabIndex}]`).toBeFalsy();
             const actualPageType = tabDataHelper.pageType(contextIndex, tabIndex);
-            expect(actualPageType).toBe(expectedPageType);
+            expect(actualPageType).toBe(nextPageType);
+            tabDataHelper.updatePageType(workingContextIndex(), workingTabIndex(), currentPageType);
             updateWorkingTab(contextIndex, tabIndex);
         });
     },

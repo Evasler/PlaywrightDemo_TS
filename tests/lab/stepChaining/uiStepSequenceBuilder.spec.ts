@@ -13,9 +13,10 @@ extendedTest(testUtils.fullTitle(0, "Chained Page Object Model | StepSequenceBui
     .populateCredentials("administrator")
     .clickLogin()
     .verifyLinkIsVisible("Rooms");
-    browserHelper.switchWorkingTab(0, 0, "BlankPage");
+    browserHelper.switchWorkingTab(0, 0, "AdminPanel", "BlankPage");
     blankSteps
     .goToRestfulBookerAdminPage(loginSteps)
     .verifyLoginIsVisible();
+    browserHelper.switchWorkingTab(1, 0, "AdminPanel", "AdminPanel");
     await stepSequenceHelper.stepSequence;
 });

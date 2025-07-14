@@ -1,30 +1,30 @@
 import errorSteps from "../error/errorSteps";
 import frameworkDataHelper from "../../helpers/data/frameworkDataHelper";
-import stepSequenceHelper from "../../helpers/chaining/stepSequenceHelper";
 import browserHelper from "../../helpers/channel/browserHelper";
 import adminPanelSteps from "../restfulBooker/adminPanel/adminPanelSteps";
 import loginSteps from "../restfulBooker/login/loginSteps";
+import BaseSteps from "../base/baseSteps";
 
-const blankSteps = {
+class BlankSteps extends BaseSteps {
 
     goToRestfulBookerAdminPage<T extends typeof loginSteps | typeof adminPanelSteps>(landingPage: T) {
-        stepSequenceHelper.addStep("goToRestfulBooker", async() => {
+        this.addStep("goToRestfulBooker", async() => {
             console.log("goToRestfulBooker");
             await browserHelper.workingTab.goto(`${frameworkDataHelper.baseUrl}admin`);
         });
         return landingPage;
-    },
+    }
 
     goToJsErrorPage() {
-        stepSequenceHelper.addStep("goToJsErrorPage", async() => {
+        this.addStep("goToJsErrorPage", async() => {
             console.log("goToJsErrorPage");
             await browserHelper.workingTab.goto("data:text/html,<script>throw new Error(\"myJavaScriptError\")</script>");
         });
         return errorSteps;
-    },
+    }
 
     goToInternalServerErrorPage() {
-        stepSequenceHelper.addStep("goToInternalServerErrorPage", async() => {
+        this.addStep("goToInternalServerErrorPage", async() => {
             console.log("goToInternalServerErrorPage");
             await browserHelper.workingTab.route(frameworkDataHelper.baseUrl, async (route) => {
                 const response = await route.fetch();
@@ -36,10 +36,10 @@ const blankSteps = {
             await browserHelper.workingTab.goto(frameworkDataHelper.baseUrl);
         });
         return errorSteps;
-    },
+    }
 
     goToConnectionErrorPage() {
-        stepSequenceHelper.addStep("goToConnectionErrorPage", async() => {
+        this.addStep("goToConnectionErrorPage", async() => {
             console.log("goToConnectionErrorPage");
             await browserHelper.workingTab.route(frameworkDataHelper.baseUrl, (route) => route.abort());
             await browserHelper.workingTab.goto(frameworkDataHelper.baseUrl);
@@ -48,4 +48,4 @@ const blankSteps = {
     }
 }
 
-export default blankSteps;
+export default new BlankSteps("BlankPage");

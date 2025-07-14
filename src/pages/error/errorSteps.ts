@@ -1,3 +1,5 @@
-const errorSteps = { }
+import BaseSteps from "../base/baseSteps";
 
-export default errorSteps;
+class ErrorSteps extends BaseSteps {}
+
+export default new ErrorSteps("Error");

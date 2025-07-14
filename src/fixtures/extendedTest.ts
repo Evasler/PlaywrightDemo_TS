@@ -5,12 +5,13 @@ import browserHelper from "../helpers/channel/browserHelper";
 import frameworkDataHelper from "../helpers/data/frameworkDataHelper";
 import tabDataHelper from "../helpers/data/tabDataHelper";
 import testDataHelper from "../helpers/data/testDataHelper";
+import BaseSteps from "../pages/base/baseSteps";
 
-const extendedTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
+const extendedTest = base.extend<{ openNewTabInNewContext: <T extends BaseSteps>(page: T) => T } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
     errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
-    extraSteps: [ async ({ playwright, browser, baseURL, setupStepsArgsArray, teardownStepsArgsArray, errorListenerOptions }, use) => {
+    openNewTabInNewContext: [ async ({ playwright, browser, baseURL, setupStepsArgsArray, teardownStepsArgsArray, errorListenerOptions }, use) => {
         if (!baseURL)
             throw new Error("baseURL not defined in playwright.config.ts");
         tabDataHelper.resetPageTypes();
@@ -23,7 +24,10 @@ const extendedTest = base.extend<{ extraSteps: void } & ErrorListenerOptionsObj 
         });
         if (setupStepsArgsArray)
             await extraStepsHelper.execute("setupSteps", setupStepsArgsArray);
-        await use();
+        await use((page) => {
+            browserHelper.openNewTabInNewContext();
+            return page;
+        });
         if (teardownStepsArgsArray)
             await extraStepsHelper.execute("teardownSteps", teardownStepsArgsArray);
         await browserHelper.closeAllContexts();

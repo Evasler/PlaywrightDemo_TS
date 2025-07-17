@@ -1,4 +1,4 @@
-import type { Reporter, FullConfig, Suite, TestCase, TestResult, FullResult, TestStep } from '@playwright/test/reporter';
+import type { Reporter, FullConfig, Suite, TestCase } from '@playwright/test/reporter';
 import terminalUtils from '../utils/terminalUtils';
 
 export default class MyReporter implements Reporter {
@@ -18,7 +18,8 @@ export default class MyReporter implements Reporter {
   }
 
   onTestBegin(test: TestCase) {
-    console.log(`(${this._testId++}/${this._testCount}) ${test.parent.project()!.name} > ${test.title}`)
+    const project = test.parent.project();
+    console.log(`(${this._testId++}/${this._testCount}) ${project ? project.name : "projectlessSuite"} > ${test.title}`)
     terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onTestBegin");
   }
 
@@ -32,20 +33,20 @@ export default class MyReporter implements Reporter {
   //   terminalUtils.printLogLevelMessage(__filename, "", "reporter", "onStepEnd");
   // }
 
-  onTestEnd(test: TestCase, result: TestResult) {
+  onTestEnd() {
     terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onTestEnd");
   }
 
-  onEnd(result: FullResult) {
+  onEnd() {
     terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onEnd");
   }
 
-  async onExit(): Promise<void> {
+  async onExit(): Promise<void> { // eslint-disable-line @typescript-eslint/require-await
     terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onExit");
     console.log('\n');
   }
 
-  onStdOut(chunk: string | Buffer, test: void | TestCase, result: void | TestResult): void {
+  onStdOut(chunk: string | Buffer): void {
     console.log(chunk.toString().trim());
   }
 }

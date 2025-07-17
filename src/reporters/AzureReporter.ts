@@ -44,15 +44,15 @@ export default class AzureReporter implements Reporter {
         if (typeof this._options[optionName] === _expectedPropertyType) {
             if (Array.isArray(this._options[optionName]))
                 if (this._options[optionName].length === 0)
-                    optionTypeErrors.push(`Value of option \"${optionName}\" in playwright.config should be an array with at least 1 item`);
+                    optionTypeErrors.push(`Value of option "${optionName}" in playwright.config should be an array with at least 1 item`);
                 else {
                     const expectedArrayType = expectedPropertyType.replace("[]", "");
                     for (const item of this._options[optionName])
                         if (typeof item !== expectedArrayType)
-                            optionTypeErrors.push(`Value \"${item}\" of option \"${optionName}\" in playwright.config should be of type ${expectedArrayType}`);
+                            optionTypeErrors.push(`Value "${item}" of option "${optionName}" in playwright.config should be of type ${expectedArrayType}`);
                 }
         } else
-            optionTypeErrors.push(`Value \"${this._options[optionName]}\" of option \"${optionName}\" in playwright.config should be of type ${expectedPropertyType}`);
+            optionTypeErrors.push(`Value "${String(this._options[optionName])}" of option "${optionName}" in playwright.config should be of type ${expectedPropertyType}`);
         return optionTypeErrors;
     }
     
@@ -74,7 +74,7 @@ export default class AzureReporter implements Reporter {
                     configurationNames: this._options.configurationNames
                 }
             );
-            GlobalReporter.addReportingStep(async() => await azureReportHelper.openAuthorizedContext());
+            GlobalReporter.addReportingStep(async() => { await azureReportHelper.openAuthorizedContext(); });
             if (this._options.mandatoryReporting)
                 GlobalReporter.addReportingStep(async() => { await azureReportHelper.throwReportingErrors(rootSuite); } );
             GlobalReporter.addReportingStep(async() => {
@@ -117,7 +117,7 @@ export default class AzureReporter implements Reporter {
      * A list of the tests, which were not reported, is printed.
      * @param result 
      */
-    onEnd(result: FullResult): Promise<{ status?: FullResult["status"]; } | undefined | void> | void {
+    onEnd(result: FullResult) {
         GlobalReporter.addReportingStep(async() => {
             if (this._options.enabled) {
                 if (this._runId) {

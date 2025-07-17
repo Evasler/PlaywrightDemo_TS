@@ -10,7 +10,7 @@ const roomSteps = {
         await test.step("getAllRooms", async() => {
             console.log("getAllRooms");
             const response = await roomRequests.getRoom();
-            expect(response.status).toEqual(200);
+            expect(response.status()).toEqual(200);
         });
     },
     
@@ -30,9 +30,9 @@ const roomSteps = {
             const response = await roomRequests.getRoom();
             expect(response.status()).toEqual(200);
             const responseJson = await response.json() as GetRoomResponse;
-            const room = responseJson.rooms.find(room => room.roomName === roomName);
-            expect(room).toBeDefined();
-            testDataHelper.pushTestData("roomId", String(room!.roomid));
+            const rooms = responseJson.rooms.filter(room => room.roomName === roomName);
+            expect(rooms).toHaveLength(1);
+            testDataHelper.pushTestData("roomId", String(rooms[0].roomid));
         });
     },
 

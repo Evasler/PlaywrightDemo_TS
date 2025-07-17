@@ -22,9 +22,9 @@ export default class RunsSteps {
                 return "User is Unauthorized";
             else if (response.status() === 403)
                 return "Creating a Run is Forbidden for this user";
-            const responseJson: { id: number } = await response.json();
+            const responseJson = await response.json() as { id: number };
             return responseJson.id;
-        } catch(error) {
+        } catch {
             return "Error occured during the Run creation";
         }
     }
@@ -55,10 +55,10 @@ export default class RunsSteps {
     async getResultId(runId: number, pointId: string) {
         try {
             const results = await this._runsRequests.getResults(runId);
-            const resultsJson: { value: { id: number; testPoint: { id: string } }[] } = await results.json();
+            const resultsJson = await results.json() as { value: { id: number; testPoint: { id: string } }[] };
             const result = resultsJson.value.filter(result => result.testPoint.id === pointId);
             return result[0].id;
-        } catch(error) {
+        } catch {
             return undefined;
         }
     }

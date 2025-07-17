@@ -12,12 +12,12 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     {
         testDetails: {
             id: 1,
-            title: "Parameterized Test | Create and delete room 998",
+            title: "Parameterized Test | Create and delete room 996",
             suiteTags: ["@fullScope"]
         },
         stepData: {
             roomDetails: {
-                roomName: "998",
+                roomName: "996",
                 type: "Double",
                 accessible: false,
                 description: "Double room description",
@@ -31,11 +31,11 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     {
         testDetails: {
             id: 2,
-            title: "Parameterized Test | Create and delete room 999"
+            title: "Parameterized Test | Create and delete room 997"
         },
         stepData: {
             roomDetails: {
-                roomName: "999",
+                roomName: "997",
                 type: "Family",
                 accessible: false,
                 description: "Family room description",

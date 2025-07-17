@@ -16,7 +16,7 @@ let projectBaseUrl: string;
 let personalAccessToken: string; 
 let planId: number;
 let suiteIds: number[];
-let configurationNames: string[];
+let configurationNames: string[] = [];
 
 /**
  * Gets a Test Point by Test Case ID.
@@ -33,7 +33,7 @@ async function getRequestErrors(test: TestCase) {
                 return [ requestError ];
         }
         return [];
-    } catch(error) {
+    } catch {
         return [];
     }
 };
@@ -45,14 +45,12 @@ async function getRequestErrors(test: TestCase) {
  */
 function getProjectErrors(projectName: string) {
     const projectErrors = [];
-    if (configurationNames) {
-        const projectConfigurations = configurationNames.filter(configuration => projectName.includes(configuration));
-        if (configurationNames.length > 0)
-            if (projectConfigurations.length === 0)
-                projectErrors.push(`Project \"${projectName}\" does not specify the configuration (${configurationNames.join("|")})`);
-            else if (projectConfigurations.length > 1)
-                projectErrors.push(`Project \"${projectName}\" specifies multiple configurations (${configurationNames.join("|")})`);
-    }
+    const projectConfigurations = configurationNames.filter(configuration => projectName.includes(configuration));
+    if (configurationNames.length > 0)
+        if (projectConfigurations.length === 0)
+            projectErrors.push(`Project "${projectName}" does not specify the configuration (${configurationNames.join("|")})`);
+        else if (projectConfigurations.length > 1)
+            projectErrors.push(`Project "${projectName}" specifies multiple configurations (${configurationNames.join("|")})`);
     return projectErrors;
 };
 
@@ -68,12 +66,12 @@ async function getTestErrors(test: TestCase, projectName: string, requestWasSucc
     const testPointErrors: string[] = [];
 
     if (!test.title.includes(":"))
-        titleErrors.push(`Title \"${test.title}\" should include a ":"`);
+        titleErrors.push(`Title "${test.title}" should include a ":"`);
     const testId = test.title.substring(0, test.title.indexOf(":"));
     if (titleErrors.length === 0 && !/\d+/.test(testId))
-        titleErrors.push(`TestId \"${testId}\" should be a number`);
+        titleErrors.push(`TestId "${testId}" should be a number`);
 
-    if (configurationNames && requestWasSuccessful) {
+    if (requestWasSuccessful) {
         const projectConfigurations = configurationNames.filter(configuration => projectName.includes(configuration));
         if (titleErrors.length === 0 && projectConfigurations.length === 1)
             if (!await testPointExists(test))
@@ -98,7 +96,7 @@ async function testPointExists(test: TestCase) {
                 return true;
         }
         return false;
-    } catch(error) {
+    } catch {
         return false;
     }
 }
@@ -141,7 +139,7 @@ const azureReportHelper = {
         try {
             _testId = testUtils.id(test);
             _projectConfiguration = testUtils.projectConfiguration(test, configurationNames);
-        } catch(error) {
+        } catch {
             return;
         }
         if (!unreportedTestTitles.includes(_testId)) {
@@ -184,7 +182,10 @@ const azureReportHelper = {
         const projectErrors: string[] = [];
         const testErrors: string[] = [];
         for (const projectSuite of rootSuite.suites) {
-            const projectName = projectSuite.project()!.name;
+            const project = projectSuite.project();
+            if(!project)
+                throw new Error(`Suite "${projectSuite.title}" does not have a project defined.`);
+            const projectName = project.name;
             projectErrors.push(...getProjectErrors(projectName));
             for (const test of projectSuite.allTests()) {
                 if (requestErrors.length === 0)
@@ -211,7 +212,7 @@ const azureReportHelper = {
             try {
                 _testId = testUtils.id(test);
                 _projectConfiguration = testUtils.projectConfiguration(test, configurationNames);
-            } catch(error) {
+            } catch {
                 unreportedTestTitles.push(test.title);
                 continue;
             }

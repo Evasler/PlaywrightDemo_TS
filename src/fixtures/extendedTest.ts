@@ -7,7 +7,7 @@ import tabDataHelper from "../helpers/data/tabDataHelper";
 import testDataHelper from "../helpers/data/testDataHelper";
 import BaseSteps from "../pages/base/baseSteps";
 
-const extendedTest = base.extend<{ openNewTabInNewContext: <T extends BaseSteps>(page: T) => T } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, {}>({
+const extendedTest = base.extend<{ openNewTabInNewContext: <T extends BaseSteps>(page: T) => T } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, object>({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
     errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],

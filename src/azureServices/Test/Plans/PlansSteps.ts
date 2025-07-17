@@ -25,14 +25,14 @@ export default class PlansSteps {
                 return "Searching Test Points is Forbidden for this user";
             else if (response.status() === 404) {
                 try {
-                    const responseJson: { message: string } = await response.json();
+                    const responseJson = await response.json() as { message: string };
                     return responseJson.message;
-                } catch(error) {
+                } catch {
                     return await response.text();
                 }
             }
-        } catch(error) {
-            return "Property \"azureBaseUrl\" in playwright.config is invalid";
+        } catch {
+            return `Property "azureBaseUrl" in playwright.config is invalid`;
         }
         return undefined;
     }
@@ -48,12 +48,12 @@ export default class PlansSteps {
     async getTestPointId(planId: number, suiteId: number, testCaseId: number, configurationName: string) {
         try {
             const response = await this._plansRequests.getPointsFilteredByTestCaseId(planId, suiteId, testCaseId);
-            const responseJson: { value: { id: number; configuration: { id: string; name: string; }}[]} = await response.json();
+            const responseJson = await response.json() as { value: { id: number; configuration: { id: string; name: string; }}[]};
             const testPoint = responseJson.value.filter( testPoint => testPoint.configuration.name === configurationName);
             if (testPoint.length === 1)
                 return testPoint[0].id;
             return undefined;
-        } catch(error) {
+        } catch {
             return undefined;
         }
     }

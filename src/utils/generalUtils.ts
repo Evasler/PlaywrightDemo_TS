@@ -5,8 +5,8 @@ const generalUtils = {
     },
     
     millisToString(millis: number) {
-        var minutes = Math.floor(millis / 60000);
-        var seconds = Math.floor((millis % 60000) / 1000);
+        const minutes = Math.floor(millis / 60000);
+        const seconds = Math.floor((millis % 60000) / 1000);
         return `${minutes}:${this.padNumber(seconds, 2)}`;
     },
     

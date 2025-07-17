@@ -18,7 +18,7 @@ class BlankSteps extends BaseSteps {
     goToJsErrorPage() {
         this.addStep("goToJsErrorPage", async() => {
             console.log("goToJsErrorPage");
-            await browserHelper.workingTab.goto("data:text/html,<script>throw new Error(\"myJavaScriptError\")</script>");
+            await browserHelper.workingTab.goto(`data:text/html,<script>throw new Error("myJavaScriptError")</script>`);
         });
         return errorSteps;
     }

@@ -13,9 +13,12 @@ const testDataHelper = {
      * @param value
      */
     pushTestData(key: TestDataKeys, value: string) {
-        if (!testData.get(key))
-            testData.set(key, []);
-        testData.get(key)!.push(value);
+        let values = testData.get(key);
+        if (!values) {
+            values = [];
+            testData.set(key, values);
+        }
+        values.push(value);
     },
 
     /**
@@ -24,7 +27,10 @@ const testDataHelper = {
      * @returns The value at index location of the Array of specified key.
      */
     getTestData(key: TestDataKeys, index: number) {
-        return testData.get(key)![index];
+        const values = testData.get(key);
+        if (!values || index < 0 || index >= values.length)
+            throw new Error(`No test data found for "${key}" at "${index}"`);
+        return values[index];
     },
 
     /**

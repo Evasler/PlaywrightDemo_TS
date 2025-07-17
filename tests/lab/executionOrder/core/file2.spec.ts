@@ -8,17 +8,17 @@ test.afterEach("fileAfterEach", ({}, testInfo) => { terminalUtils.printLogLevelM
 
 test("[4] fileTest", async ({}, testInfo) => {
     terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "beforeStep1");
-    await test.step("step1", async () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
+    await test.step("step1", () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
 });
 test.describe("describe1", () => {
     test.beforeAll("describeBeforeAll", ({}, testInfo) => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "describe", "beforeAll") });
     test.afterAll("describeAfterAll", ({}, testInfo) => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "describe", "afterAll") });
     test.beforeEach("describeBeforeEach", ({}, testInfo) => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "describe", "beforeEach") });
     test.afterEach("describeAfterEach", ({}, testInfo) => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "describe", "afterEach") });
-    test("[5] describeTest", async ({ failedTestFixture }, testInfo) => {
-        await test.step("step1", async () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
+    test("[5] describeTest", async ({ failedTestFixture }, testInfo) => {  // eslint-disable-line @typescript-eslint/no-unused-vars
+        await test.step("step1", () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
     });
     test("[6] describeTest", async ({}, testInfo) => {
-        await test.step("step1", async () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
+        await test.step("step1", () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
     });
 });

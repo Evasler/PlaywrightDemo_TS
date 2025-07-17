@@ -1,7 +1,7 @@
 import test from "@playwright/test";
 import config from "../../../playwright.config";
 
-const testFilePath = new RegExp(`${config.testDir!.replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+\.spec\.ts:[0-9]+:[0-9]+`);
+const testFilePath = new RegExp(`${(config.testDir || "").replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+.spec.ts:[0-9]+:[0-9]+`);
 let stepSequence = Promise.resolve();
 
 /**
@@ -39,10 +39,10 @@ const stepSequenceHelper = {
      * @param title 
      * @param callback 
      */
-    addStep(title: string, callback: () => Promise<void>) {
+    addStep(title: string, callback: () => void | Promise<void>) {
         const myError = new Error();
         const step = async() => { await test.step(title, callback); }
-        stepSequence = stepSequence.then(step).catch(error => {
+        stepSequence = stepSequence.then(step).catch((error: unknown) => {
             if (error instanceof Error) {
                 if (error.stack && myError.stack)
                     if (error.stack.includes(__filename) && testFilePath.test(myError.stack)) {

@@ -112,7 +112,7 @@ const browserHelper = {
      * @param nextPageType 
      */
     switchWorkingTab(contextIndex: number, tabIndex: number, currentPageType: PageType, nextPageType: PageType) {
-        stepSequenceHelper.addStep("switchWorkingTab", async() => {
+        stepSequenceHelper.addStep("switchWorkingTab", () => {
             console.log("switchWorkingTab");
             expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(latestContextIndex());
             expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(latestTabIndex(contextIndex));
@@ -134,8 +134,8 @@ const browserHelper = {
             console.log("closeContext");
             expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(latestContextIndex());
             expect(contextIndex, `Context [${contextIndex}] is the Working Context. It cannot be closed`).not.toEqual(workingContextIndex());
-            frameworkDataHelper.browser.contexts()[contextIndex].pages().forEach(async (page) => await page.close());
-            await expect(async () => expect(latestTabIndex(contextIndex)).toEqual(-1)).toPass();
+            for (const page of frameworkDataHelper.browser.contexts()[contextIndex].pages())
+                await page.close();
             await frameworkDataHelper.browser.contexts()[contextIndex].close();
             tabDataHelper.removeContextPageTypes(contextIndex);
         });
@@ -162,12 +162,11 @@ const browserHelper = {
      * Gracefully closes all Contexts.
      */
     async closeAllContexts() {
-        frameworkDataHelper.browser.contexts().forEach(async context => {
-            context.pages().forEach(async (page) => await page.close());
-            await expect(async () => expect(context.pages().length).toEqual(0)).toPass();
+        for (const context of frameworkDataHelper.browser.contexts()) {
+            for (const page of context.pages())
+                await page.close();
             await context.close();
-        });
-        await expect(async () => expect(latestContextIndex()).toEqual(-1)).toPass();
+        }
     },
 
     /**

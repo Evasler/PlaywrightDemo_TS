@@ -1,4 +1,4 @@
-import type { Reporter, FullConfig, Suite, TestCase, TestResult, FullResult, TestStep, TestError } from '@playwright/test/reporter';
+import type { Reporter, FullConfig, Suite, TestCase, TestError } from '@playwright/test/reporter';
 
 export default class MyReporter implements Reporter {
 
@@ -11,14 +11,15 @@ export default class MyReporter implements Reporter {
   }
 
   onTestBegin(test: TestCase) {
-    console.log(`(${this._testId++}/${this._testCount}) ${test.parent.project()!.name} > ${test.title}`)
+    const project = test.parent.project();
+    console.log(`(${this._testId++}/${this._testCount}) ${project ? project.name : "projectlessSuite"} > ${test.title}`)
   }
 
-  async onExit(): Promise<void> {
+  async onExit(): Promise<void> { // eslint-disable-line @typescript-eslint/require-await
     console.log('\n');
   }
 
-  onStdOut(chunk: string | Buffer, test: void | TestCase, result: void | TestResult): void {
+  onStdOut(chunk: string | Buffer): void {
     console.log(chunk.toString().trim());
   }
 

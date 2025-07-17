@@ -114,7 +114,7 @@ const requestHelper = {
      * @param requestContextIndex 
      */
     async switchWorkingContext(requestContextIndex: number) {
-        await test.step("switchWorkingContext", async () => {
+        await test.step("switchWorkingContext", () => {
             console.log("switchWorkingContext");
             expect(requestContextIndex, `Context [${requestContextIndex}] not found`).toBeLessThan(requestContexts.length);
             expect(requestContextIndex, `Already working on context [${requestContextIndex}]`).not.toEqual(this.workingRequestContextIndex);

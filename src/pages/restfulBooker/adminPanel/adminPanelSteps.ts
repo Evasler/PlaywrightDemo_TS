@@ -6,7 +6,7 @@ class AdminPanelSteps extends BaseSteps {
     
     verifyLinkIsVisible(name: string) {
         this.addStep("verifyLinkIsVisible", async() => {
-            console.log(`Verifying \"${name}\" link is visible`);
+            console.log(`Verifying "${name}" link is visible`);
             await expect(adminPanelLocators.link(name)).toBeVisible();
         });
         return this;

@@ -23,7 +23,7 @@ const errorListener = {
             page.on("requestfinished", async (request) => {
                 const response = await request.response();
                 if (response !== null && response.status() >= 400)
-                    throw new Error(`Error code: \"${response.status()} ${response.statusText()}\" from ${response.url()}`);
+                    throw new Error(`Error code: "${response.status()} ${response.statusText()}" from ${response.url()}`);
             });
     }
 };

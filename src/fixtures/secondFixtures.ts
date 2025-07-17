@@ -1,3 +1,6 @@
+/* eslint @typescript-eslint/no-invalid-void-type: 0 */
+/* eslint @typescript-eslint/no-unused-vars: 0 */
+
 import { test as base } from "@playwright/test";
 import terminalUtils from "../utils/terminalUtils";
 import path from "path";

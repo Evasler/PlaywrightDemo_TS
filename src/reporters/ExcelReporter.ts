@@ -35,15 +35,15 @@ export default class ExcelReporter implements Reporter {
         if (typeof this._options[optionName] === _expectedPropertyType) {
             if (Array.isArray(this._options[optionName]))
                 if (this._options[optionName].length === 0)
-                    optionTypeErrors.push(`Option \"${optionName}\" in playwright.config should include at least 1 value`);
+                    optionTypeErrors.push(`Option "${optionName}" in playwright.config should include at least 1 value`);
                 else {
                     const expectedArrayType = expectedPropertyType.replace("[]", "");
                     for (const item of this._options[optionName])
                         if (typeof item !== expectedArrayType)
-                            optionTypeErrors.push(`Value \"${item}\" of option \"${optionName}\" in playwright.config should be of type ${expectedArrayType}`);
+                            optionTypeErrors.push(`Value "${item}" of option "${optionName}" in playwright.config should be of type ${expectedArrayType}`);
                 }
         } else
-            optionTypeErrors.push(`Value \"${this._options[optionName]}\" of option \"${optionName}\" in playwright.config should be of type ${expectedPropertyType}`);
+            optionTypeErrors.push(`Value "${String(this._options[optionName])}" of option "${optionName}" in playwright.config should be of type ${expectedPropertyType}`);
         return optionTypeErrors;
     }
 

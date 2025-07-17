@@ -8,7 +8,7 @@ class LoginSteps extends BaseSteps {
 
     verifyLoginIsVisible() {
         this.addStep("verifyLoginIsVisible", async() => {
-            console.log("Verifying \"Login\" is visible");
+            console.log(`Verifying "Login" is visible`);
             await expect(loginLocators.loginHeading()).toBeVisible();
         });
         return this;

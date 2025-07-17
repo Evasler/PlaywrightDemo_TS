@@ -7,5 +7,5 @@ test.beforeEach("fileBeforeEach", ({}, testInfo) => { terminalUtils.printLogLeve
 test.afterEach("fileAfterEach", ({}, testInfo) => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "specFile", "afterEach") });
 
 test("[7] fileTest", async ({}, testInfo) => {
-    await test.step("step1", async () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
+    await test.step("step1", () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
 });

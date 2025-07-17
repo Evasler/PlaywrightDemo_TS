@@ -70,32 +70,33 @@ export default defineConfig<ErrorListenerOptionsObj>({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /tests\/lab\/(dataHandling|listeners|stepChaining|storageState)\/*\/.*\.spec\.ts/
     },
     {
       name: 'executionOrderDependency',
-      testMatch: '**/executionOrder/dependencies/global.setup.ts',
+      testMatch: /executionOrder\/dependencies\/global.setup.ts/,
       teardown: 'executionOrderTeardown'
     },
     {
       name: 'executionOrderTeardown',
-      testMatch: '**/executionOrder/dependencies/global.teardown.ts'
+      testMatch: /executionOrder\/dependencies\/global.teardown.ts/
     },
     {
       name: 'executionOrder',
-      testMatch: '**/executionOrder/core/**',
+      testMatch: /executionOrder\/core\/.*/,
       dependencies: ['executionOrderDependency']
     },
     {
       name: 'configuration1',
-      testMatch: '**/excelReporting/**',
+      testMatch: /excelReporting\/.*/,
       use: {
         ...devices['Desktop Chrome']
       }
     },
     {
       name: 'configuration2',
-      testMatch: '**/excelReporting/**',
+      testMatch: /excelReporting\/.*/,
       use: {
         ...devices['Desktop Chrome']
       }

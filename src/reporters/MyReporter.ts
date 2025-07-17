@@ -3,7 +3,7 @@ import type { Reporter, FullConfig, Suite, TestCase, TestError } from '@playwrig
 export default class MyReporter implements Reporter {
 
   private _testId = 1;
-  private _testCount: number = 0;
+  private _testCount = 0;
 
   onBegin(config: FullConfig, suite: Suite) {
     console.log('\n');

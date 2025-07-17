@@ -1,6 +1,3 @@
-export const userCredentials: {[key: string]: {username: string, password: string}} = {
-    "administrator": {
-        username: "admin",
-        password: "password"
-    }
-};
+export const userCredentials = new Map<string, { username: string, password: string }>([
+    ["administrator", { username: "admin", password: "password" }],
+]);

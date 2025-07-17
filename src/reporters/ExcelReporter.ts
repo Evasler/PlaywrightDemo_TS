@@ -1,5 +1,5 @@
 import type { FullConfig, Reporter, Suite, TestCase, TestResult } from '@playwright/test/reporter';
-import { ExcelReporterOptions } from '../customTypes/frameworkTypes';
+import { ExcelReporterOptions } from '../types/frameworkTypes';
 import excelReportHelper from '../helpers/reporting/excelReportHelper';
 import GlobalReporter from './GlobalReporter';
 import errorHandlingUtils from '../utils/errorHandlingUtils';

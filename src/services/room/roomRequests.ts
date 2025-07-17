@@ -1,4 +1,4 @@
-import { CreateRoomPayload } from "../../customTypes/apiPayloadTypes";
+import { CreateRoomPayload } from "../../types/apiPayloadTypes";
 import requestHelper from "../../helpers/channel/requestHelper";
 import roomEndpoints from "./roomEndpoints";
 

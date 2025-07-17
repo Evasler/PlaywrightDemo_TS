@@ -1,8 +1,8 @@
 import { APIRequestContext, expect, Page } from "@playwright/test";
 import authEndpoints from "../../services/auth/authEndpoints";
 import credentialsUtils from "../../utils/credentialsUtils";
-import { StorageState } from "../../customTypes/frameworkTypes";
-import { LoginResponse } from "../../customTypes/apiResponseTypes";
+import { StorageState } from "../../types/frameworkTypes";
+import { LoginResponse } from "../../types/apiResponseTypes";
 import fileUtils from "../../utils/fileUtils";
 import frameworkDataHelper from "../data/frameworkDataHelper";
 

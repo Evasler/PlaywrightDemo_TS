@@ -1,7 +1,7 @@
 import test, { expect } from "@playwright/test";
 import credentialsUtils from "../../utils/credentialsUtils";
-import { LoginResponse, ValidateResponse } from "../../customTypes/apiResponseTypes";
-import { LoginArgs } from "../../customTypes/stepArgsTypes";
+import { LoginResponse, ValidateResponse } from "../../types/apiResponseTypes";
+import { LoginArgs } from "../../types/stepArgsTypes";
 import authRequests from "./authRequests";
 import requestHelper from "../../helpers/channel/requestHelper";
 import testDataHelper from "../../helpers/data/testDataHelper";

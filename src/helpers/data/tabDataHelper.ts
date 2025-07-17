@@ -1,7 +1,7 @@
-import { PageType } from "../../customTypes/frameworkTypes";
+import { PageType } from "../../types/frameworkTypes";
 
 const defaultPageType: PageType = "BlankPage";
-const pageTypes: Array<Array<PageType>> = [];
+const pageTypes: PageType[][] = [];
 
 /**
  * Stores the PageType of each tab for all contexts.

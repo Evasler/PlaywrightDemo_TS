@@ -1,9 +1,9 @@
 import { RoomFeature, RoomType } from "./appTypes";
 
-export type LoginResponse = { token: string; }
-export type ValidateResponse = { valid: boolean; }
-export type CreateRoomResponse = { success: boolean; }
-export type GetRoomResponse = {
+export interface LoginResponse { token: string; }
+export interface ValidateResponse { valid: boolean; }
+export interface CreateRoomResponse { success: boolean; }
+export interface GetRoomResponse {
     rooms: {
         roomid: number;
         roomName: string;

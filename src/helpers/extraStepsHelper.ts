@@ -1,4 +1,4 @@
-import { ExtraStepsArgs } from "../customTypes/stepArgsTypes";
+import { ExtraStepsArgs } from "../types/stepArgsTypes";
 import authSteps from "../services/auth/authSteps";
 import roomSteps from "../services/room/roomSteps";
 import requestHelper from "./channel/requestHelper";

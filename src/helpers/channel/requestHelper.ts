@@ -4,8 +4,8 @@ import storageStateHelper from "../chaining/storageStateHelper";
 
 const requestContexts: APIRequestContext[] = [];
 const throwAwayContexts: APIRequestContext[] = [];
-const requestContextsExtraHeaders: { [key: string]: string; }[] = [];
-const throwAwayContextsExtraHeaders: { [key: string]: string; }[] = [];
+const requestContextsExtraHeaders: (undefined | Map<string,string>)[] = [];
+const throwAwayContextsExtraHeaders: (undefined | Map<string,string>)[] = [];
 
 let workingRequestContext: APIRequestContext;
 
@@ -46,16 +46,14 @@ const requestHelper = {
     putExtraHeader(key: string, value: string) {
         const contextIndex = requestContexts.indexOf(workingRequestContext);
         if (contextIndex >= 0) {
-            if(!requestContextsExtraHeaders[contextIndex])
-                requestContextsExtraHeaders[contextIndex] = {};
-            requestContextsExtraHeaders[contextIndex][key] = value;
+            requestContextsExtraHeaders[contextIndex] ??= new Map<string,string>();
+            requestContextsExtraHeaders[contextIndex].set(key, value);
             return;
         }
         const throwAwayContextIndex = throwAwayContexts.indexOf(workingRequestContext);
         if (throwAwayContextIndex >= 0) {
-            if(!throwAwayContextsExtraHeaders[throwAwayContextIndex])
-                throwAwayContextsExtraHeaders[throwAwayContextIndex] = {};
-            throwAwayContextsExtraHeaders[throwAwayContextIndex][key] = value;
+            throwAwayContextsExtraHeaders[throwAwayContextIndex] ??= new Map<string,string>();
+            throwAwayContextsExtraHeaders[throwAwayContextIndex].set(key, value);
         }
     },
 
@@ -65,11 +63,15 @@ const requestHelper = {
      */
     getExtraHeaders() {
         const contextIndex = requestContexts.indexOf(workingRequestContext);
-        if (contextIndex >= 0)
-            return requestContextsExtraHeaders[contextIndex];
+        if (contextIndex >= 0) {
+            const extraHeaders = requestContextsExtraHeaders[contextIndex];
+            return !extraHeaders || extraHeaders.size == 0 ? undefined : Object.fromEntries(extraHeaders);
+        }
         const throwAwayContextIndex = throwAwayContexts.indexOf(workingRequestContext);
-        if (throwAwayContextIndex >= 0)
-            return throwAwayContextsExtraHeaders[throwAwayContextIndex];
+        if (throwAwayContextIndex >= 0) {
+            const extraHeaders = throwAwayContextsExtraHeaders[throwAwayContextIndex];
+            return !extraHeaders || extraHeaders.size == 0 ? undefined : Object.fromEntries(extraHeaders);
+        }
         throw new Error("Could not find workingRequestContext's Extra Headers")
     },
     

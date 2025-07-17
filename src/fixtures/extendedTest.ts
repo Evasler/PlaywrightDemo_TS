@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../customTypes/frameworkTypes";
+import { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../types/frameworkTypes";
 import extraStepsHelper from "../helpers/extraStepsHelper";
 import browserHelper from "../helpers/channel/browserHelper";
 import frameworkDataHelper from "../helpers/data/frameworkDataHelper";

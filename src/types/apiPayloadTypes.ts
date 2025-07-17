@@ -1,6 +1,6 @@
 import { RoomFeature, RoomType } from "./appTypes";
 
-export type CreateRoomPayload = {
+export interface CreateRoomPayload {
     roomName: string;
     type: RoomType;
     accessible: boolean;

@@ -4,7 +4,7 @@ export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
 export type TestDataKeys = "token" | "roomId";
 export type LogLevel = "test" | "describe" | "specFile" | "fixture" | "projectDependency" | "reporter";
 export type SuiteTag = "@smoke" | "@regression" | "@fullScope";
-export type StorageState = {
+export interface StorageState {
     cookies: {
         name: string,
         value: string,
@@ -17,28 +17,28 @@ export type StorageState = {
     }[],
     origins: []
 }
-export type ErrorListenerOptions = {
+export interface ErrorListenerOptions {
     failOnJsError: boolean;
     failOnConnectionError: boolean;
     failOnRequestError: boolean;
 };
-export type ErrorListenerOptionsObj = { errorListenerOptions: ErrorListenerOptions };
-export type TestDetailsObj = {
+export interface ErrorListenerOptionsObj { errorListenerOptions: ErrorListenerOptions };
+export interface TestDetailsObj {
     testDetails: {
         id: number;
         title: string;
         suiteTags?: SuiteTag[];
     };
 }
-export type SetupStepsArgsObj = { setupStepsArgsArray?: ExtraStepsArgs[] };
-export type TeardownStepsArgsObj = { teardownStepsArgsArray?: ExtraStepsArgs[] };
-export type ExcelReporterOptions = {
+export interface SetupStepsArgsObj { setupStepsArgsArray?: ExtraStepsArgs[] }
+export interface TeardownStepsArgsObj { teardownStepsArgsArray?: ExtraStepsArgs[] }
+export interface ExcelReporterOptions {
     enabled: boolean;
     mandatoryReporting: boolean;
     filepath: string;
     configurationNames: string[];
 }
-export type AzureReporterOptions = {
+export interface AzureReporterOptions {
     enabled: boolean;
     mandatoryReporting: boolean;
     azureBaseUrl: string;
@@ -51,7 +51,7 @@ export type AzureReporterOptions = {
     configurationNames: string[];
 }
 type AzureTestRunState = "Unspecified" | "NotStarted" | "InProgress" | "Completed" | "Aborted" | "Waiting" | "NeedsInvestigation";
-export type RunDetails = {
+export interface RunDetails {
     name: string;
     automated: boolean;
     plan: { id: number };
@@ -60,7 +60,7 @@ export type RunDetails = {
     startedDate: string;
     completedDate?: string;
 }
-export type ResultDetails = {
+export interface ResultDetails {
     id: number;
     outcome: "Unspecified" | "None" | "Passed" | "Failed" | "Inconclusive" | "Timeout" | "Aborted" | "Blocked" | "NotExecuted" | "Warning" | "Error" | "NotApplicable" | "Paused" | "InProgress" | "NotImpacted";
     state: AzureTestRunState;

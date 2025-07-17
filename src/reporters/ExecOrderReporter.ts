@@ -4,7 +4,7 @@ import terminalUtils from '../utils/terminalUtils';
 export default class MyReporter implements Reporter {
 
   private _testId = 1;
-  private _testCount: number = 0;
+  private _testCount = 0;
 
   constructor() {
     console.log('\n');

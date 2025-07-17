@@ -1,5 +1,5 @@
-import { CreateRoomPayload } from "../../../src/customTypes/apiPayloadTypes";
-import { TestDetailsObj } from "../../../src/customTypes/frameworkTypes";
+import { CreateRoomPayload } from "../../../src/types/apiPayloadTypes";
+import { TestDetailsObj } from "../../../src/types/frameworkTypes";
 
 type ParameterizedTestsDataset = TestDetailsObj & {
     stepData: {
@@ -12,12 +12,12 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     {
         testDetails: {
             id: 1,
-            title: "Parameterized Test | Create and delete room 996",
+            title: "Parameterized Test | Create and delete room 994",
             suiteTags: ["@fullScope"]
         },
         stepData: {
             roomDetails: {
-                roomName: "996",
+                roomName: "994",
                 type: "Double",
                 accessible: false,
                 description: "Double room description",
@@ -31,11 +31,11 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     {
         testDetails: {
             id: 2,
-            title: "Parameterized Test | Create and delete room 997"
+            title: "Parameterized Test | Create and delete room 995"
         },
         stepData: {
             roomDetails: {
-                roomName: "997",
+                roomName: "995",
                 type: "Family",
                 accessible: false,
                 description: "Family room description",

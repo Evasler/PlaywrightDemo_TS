@@ -1,7 +1,7 @@
 import test from "@playwright/test";
 import config from "../../../playwright.config";
 
-const testFilePath = new RegExp(`${(config.testDir || "").replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+.spec.ts:[0-9]+:[0-9]+`);
+const testFilePath = new RegExp(`${(config.testDir ?? "").replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+.spec.ts:[0-9]+:[0-9]+`);
 let stepSequence = Promise.resolve();
 
 /**

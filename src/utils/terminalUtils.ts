@@ -1,4 +1,4 @@
-import { LogLevel } from "../customTypes/frameworkTypes";
+import { LogLevel } from "../types/frameworkTypes";
 import path from "path";
 
 const reset = "\x1b[0m";

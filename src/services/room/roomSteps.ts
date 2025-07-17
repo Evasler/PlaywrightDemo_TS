@@ -1,6 +1,6 @@
 import test, { expect } from "@playwright/test";
-import { CreateRoomResponse, GetRoomResponse } from "../../customTypes/apiResponseTypes";
-import { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../customTypes/stepArgsTypes";
+import { CreateRoomResponse, GetRoomResponse } from "../../types/apiResponseTypes";
+import { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../types/stepArgsTypes";
 import roomRequests from "./roomRequests";
 import testDataHelper from "../../helpers/data/testDataHelper";
 

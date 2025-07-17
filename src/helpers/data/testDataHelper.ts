@@ -1,6 +1,6 @@
-import { TestDataKeys } from "../../customTypes/frameworkTypes";
+import { TestDataKeys } from "../../types/frameworkTypes";
 
-const testData = new Map<TestDataKeys,Array<string>>();
+const testData = new Map<TestDataKeys,string[]>();
 
 /**
  * Facilitates data-sharing between methods, while writting Tests in a method-chaining manner. 

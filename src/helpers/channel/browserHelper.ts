@@ -1,5 +1,5 @@
 import { expect, Page } from "@playwright/test";
-import { PageType } from "../../customTypes/frameworkTypes";
+import { PageType } from "../../types/frameworkTypes";
 import stepSequenceHelper from "../chaining/stepSequenceHelper";
 import frameworkDataHelper from "../data/frameworkDataHelper";
 import errorListener from "../../listeners/errorListener";

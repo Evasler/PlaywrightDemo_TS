@@ -6,7 +6,7 @@ import errorHandlingUtils from "../../utils/errorHandlingUtils";
 import { APIRequestContext } from "@playwright/test";
 import RunsSteps from "../../azureServices/Test/Runs/RunsSteps";
 import PlansSteps from "../../azureServices/Test/Plans/PlansSteps";
-import { ResultDetails, RunDetails } from "../../customTypes/frameworkTypes";
+import { ResultDetails, RunDetails } from "../../types/frameworkTypes";
 
 const unreportedTestTitles: string[] = [];
 let authorizedContext: APIRequestContext;

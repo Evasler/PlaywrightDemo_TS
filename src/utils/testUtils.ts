@@ -1,5 +1,5 @@
 import { TestCase, TestResult } from "@playwright/test/reporter";
-import { SuiteTag } from "../customTypes/frameworkTypes";
+import { SuiteTag } from "../types/frameworkTypes";
 
 const testUtils = {
 
@@ -33,15 +33,15 @@ const testUtils = {
         return project;
     },
     
-    projectConfiguration(test: TestCase, configurations: string[]) {
+    projectConfiguration(test: TestCase, configurationNames: string[]) {
         const _project = this.project(test);
         const projectName = _project.name;
-        const projectConfiguration = configurations.filter(configuration => projectName.includes(configuration));
+        const projectConfiguration = configurationNames.filter(configurationName => projectName.includes(configurationName));
         if (projectConfiguration.length === 0)
-            throw new Error(`Project "${projectName}" doesn't specify a configuration (${configurations.join("|")})`);
+            throw new Error(`Project "${projectName}" doesn't specify a configuration (${configurationNames.join("|")})`);
         else if (projectConfiguration.length > 1)
-            throw new Error(`Project "${projectName}" specifies multiple configurations (${configurations.join("|")})`);
-        return configurations.filter(configuration => projectName.includes(configuration))[0];
+            throw new Error(`Project "${projectName}" specifies multiple configurations (${configurationNames.join("|")})`);
+        return projectConfiguration[0];
     },
     
     type(test: TestCase) {

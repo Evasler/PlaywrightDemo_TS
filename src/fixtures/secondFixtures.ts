@@ -5,11 +5,11 @@ import { test as base } from "@playwright/test";
 import terminalUtils from "../utils/terminalUtils";
 import path from "path";
 
-type TestFixtures = {
+interface TestFixtures {
     autoTestFixture: void;
     manualTestFixture: void;
 };
-type WorkerFixtures = {
+interface WorkerFixtures {
     autoWorkerFixture: void;
     manualWorkerFixture: void;
     dependencyFixture: void;

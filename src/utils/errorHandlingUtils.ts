@@ -1,4 +1,4 @@
-import terminalUtils from "./terminalUtils";
+import terminalUtils from "./terminalUtils.js";
 
 /**
  * Centralized error handling utility for standardized error reporting and handling.

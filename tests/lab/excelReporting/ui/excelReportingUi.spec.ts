@@ -1,7 +1,7 @@
-import extendedTest from "../../../../src/fixtures/extendedTest";
-import blankSteps from "../../../../src/pages/blank/blankSteps";
-import adminPanelSteps from "../../../../src/pages/restfulBooker/adminPanel/adminPanelSteps";
-import testUtils from "../../../../src/utils/testUtils";
+import extendedTest from "../../../../src/fixtures/extendedTest.js";
+import blankSteps from "../../../../src/pages/blank/blankSteps.js";
+import adminPanelSteps from "../../../../src/pages/restfulBooker/adminPanel/adminPanelSteps.js";
+import testUtils from "../../../../src/utils/testUtils.js";
 
 extendedTest(testUtils.fullTitle(1, "This Test should fail"), async({ openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)

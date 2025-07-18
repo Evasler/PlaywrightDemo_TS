@@ -1,9 +1,9 @@
-import errorSteps from "../error/errorSteps";
-import frameworkDataHelper from "../../helpers/data/frameworkDataHelper";
-import browserHelper from "../../helpers/channel/browserHelper";
-import adminPanelSteps from "../restfulBooker/adminPanel/adminPanelSteps";
-import loginSteps from "../restfulBooker/login/loginSteps";
-import BaseSteps from "../base/baseSteps";
+import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
+import browserHelper from "../../helpers/channel/browserHelper.js";
+import BaseSteps from "../base/baseSteps.js";
+import type loginSteps from "../restfulBooker/login/loginSteps.js";
+import type adminPanelSteps from "../restfulBooker/adminPanel/adminPanelSteps.js";
+import errorSteps from "../error/errorSteps.js";
 
 class BlankSteps extends BaseSteps {
 

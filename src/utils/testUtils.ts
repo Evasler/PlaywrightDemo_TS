@@ -1,5 +1,5 @@
-import { TestCase, TestResult } from "@playwright/test/reporter";
-import { SuiteTag } from "../types/frameworkTypes";
+import type { TestCase, TestResult } from "@playwright/test/reporter";
+import type { SuiteTag } from "../types/frameworkTypes.js";
 
 const testUtils = {
 

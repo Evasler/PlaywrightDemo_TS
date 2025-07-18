@@ -1,6 +1,6 @@
-import { CreateRoomPayload } from "../../../../src/types/apiPayloadTypes";
-import { SetupStepsArgsObj, TeardownStepsArgsObj, TestDetailsObj } from "../../../../src/types/frameworkTypes";
-import { CreateRoomArgs, LoginArgs } from "../../../../src/types/stepArgsTypes";
+import type { CreateRoomPayload } from "../../../../src/types/apiPayloadTypes.js";
+import type { SetupStepsArgsObj, TeardownStepsArgsObj, TestDetailsObj } from "../../../../src/types/frameworkTypes.js";
+import type { CreateRoomArgs, LoginArgs } from "../../../../src/types/stepArgsTypes.js";
 
 type TestData = TestDetailsObj & SetupStepsArgsObj & TeardownStepsArgsObj & {
     stepData: { 

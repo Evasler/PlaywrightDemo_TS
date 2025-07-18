@@ -2,8 +2,7 @@
 /* eslint @typescript-eslint/no-unused-vars: 0 */
 
 import { test as base } from "@playwright/test";
-import terminalUtils from "../utils/terminalUtils";
-import path from "path";
+import terminalUtils from "../utils/terminalUtils.js";
 
 interface TestFixtures {
     autoTestFixture: void;
@@ -17,29 +16,29 @@ interface WorkerFixtures {
 
 const test = base.extend<TestFixtures, WorkerFixtures>({
     autoTestFixture: [ async ({}, use, testInfo) => {
-        terminalUtils.printLogLevelMessage(path.basename(__filename), testInfo.title, "fixture", "autoSetup");
+        terminalUtils.printLogLevelMessage(import.meta.filename, testInfo.title, "fixture", "autoSetup");
         await use();
-        terminalUtils.printLogLevelMessage(path.basename(__filename), testInfo.title, "fixture", "autoTeardown");
+        terminalUtils.printLogLevelMessage(import.meta.filename, testInfo.title, "fixture", "autoTeardown");
     }, { scope: "test", auto: true }],
     manualTestFixture: [ async ({}, use, testInfo) => {
-        terminalUtils.printLogLevelMessage(path.basename(__filename), testInfo.title, "fixture", "manualSetup");
+        terminalUtils.printLogLevelMessage(import.meta.filename, testInfo.title, "fixture", "manualSetup");
         await use();
-        terminalUtils.printLogLevelMessage(path.basename(__filename), testInfo.title, "fixture", "manualTeardown");
+        terminalUtils.printLogLevelMessage(import.meta.filename, testInfo.title, "fixture", "manualTeardown");
     }, { scope: "test" }],
     dependencyFixture: [ async ({}, use, testInfo) => {
-        terminalUtils.printLogLevelMessage(path.basename(__filename), `worker ${testInfo.workerIndex}`, "fixture", "dependencySetup");
+        terminalUtils.printLogLevelMessage(import.meta.filename, `worker ${testInfo.workerIndex}`, "fixture", "dependencySetup");
         await use();
-        terminalUtils.printLogLevelMessage(path.basename(__filename), `worker ${testInfo.workerIndex}`, "fixture", "dependencyTeardown");
+        terminalUtils.printLogLevelMessage(import.meta.filename, `worker ${testInfo.workerIndex}`, "fixture", "dependencyTeardown");
     }, {scope: "worker"}],
     autoWorkerFixture: [ async ({ dependencyFixture }, use, testInfo) => {
-        terminalUtils.printLogLevelMessage(path.basename(__filename), `worker ${testInfo.workerIndex}`, "fixture", "autoSetup");
+        terminalUtils.printLogLevelMessage(import.meta.filename, `worker ${testInfo.workerIndex}`, "fixture", "autoSetup");
         await use();
-        terminalUtils.printLogLevelMessage(path.basename(__filename), `worker ${testInfo.workerIndex}`, "fixture", "autoTeardown");
+        terminalUtils.printLogLevelMessage(import.meta.filename, `worker ${testInfo.workerIndex}`, "fixture", "autoTeardown");
     }, {scope: "worker", auto: true}],
     manualWorkerFixture: [ async ({}, use, testInfo) => {
-        terminalUtils.printLogLevelMessage(path.basename(__filename), `worker ${testInfo.workerIndex}`, "fixture", "manualSetup");
+        terminalUtils.printLogLevelMessage(import.meta.filename, `worker ${testInfo.workerIndex}`, "fixture", "manualSetup");
         await use();
-        terminalUtils.printLogLevelMessage(path.basename(__filename), `worker ${testInfo.workerIndex}`, "fixture", "manualTeardown");
+        terminalUtils.printLogLevelMessage(import.meta.filename, `worker ${testInfo.workerIndex}`, "fixture", "manualTeardown");
     }, {scope: "worker"}]
 });
 

@@ -1,12 +1,12 @@
-import { Suite, TestCase, TestResult } from "@playwright/test/reporter";
+import type { APIRequestContext } from "@playwright/test"
+import type { Suite, TestCase, TestResult } from "@playwright/test/reporter";
 import { request } from "@playwright/test";
-import terminalUtils from "../../utils/terminalUtils";
-import testUtils from "../../utils/testUtils";
-import errorHandlingUtils from "../../utils/errorHandlingUtils";
-import { APIRequestContext } from "@playwright/test";
-import RunsSteps from "../../azureServices/Test/Runs/RunsSteps";
-import PlansSteps from "../../azureServices/Test/Plans/PlansSteps";
-import { ResultDetails, RunDetails } from "../../types/frameworkTypes";
+import terminalUtils from "../../utils/terminalUtils.js";
+import testUtils from "../../utils/testUtils.js";
+import errorHandlingUtils from "../../utils/errorHandlingUtils.js";
+import RunsSteps from "../../azureServices/Test/Runs/RunsSteps.js";
+import PlansSteps from "../../azureServices/Test/Plans/PlansSteps.js";
+import type { ResultDetails, RunDetails } from "../../types/frameworkTypes.js";
 
 const unreportedTestTitles: string[] = [];
 let authorizedContext: APIRequestContext;

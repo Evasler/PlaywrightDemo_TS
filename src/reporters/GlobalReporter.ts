@@ -1,4 +1,4 @@
-import { Reporter } from "@playwright/test/reporter";
+import type { Reporter } from "@playwright/test/reporter";
 
 /**
  * Ensures that the operations from all other reporters are executed sequentially.

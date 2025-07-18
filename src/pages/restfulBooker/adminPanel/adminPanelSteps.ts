@@ -1,9 +1,9 @@
 import { expect } from "@playwright/test";
-import adminPanelLocators from "./adminPanelLocators";
-import BaseSteps from "../../base/baseSteps";
+import adminPanelLocators from "./adminPanelLocators.js";
+import BaseSteps from "../../base/baseSteps.js";
 
 class AdminPanelSteps extends BaseSteps {
-    
+
     verifyLinkIsVisible(name: string) {
         this.addStep("verifyLinkIsVisible", async() => {
             console.log(`Verifying "${name}" link is visible`);

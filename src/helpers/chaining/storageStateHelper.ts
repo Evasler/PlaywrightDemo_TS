@@ -1,10 +1,10 @@
-import { APIRequestContext, expect, Page } from "@playwright/test";
-import authEndpoints from "../../services/auth/authEndpoints";
-import credentialsUtils from "../../utils/credentialsUtils";
-import { StorageState } from "../../types/frameworkTypes";
-import { LoginResponse } from "../../types/apiResponseTypes";
-import fileUtils from "../../utils/fileUtils";
-import frameworkDataHelper from "../data/frameworkDataHelper";
+import { type APIRequestContext, type Page, expect } from "@playwright/test";
+import authEndpoints from "../../services/auth/authEndpoints.js";
+import credentialsUtils from "../../utils/credentialsUtils.js";
+import type { StorageState } from "../../types/frameworkTypes.js";
+import type { LoginResponse } from "../../types/apiResponseTypes.js";
+import fileUtils from "../../utils/fileUtils.js";
+import frameworkDataHelper from "../data/frameworkDataHelper.js";
 
 const authDirectory = ".auth";
 

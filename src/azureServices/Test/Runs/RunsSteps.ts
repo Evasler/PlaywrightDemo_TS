@@ -1,6 +1,6 @@
-import { APIRequestContext } from "@playwright/test";
-import RunsRequests from "./RunsRequests";
-import { ResultDetails, RunDetails } from "../../../types/frameworkTypes";
+import type { APIRequestContext } from "@playwright/test";
+import RunsRequests from "./RunsRequests.js";
+import type { ResultDetails, RunDetails } from "../../../types/frameworkTypes.js";
 
 export default class RunsSteps {
     

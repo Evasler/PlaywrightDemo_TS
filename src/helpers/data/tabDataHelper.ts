@@ -1,4 +1,4 @@
-import { PageType } from "../../types/frameworkTypes";
+import type { PageType } from "../../types/frameworkTypes.js";
 
 const defaultPageType: PageType = "BlankPage";
 const pageTypes: PageType[][] = [];

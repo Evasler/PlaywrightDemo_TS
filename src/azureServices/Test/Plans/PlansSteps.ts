@@ -1,5 +1,5 @@
-import { APIRequestContext } from "@playwright/test";
-import PlansRequests from "./PlansRequests";
+import type { APIRequestContext } from "@playwright/test";
+import PlansRequests from "./PlansRequests.js";
 
 export default class PlansSteps {
     

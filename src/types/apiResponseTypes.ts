@@ -1,4 +1,4 @@
-import { RoomFeature, RoomType } from "./appTypes";
+import type { RoomFeature, RoomType } from "./appTypes.js";
 
 export interface LoginResponse { token: string; }
 export interface ValidateResponse { valid: boolean; }

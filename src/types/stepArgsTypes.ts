@@ -1,4 +1,4 @@
-import { CreateRoomPayload } from "./apiPayloadTypes";
+import type { CreateRoomPayload } from "./apiPayloadTypes.js";
 
 export interface ExtraStepsArgs {
     loginArgs?: LoginArgs,

@@ -1,10 +1,10 @@
-import test, { expect } from "@playwright/test";
-import credentialsUtils from "../../utils/credentialsUtils";
-import { LoginResponse, ValidateResponse } from "../../types/apiResponseTypes";
-import { LoginArgs } from "../../types/stepArgsTypes";
-import authRequests from "./authRequests";
-import requestHelper from "../../helpers/channel/requestHelper";
-import testDataHelper from "../../helpers/data/testDataHelper";
+import { test, expect } from "@playwright/test";
+import credentialsUtils from "../../utils/credentialsUtils.js";
+import type { LoginResponse, ValidateResponse } from "../../types/apiResponseTypes.js";
+import type { LoginArgs } from "../../types/stepArgsTypes.js";
+import authRequests from "./authRequests.js";
+import requestHelper from "../../helpers/channel/requestHelper.js";
+import testDataHelper from "../../helpers/data/testDataHelper.js";
 
 const authSteps = {
 

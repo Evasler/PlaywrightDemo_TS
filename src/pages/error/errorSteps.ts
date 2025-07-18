@@ -1,4 +1,4 @@
-import BaseSteps from "../base/baseSteps";
+import BaseSteps from "../base/baseSteps.js";
 
 class ErrorSteps extends BaseSteps {}
 

@@ -1,4 +1,4 @@
-import BaseAzureTestEndpoints from "../BaseAzureTestEndpoints"
+import BaseAzureTestEndpoints from "../BaseAzureTestEndpoints.js"
 
 export default class PlansEndpoints extends BaseAzureTestEndpoints {
 

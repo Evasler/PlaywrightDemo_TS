@@ -1,6 +1,6 @@
-import extendedTest from "../../../src/fixtures/extendedTest";
-import blankSteps from "../../../src/pages/blank/blankSteps";
-import testUtils from "../../../src/utils/testUtils";
+import extendedTest from "../../../src/fixtures/extendedTest.js";
+import blankSteps from "../../../src/pages/blank/blankSteps.js";
+import testUtils from "../../../src/utils/testUtils.js";
 
 extendedTest(testUtils.fullTitle(0, "Test failure, because errorListener catches a JS error"), async({ openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)

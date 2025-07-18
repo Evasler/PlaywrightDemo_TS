@@ -1,10 +1,10 @@
-import extendedTest from "../../../src/fixtures/extendedTest";
-import stepSequenceHelper from "../../../src/helpers/chaining/stepSequenceHelper";
-import browserHelper from "../../../src/helpers/channel/browserHelper";
-import blankSteps from "../../../src/pages/blank/blankSteps";
-import adminPanelSteps from "../../../src/pages/restfulBooker/adminPanel/adminPanelSteps";
-import loginSteps from "../../../src/pages/restfulBooker/login/loginSteps";
-import testUtils from "../../../src/utils/testUtils";
+import extendedTest from "../../../src/fixtures/extendedTest.js";
+import stepSequenceHelper from "../../../src/helpers/chaining/stepSequenceHelper.js";
+import browserHelper from "../../../src/helpers/channel/browserHelper.js";
+import blankSteps from "../../../src/pages/blank/blankSteps.js";
+import adminPanelSteps from "../../../src/pages/restfulBooker/adminPanel/adminPanelSteps.js";
+import loginSteps from "../../../src/pages/restfulBooker/login/loginSteps.js";
+import testUtils from "../../../src/utils/testUtils.js";
 
 extendedTest.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false } });
 extendedTest.describe("Initial Page without storageState", () => {

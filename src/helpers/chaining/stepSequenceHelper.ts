@@ -1,5 +1,5 @@
-import test from "@playwright/test";
-import config from "../../../playwright.config";
+import { test } from "@playwright/test";
+import config from "../../../playwright.config.js";
 
 const testFilePath = new RegExp(`${(config.testDir ?? "").replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+.spec.ts:[0-9]+:[0-9]+`);
 let stepSequence = Promise.resolve();
@@ -45,13 +45,13 @@ const stepSequenceHelper = {
         stepSequence = stepSequence.then(step).catch((error: unknown) => {
             if (error instanceof Error) {
                 if (error.stack && myError.stack)
-                    if (error.stack.includes(__filename) && testFilePath.test(myError.stack)) {
+                    if (error.stack.includes(import.meta.filename) && testFilePath.test(myError.stack)) {
                         const stepCallRow = getTestCallRowInStack(myError.stack);
                         const promiseAwaitRow = getTestCallRowInStack(error.stack);
                         error.stack = error.stack
                             .replace(promiseAwaitRow, stepCallRow)
                             .split('\n')
-                            .filter(row => !row.includes(__filename))
+                            .filter(row => !row.includes(import.meta.filename))
                             .join('\n');
                     }
                 throw error;

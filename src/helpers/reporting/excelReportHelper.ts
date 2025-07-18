@@ -1,9 +1,9 @@
-import { Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import GeneralUtils from "../../utils/generalUtils";
-import terminalUtils from "../../utils/terminalUtils";
-import fileUtils from "../../utils/fileUtils";
-import testUtils from "../../utils/testUtils";
-import errorHandlingUtils from "../../utils/errorHandlingUtils";
+import type { Suite, TestCase, TestResult } from "@playwright/test/reporter";
+import GeneralUtils from "../../utils/generalUtils.js";
+import terminalUtils from "../../utils/terminalUtils.js";
+import fileUtils from "../../utils/fileUtils.js";
+import testUtils from "../../utils/testUtils.js";
+import errorHandlingUtils from "../../utils/errorHandlingUtils.js";
 import Excel from "exceljs";
 
 const unreportedTestTitles: string[] = [];

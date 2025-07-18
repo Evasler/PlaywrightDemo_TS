@@ -1,6 +1,6 @@
-import { CreateRoomPayload } from "../../types/apiPayloadTypes";
-import requestHelper from "../../helpers/channel/requestHelper";
-import roomEndpoints from "./roomEndpoints";
+import type { CreateRoomPayload } from "../../types/apiPayloadTypes.js";
+import requestHelper from "../../helpers/channel/requestHelper.js";
+import roomEndpoints from "./roomEndpoints.js";
 
 const roomRequests = {
     getRoom() {

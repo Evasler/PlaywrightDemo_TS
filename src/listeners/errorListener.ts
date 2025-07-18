@@ -1,5 +1,5 @@
-import { Page } from "@playwright/test";
-import frameworkDataHelper from "../helpers/data/frameworkDataHelper";
+import type { Page } from "@playwright/test";
+import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
 
 /**
  * Facilitates attaching listeners.

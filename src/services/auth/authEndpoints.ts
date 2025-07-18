@@ -1,4 +1,4 @@
-import frameworkDataHelper from "../../helpers/data/frameworkDataHelper";
+import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
 
 const authEndpoints = {
     auth() { return `${frameworkDataHelper.apiUrl}auth/` },

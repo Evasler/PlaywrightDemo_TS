@@ -1,4 +1,4 @@
-import browserHelper from "../../../helpers/channel/browserHelper";
+import browserHelper from "../../../helpers/channel/browserHelper.js";
 
 const loginLocators = {
     loginHeading() { return browserHelper.workingTab.getByRole("heading", { name: "Login", exact: true }); },

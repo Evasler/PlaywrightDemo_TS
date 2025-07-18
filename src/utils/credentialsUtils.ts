@@ -1,4 +1,4 @@
-import { userCredentials } from "../../resources/userCredentials";
+import { userCredentials } from "../../resources/userCredentials.js";
 
 const credentialsUtils = {
 

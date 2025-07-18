@@ -1,8 +1,8 @@
-import extendedTest from "../../../../src/fixtures/extendedTest";
-import blankSteps from "../../../../src/pages/blank/blankSteps";
-import loginSteps from "../../../../src/pages/restfulBooker/login/loginSteps";
-import testUtils from "../../../../src/utils/testUtils";
-import dataset from "./setupStepsUi.data";
+import extendedTest from "../../../../src/fixtures/extendedTest.js";
+import blankSteps from "../../../../src/pages/blank/blankSteps.js";
+import loginSteps from "../../../../src/pages/restfulBooker/login/loginSteps.js";
+import testUtils from "../../../../src/utils/testUtils.js";
+import dataset from "./setupStepsUi.data.js";
 
 extendedTest.use({ setupStepsArgsArray: dataset.setupStepsArgsArray });
 extendedTest(testUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ openNewTabInNewContext }) => {

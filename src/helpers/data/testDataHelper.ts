@@ -1,4 +1,4 @@
-import { TestDataKeys } from "../../types/frameworkTypes";
+import type { TestDataKeys } from "../../types/frameworkTypes.js";
 
 const testData = new Map<TestDataKeys,string[]>();
 

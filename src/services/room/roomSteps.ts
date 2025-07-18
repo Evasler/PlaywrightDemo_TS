@@ -1,8 +1,8 @@
-import test, { expect } from "@playwright/test";
-import { CreateRoomResponse, GetRoomResponse } from "../../types/apiResponseTypes";
-import { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../types/stepArgsTypes";
-import roomRequests from "./roomRequests";
-import testDataHelper from "../../helpers/data/testDataHelper";
+import { test, expect } from "@playwright/test";
+import type { CreateRoomResponse, GetRoomResponse } from "../../types/apiResponseTypes.js";
+import type { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../types/stepArgsTypes.js";
+import roomRequests from "./roomRequests.js";
+import testDataHelper from "../../helpers/data/testDataHelper.js";
 
 const roomSteps = {
     

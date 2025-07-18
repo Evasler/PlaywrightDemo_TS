@@ -1,4 +1,4 @@
-import { ExtraStepsArgs } from "./stepArgsTypes";
+import type { ExtraStepsArgs } from "./stepArgsTypes.js";
 
 export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
 export type TestDataKeys = "token" | "roomId";

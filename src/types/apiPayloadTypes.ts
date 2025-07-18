@@ -1,4 +1,4 @@
-import { RoomFeature, RoomType } from "./appTypes";
+import type { RoomFeature, RoomType } from "./appTypes.js";
 
 export interface CreateRoomPayload {
     roomName: string;

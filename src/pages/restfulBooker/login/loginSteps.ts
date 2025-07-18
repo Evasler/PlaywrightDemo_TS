@@ -1,8 +1,8 @@
 import { expect } from "@playwright/test";
-import credentialsUtils from "../../../utils/credentialsUtils";
-import adminPanelSteps from "../adminPanel/adminPanelSteps";
-import loginLocators from "./loginLocators";
-import BaseSteps from "../../base/baseSteps";
+import credentialsUtils from "../../../utils/credentialsUtils.js";
+import loginLocators from "./loginLocators.js";
+import BaseSteps from "../../base/baseSteps.js";
+import adminPanelSteps from "../adminPanel/adminPanelSteps.js";
 
 class LoginSteps extends BaseSteps {
 

@@ -1,5 +1,5 @@
-import requestHelper from "../../helpers/channel/requestHelper";
-import authEndpoints from "./authEndpoints";
+import requestHelper from "../../helpers/channel/requestHelper.js";
+import authEndpoints from "./authEndpoints.js";
 
 const authRequests = {
     login(payload: { username: string; password: string; }) {

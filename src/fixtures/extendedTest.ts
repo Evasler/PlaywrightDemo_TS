@@ -1,11 +1,11 @@
 import { test as base } from "@playwright/test";
-import { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../types/frameworkTypes";
-import extraStepsHelper from "../helpers/extraStepsHelper";
-import browserHelper from "../helpers/channel/browserHelper";
-import frameworkDataHelper from "../helpers/data/frameworkDataHelper";
-import tabDataHelper from "../helpers/data/tabDataHelper";
-import testDataHelper from "../helpers/data/testDataHelper";
-import BaseSteps from "../pages/base/baseSteps";
+import type { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../types/frameworkTypes.js";
+import extraStepsHelper from "../helpers/extraStepsHelper.js";
+import browserHelper from "../helpers/channel/browserHelper.js";
+import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
+import tabDataHelper from "../helpers/data/tabDataHelper.js";
+import testDataHelper from "../helpers/data/testDataHelper.js";
+import BaseSteps from "../pages/base/baseSteps.js";
 
 const extendedTest = base.extend<{ openNewTabInNewContext: <T extends BaseSteps>(page: T) => T } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, object>({
     setupStepsArgsArray: [ undefined, { option: true }],

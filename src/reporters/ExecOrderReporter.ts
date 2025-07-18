@@ -1,5 +1,5 @@
 import type { Reporter, FullConfig, Suite, TestCase } from '@playwright/test/reporter';
-import terminalUtils from '../utils/terminalUtils';
+import terminalUtils from '../utils/terminalUtils.js';
 
 export default class MyReporter implements Reporter {
 
@@ -9,40 +9,40 @@ export default class MyReporter implements Reporter {
   constructor() {
     console.log('\n');
     terminalUtils.printHeader();
-    terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "constructor");
+    terminalUtils.printLogLevelMessage(import.meta.filename, "customReporter", "reporter", "constructor");
   }
 
   onBegin(config: FullConfig, suite: Suite) {
     this._testCount = suite.allTests().length;
-    terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onBegin");
+    terminalUtils.printLogLevelMessage(import.meta.filename, "customReporter", "reporter", "onBegin");
   }
 
   onTestBegin(test: TestCase) {
     const project = test.parent.project();
     console.log(`(${this._testId++}/${this._testCount}) ${project ? project.name : "projectlessSuite"} > ${test.title}`)
-    terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onTestBegin");
+    terminalUtils.printLogLevelMessage(import.meta.filename, "customReporter", "reporter", "onTestBegin");
   }
 
   // Commented-out due to extreme noise
   // onStepBegin(test: TestCase, result: TestResult, step: TestStep) {
-  //   terminalUtils.printLogLevelMessage(__filename, "", "reporter", "onStepBegin");
+  //   terminalUtils.printLogLevelMessage(import.meta.filename, "", "reporter", "onStepBegin");
   // }
 
   // Commented-out due to extreme noise
   // onStepEnd(test: TestCase, result: TestResult, step: TestStep) {
-  //   terminalUtils.printLogLevelMessage(__filename, "", "reporter", "onStepEnd");
+  //   terminalUtils.printLogLevelMessage(import.meta.filename, "", "reporter", "onStepEnd");
   // }
 
   onTestEnd() {
-    terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onTestEnd");
+    terminalUtils.printLogLevelMessage(import.meta.filename, "customReporter", "reporter", "onTestEnd");
   }
 
   onEnd() {
-    terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onEnd");
+    terminalUtils.printLogLevelMessage(import.meta.filename, "customReporter", "reporter", "onEnd");
   }
 
   async onExit(): Promise<void> { // eslint-disable-line @typescript-eslint/require-await
-    terminalUtils.printLogLevelMessage(__filename, "customReporter", "reporter", "onExit");
+    terminalUtils.printLogLevelMessage(import.meta.filename, "customReporter", "reporter", "onExit");
     console.log('\n');
   }
 

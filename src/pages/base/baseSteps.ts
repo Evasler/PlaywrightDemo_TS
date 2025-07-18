@@ -1,7 +1,7 @@
-import { PageType, TestDataKeys } from "../../types/frameworkTypes";
-import stepSequenceHelper from "../../helpers/chaining/stepSequenceHelper";
-import browserHelper from "../../helpers/channel/browserHelper";
-import testDataHelper from "../../helpers/data/testDataHelper";
+import type { PageType, TestDataKeys } from "../../types/frameworkTypes.js";
+import stepSequenceHelper from "../../helpers/chaining/stepSequenceHelper.js";
+import browserHelper from "../../helpers/channel/browserHelper.js";
+import testDataHelper from "../../helpers/data/testDataHelper.js";
 
 export default abstract class BaseSteps {
 

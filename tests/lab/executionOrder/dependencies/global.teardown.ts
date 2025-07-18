@@ -1,6 +1,6 @@
 import { test as teardown} from "@playwright/test";
-import terminalUtils from "../../../../src/utils/terminalUtils";
+import terminalUtils from "../../../../src/utils/terminalUtils.js";
 
 teardown("teardown", ({}, testInfo) => {
-    terminalUtils.printLogLevelMessage(__filename, testInfo.title, "projectDependency", "teardown");
+    terminalUtils.printLogLevelMessage(import.meta.filename, testInfo.title, "projectDependency", "teardown");
 });

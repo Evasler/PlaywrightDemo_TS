@@ -1,9 +1,9 @@
-import extendedTest from "../../../src/fixtures/extendedTest";
-import requestHelper from "../../../src/helpers/channel/requestHelper";
-import authSteps from "../../../src/services/auth/authSteps";
-import roomSteps from "../../../src/services/room/roomSteps";
-import testUtils from "../../../src/utils/testUtils";
-import datasets from "./parameterizedTests.data";
+import extendedTest from "../../../src/fixtures/extendedTest.js";
+import requestHelper from "../../../src/helpers/channel/requestHelper.js";
+import authSteps from "../../../src/services/auth/authSteps.js";
+import roomSteps from "../../../src/services/room/roomSteps.js";
+import testUtils from "../../../src/utils/testUtils.js";
+import datasets from "./parameterizedTests.data.js";
 
 for (const dataset of datasets)
     extendedTest(testUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async() => {

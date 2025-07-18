@@ -1,5 +1,6 @@
 import extendedTest from "../../../../src/fixtures/extendedTest.js";
 import blankSteps from "../../../../src/pages/blank/blankSteps.js";
+import adminPanelSteps from "../../../../src/pages/restfulBooker/adminPanel/adminPanelSteps.js";
 import loginSteps from "../../../../src/pages/restfulBooker/login/loginSteps.js";
 import testUtils from "../../../../src/utils/testUtils.js";
 import dataset from "./setupStepsUi.data.js";
@@ -9,7 +10,7 @@ extendedTest(testUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.tit
     await openNewTabInNewContext(blankSteps)
     .goToRestfulBookerAdminPage(loginSteps)
     .populateCredentials("administrator")
-    .clickLogin()
+    .clickLogin(adminPanelSteps)
     .verifyRoomVisibility(dataset.stepData.roomInfo, true)
     .deleteRoom(dataset.stepData.roomInfo)
     .verifyRoomVisibility(dataset.stepData.roomInfo, false)

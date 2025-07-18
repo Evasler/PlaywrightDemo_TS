@@ -5,7 +5,7 @@ import testDataHelper from "../../helpers/data/testDataHelper.js";
 
 export default abstract class BaseSteps {
 
-    constructor(readonly _stepsType: PageType) {}
+    constructor(protected readonly _stepsType: PageType) {}
 
     protected addStep(stepName: string, stepFunction: () => Promise<void>) {
         stepSequenceHelper.addStep(stepName, stepFunction);

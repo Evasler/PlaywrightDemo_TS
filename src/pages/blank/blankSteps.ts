@@ -1,13 +1,15 @@
+import type { ErrorSteps } from "../error/errorSteps.js";
+import type { AdminPanelSteps } from "../restfulBooker/adminPanel/adminPanelSteps.js";
+import type { LoginSteps } from "../restfulBooker/login/loginSteps.js";
 import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
 import browserHelper from "../../helpers/channel/browserHelper.js";
 import BaseSteps from "../base/baseSteps.js";
-import type loginSteps from "../restfulBooker/login/loginSteps.js";
-import type adminPanelSteps from "../restfulBooker/adminPanel/adminPanelSteps.js";
-import errorSteps from "../error/errorSteps.js";
 
 class BlankSteps extends BaseSteps {
 
-    goToRestfulBookerAdminPage<T extends typeof loginSteps | typeof adminPanelSteps>(landingPage: T) {
+    constructor() { super("BlankPage"); }
+
+    goToRestfulBookerAdminPage<T extends LoginSteps | AdminPanelSteps>(landingPage: T) {
         this.addStep("goToRestfulBooker", async() => {
             console.log("goToRestfulBooker");
             await browserHelper.workingTab.goto(`${frameworkDataHelper.baseUrl}admin`);
@@ -15,7 +17,7 @@ class BlankSteps extends BaseSteps {
         return landingPage;
     }
 
-    goToJsErrorPage() {
+    goToJsErrorPage(errorSteps: ErrorSteps) {
         this.addStep("goToJsErrorPage", async() => {
             console.log("goToJsErrorPage");
             await browserHelper.workingTab.goto(`data:text/html,<script>throw new Error("myJavaScriptError")</script>`);
@@ -23,7 +25,7 @@ class BlankSteps extends BaseSteps {
         return errorSteps;
     }
 
-    goToInternalServerErrorPage() {
+    goToInternalServerErrorPage(errorSteps: ErrorSteps) {
         this.addStep("goToInternalServerErrorPage", async() => {
             console.log("goToInternalServerErrorPage");
             await browserHelper.workingTab.route(frameworkDataHelper.baseUrl, async (route) => {
@@ -38,7 +40,7 @@ class BlankSteps extends BaseSteps {
         return errorSteps;
     }
 
-    goToConnectionErrorPage() {
+    goToConnectionErrorPage(errorSteps: ErrorSteps) {
         this.addStep("goToConnectionErrorPage", async() => {
             console.log("goToConnectionErrorPage");
             await browserHelper.workingTab.route(frameworkDataHelper.baseUrl, (route) => route.abort());
@@ -48,4 +50,5 @@ class BlankSteps extends BaseSteps {
     }
 }
 
-export default new BlankSteps("BlankPage");
+export default new BlankSteps();
+export type { BlankSteps };

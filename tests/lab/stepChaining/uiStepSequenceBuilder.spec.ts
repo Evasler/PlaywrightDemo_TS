@@ -9,7 +9,7 @@ extendedTest(testUtils.fullTitle(0, "Chained Page Object Model | StepSequenceBui
     ._openNewTabInNewContext(blankSteps)
     .goToRestfulBookerAdminPage(loginSteps)
     .populateCredentials("administrator")
-    .clickLogin()
+    .clickLogin(adminPanelSteps)
     .verifyLinkIsVisible("Rooms")
     ._switchWorkingTab(0, 0, blankSteps)
     .goToRestfulBookerAdminPage(loginSteps)

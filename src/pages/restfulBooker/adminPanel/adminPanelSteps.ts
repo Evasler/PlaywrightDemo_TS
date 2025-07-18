@@ -3,6 +3,8 @@ import adminPanelLocators from "./adminPanelLocators.js";
 import BaseSteps from "../../base/baseSteps.js";
 
 class AdminPanelSteps extends BaseSteps {
+    
+    constructor() { super("AdminPanel"); }
 
     verifyLinkIsVisible(name: string) {
         this.addStep("verifyLinkIsVisible", async() => {
@@ -32,4 +34,5 @@ class AdminPanelSteps extends BaseSteps {
     }
 }
 
-export default new AdminPanelSteps("AdminPanel");
+export default new AdminPanelSteps();
+export type { AdminPanelSteps };

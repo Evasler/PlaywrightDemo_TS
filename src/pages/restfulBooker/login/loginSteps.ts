@@ -2,9 +2,11 @@ import { expect } from "@playwright/test";
 import credentialsUtils from "../../../utils/credentialsUtils.js";
 import loginLocators from "./loginLocators.js";
 import BaseSteps from "../../base/baseSteps.js";
-import adminPanelSteps from "../adminPanel/adminPanelSteps.js";
+import type { AdminPanelSteps } from "../adminPanel/adminPanelSteps.js";
 
 class LoginSteps extends BaseSteps {
+
+    constructor() { super("LoginPage"); }
 
     verifyLoginIsVisible() {
         this.addStep("verifyLoginIsVisible", async() => {
@@ -24,7 +26,7 @@ class LoginSteps extends BaseSteps {
         return this;
     }
 
-    clickLogin() {
+    clickLogin(adminPanelSteps: AdminPanelSteps) {
         this.addStep("clickLogin", async() => {
             console.log("clickLogin");
             await loginLocators.loginButton().click();
@@ -33,4 +35,5 @@ class LoginSteps extends BaseSteps {
     }
 }
 
-export default new LoginSteps("LoginPage");
+export default new LoginSteps();
+export type { LoginSteps };

@@ -26,7 +26,7 @@ class AdminPanelSteps extends BaseSteps {
             if (shouldBeVisible)
                 await expect(adminPanelLocators.row(roomInfo.roomName, roomInfo.type, roomInfo.accessible, roomInfo.price, roomInfo.roomDetails)).toBeVisible();
             else
-                await expect(adminPanelLocators.row(roomInfo.roomName, roomInfo.type, roomInfo.accessible, roomInfo.price, roomInfo.roomDetails)).not.toBeVisible();
+                await expect(adminPanelLocators.row(roomInfo.roomName, roomInfo.type, roomInfo.accessible, roomInfo.price, roomInfo.roomDetails)).toBeHidden();
         });
         return this;
     }

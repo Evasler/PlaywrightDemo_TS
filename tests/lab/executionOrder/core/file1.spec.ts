@@ -19,7 +19,7 @@ test.describe("describe1", () => {
         await test.step("step1", () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step1") });
         await test.step("step2", async () => {
             terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step2_1");
-            await test.step("nestedStep", () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "nestedStep") });
+            await test.step("nestedStep", () => { terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "nestedStep") });  // eslint-disable-line playwright/no-nested-step
             terminalUtils.printLogLevelMessage(__filename, testInfo.title, "test", "step2_2");
         });
     });

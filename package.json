@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "validate": "npx tsc --noEmit && npx eslint ."
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

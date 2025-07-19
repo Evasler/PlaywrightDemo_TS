@@ -18,6 +18,30 @@ export default tseslint.config(
     },
     rules: {
         "no-empty-pattern": ["error", { "allowObjectPatternsAsParameters": true }],
+        "no-restricted-imports": ["error", {
+            "patterns": [
+              {
+                "regex": "/helpers/(?!index\.js)",
+                "message": "Exported modules of \"helpers\" directory are listed in \/helpers\/index.js. Please import from there instead."
+              },
+              {
+                "regex": "/pages/(?!index\.js)",
+                "message": "Exported modules of \"pages\" directory are listed in \/pages\/index.js. Please import from there instead."
+              },
+              {
+                "regex": "/services/(?!index\.js)",
+                "message": "Exported modules of \"services\" directory are listed in \/services\/index.js. Please import from there instead."
+              },
+              {
+                "regex": "/types/(?!index\.js)",
+                "message": "Exported modules of \"types\" directory are listed in \/types\/index.js. Please import from there instead."
+              },
+              {
+                "regex": "/utils/(?!index\.js)",
+                "message": "Exported modules of \"utils\" directory are listed in \/utils\/index.js. Please import from there instead."
+              }
+            ]
+        }],
         "@typescript-eslint/restrict-template-expressions": ["error", { "allowNumber": true }],
         "playwright/no-standalone-expect": "off",
         "playwright/no-conditional-in-test": "off",

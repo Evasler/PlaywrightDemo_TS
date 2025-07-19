@@ -1,5 +1,5 @@
 import type { TestCase, TestResult } from "@playwright/test/reporter";
-import type { SuiteTag } from "../types/frameworkTypes.js";
+import type { SuiteTag } from "../types/index.js";
 
 const testUtils = {
 

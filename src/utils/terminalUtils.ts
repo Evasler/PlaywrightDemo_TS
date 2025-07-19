@@ -1,5 +1,5 @@
 
-import type { LogLevel } from "../types/frameworkTypes.js";
+import type { LogLevel } from "../types/index.js";
 import path from "path";
 
 const reset = "\x1b[0m";

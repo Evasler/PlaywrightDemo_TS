@@ -1,8 +1,7 @@
 import { test, expect } from "@playwright/test";
-import type { CreateRoomResponse, GetRoomResponse } from "../../types/apiResponseTypes.js";
-import type { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs } from "../../types/stepArgsTypes.js";
+import type { CreateRoomArgs, DeleteRoomArgs, GetRoomIdArgs, CreateRoomResponse, GetRoomResponse } from "../../types/index.js";
 import roomRequests from "./roomRequests.js";
-import testDataHelper from "../../helpers/data/testDataHelper.js";
+import { testDataHelper } from "../../helpers/index.js";
 
 const roomSteps = {
     

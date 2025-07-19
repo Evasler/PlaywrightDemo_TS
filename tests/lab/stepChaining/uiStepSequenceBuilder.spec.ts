@@ -1,8 +1,6 @@
 import extendedTest from "../../../src/fixtures/extendedTest.js";
-import blankSteps from "../../../src/pages/blank/blankSteps.js";
-import adminPanelSteps from "../../../src/pages/restfulBooker/adminPanel/adminPanelSteps.js";
-import loginSteps from "../../../src/pages/restfulBooker/login/loginSteps.js";
-import testUtils from "../../../src/utils/testUtils.js";
+import { adminPanelSteps, blankSteps, loginSteps } from "../../../src/pages/index.js";
+import { testUtils } from "../../../src/utils/index.js";
 
 extendedTest(testUtils.fullTitle(0, "Chained Page Object Model | StepSequenceBuilder"), async( { openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)

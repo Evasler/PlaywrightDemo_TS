@@ -1,10 +1,6 @@
 import type { Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import GeneralUtils from "../../utils/generalUtils.js";
-import terminalUtils from "../../utils/terminalUtils.js";
-import fileUtils from "../../utils/fileUtils.js";
-import testUtils from "../../utils/testUtils.js";
-import errorHandlingUtils from "../../utils/errorHandlingUtils.js";
 import Excel from "exceljs";
+import { errorHandlingUtils, fileUtils, generalUtils, terminalUtils, testUtils } from "../../utils/index.js";
 
 const unreportedTestTitles: string[] = [];
 let filepath: string;
@@ -213,8 +209,8 @@ const excelReportHelper = {
                     resultCell.value = testUtils.status(result);
                     if (result.error?.message)
                         errorCell.value = terminalUtils.clearOutput(result.error.message);
-                    durationCell.value = GeneralUtils.millisToString(result.duration);
-                    dateCell.value = GeneralUtils.getCurrentDate();
+                    durationCell.value = generalUtils.millisToString(result.duration);
+                    dateCell.value = generalUtils.getCurrentDate();
                 }
                 testPointExists = true;
                 break;

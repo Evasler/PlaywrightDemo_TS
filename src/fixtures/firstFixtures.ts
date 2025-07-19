@@ -2,7 +2,7 @@
 /* eslint @typescript-eslint/no-unused-vars: 0 */
 
 import { test as base, expect } from "@playwright/test";
-import terminalUtils from "../utils/terminalUtils.js";
+import { terminalUtils } from "../utils/index.js";
 
 interface TestFixtures {
     autoTestFixture: void;

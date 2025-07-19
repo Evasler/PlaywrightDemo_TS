@@ -1,4 +1,4 @@
-import requestHelper from "../../helpers/channel/requestHelper.js";
+import { requestHelper } from "../../helpers/index.js";
 import authEndpoints from "./authEndpoints.js";
 
 const authRequests = {

@@ -1,5 +1,5 @@
 import type { APIRequest, Browser } from "@playwright/test";
-import type { ErrorListenerOptions } from "../../types/frameworkTypes.js";
+import type { ErrorListenerOptions } from "../../types/index.js";
 
 let apiRequest: APIRequest;
 let baseUrl: string;

@@ -1,11 +1,13 @@
-import type { PageType, TestDataKeys } from "../../types/frameworkTypes.js";
-import stepSequenceHelper from "../../helpers/chaining/stepSequenceHelper.js";
-import browserHelper from "../../helpers/channel/browserHelper.js";
-import testDataHelper from "../../helpers/data/testDataHelper.js";
+import { browserHelper, stepSequenceHelper, testDataHelper } from "../../helpers/index.js";
+import type { PageType, TestDataKeys } from "../../types/index.js";
 
 export default abstract class BaseSteps {
 
     constructor(protected readonly _stepsType: PageType) {}
+
+    protected get workingTab() {
+        return browserHelper.workingTab;
+    }
 
     protected addStep(stepName: string, stepFunction: () => Promise<void>) {
         stepSequenceHelper.addStep(stepName, stepFunction);
@@ -38,3 +40,5 @@ export default abstract class BaseSteps {
         return stepSequenceHelper.stepSequence;
     }
 }
+
+export type { BaseSteps };

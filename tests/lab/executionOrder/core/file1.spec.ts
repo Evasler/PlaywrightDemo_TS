@@ -1,5 +1,5 @@
 import test from "../../../../src/fixtures/firstFixtures.js";
-import terminalUtils from "../../../../src/utils/terminalUtils.js";
+import { terminalUtils } from "../../../../src/utils/index.js";
 
 test.beforeAll("fileBeforeAll", ({}, testInfo) => { terminalUtils.printLogLevelMessage(import.meta.filename, testInfo.title, "specFile", "beforeAll") });
 test.afterAll("fileAfterAll", ({}, testInfo) => { terminalUtils.printLogLevelMessage(import.meta.filename, testInfo.title, "specFile", "afterAll") });

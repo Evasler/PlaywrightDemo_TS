@@ -1,8 +1,8 @@
 import type { FullConfig, Reporter, Suite, TestCase, TestResult } from '@playwright/test/reporter';
-import type { ExcelReporterOptions } from '../types/frameworkTypes.js';
-import excelReportHelper from '../helpers/reporting/excelReportHelper.js';
+import type { ExcelReporterOptions } from '../types/index.js';
 import GlobalReporter from './GlobalReporter.js';
-import errorHandlingUtils from '../utils/errorHandlingUtils.js';
+import { errorHandlingUtils } from '../utils/index.js';
+import { excelReportHelper } from '../helpers/index.js';
 
 export default class ExcelReporter implements Reporter {
 

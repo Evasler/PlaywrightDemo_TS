@@ -1,4 +1,4 @@
-import browserHelper from "../../../helpers/channel/browserHelper.js";
+import { browserHelper } from "../../../helpers/index.js";
 
 const adminPanelLocators = {
     link(name: string) { return browserHelper.workingTab.getByRole("link", {name: name, exact: true}); },

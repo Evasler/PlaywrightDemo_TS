@@ -1,13 +1,9 @@
 import { test as base } from "@playwright/test";
-import type { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../types/frameworkTypes.js";
-import extraStepsHelper from "../helpers/extraStepsHelper.js";
-import browserHelper from "../helpers/channel/browserHelper.js";
-import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
-import tabDataHelper from "../helpers/data/tabDataHelper.js";
-import testDataHelper from "../helpers/data/testDataHelper.js";
-import BaseSteps from "../pages/base/baseSteps.js";
+import type { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../types/index.js";
+import { browserHelper, extraStepsHelper, frameworkDataHelper, tabDataHelper, testDataHelper } from "../helpers/index.js";
+import type { BaseSteps } from "../pages/index.js";
 
-const extendedTest = base.extend<{ openNewTabInNewContext: <T extends BaseSteps>(page: T) => T } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, object>({
+const extendedTest = base.extend<{ openNewTabInNewContext: <T extends BaseSteps>(page: T, authenticatedUser?: string) => T } & ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, object>({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
     errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
@@ -24,8 +20,8 @@ const extendedTest = base.extend<{ openNewTabInNewContext: <T extends BaseSteps>
         });
         if (setupStepsArgsArray)
             await extraStepsHelper.execute("setupSteps", setupStepsArgsArray);
-        await use((page) => {
-            browserHelper.openNewTabInNewContext();
+        await use((page, authenticatedUser) => {
+            browserHelper.openNewTabInNewContext(authenticatedUser);
             return page;
         });
         if (teardownStepsArgsArray)

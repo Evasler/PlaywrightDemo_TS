@@ -1,5 +1,5 @@
 import { expect } from "@playwright/test";
-import credentialsUtils from "../../../utils/credentialsUtils.js";
+import { credentialsUtils } from "../../../utils/index.js";
 import loginLocators from "./loginLocators.js";
 import BaseSteps from "../../base/baseSteps.js";
 import type { AdminPanelSteps } from "../adminPanel/adminPanelSteps.js";

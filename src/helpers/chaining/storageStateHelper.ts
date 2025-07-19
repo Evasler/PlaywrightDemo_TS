@@ -1,10 +1,8 @@
 import { type APIRequestContext, type Page, expect } from "@playwright/test";
-import authEndpoints from "../../services/auth/authEndpoints.js";
-import credentialsUtils from "../../utils/credentialsUtils.js";
-import type { StorageState } from "../../types/frameworkTypes.js";
-import type { LoginResponse } from "../../types/apiResponseTypes.js";
-import fileUtils from "../../utils/fileUtils.js";
-import frameworkDataHelper from "../data/frameworkDataHelper.js";
+import { credentialsUtils, fileUtils } from "../../utils/index.js";
+import type { StorageState, LoginResponse } from "../../types/index.js";
+import { frameworkDataHelper } from "../index.js";
+import { authRequests } from "../../services/index.js";
 
 const authDirectory = ".auth";
 
@@ -22,7 +20,7 @@ function storageStatePath(user: string) { return `${authDirectory}/${user}.json`
 async function createStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
     console.log(`Generating ${storageStatePath(user)}`)
     const credentials = credentialsUtils.getUserCredentials(user);
-    const response = await workingRequest.post(authEndpoints.login(), { data: credentials });
+    const response = await authRequests.login(credentials);
     expect(response.status()).toEqual(200);
     const responseJson = await response.json() as LoginResponse;
     const storageStateTemplate = JSON.parse(fileUtils.readFile("./resources/other/restfulBookerStorageStateTemplate.json")) as StorageState;
@@ -41,7 +39,7 @@ async function contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
     const tokenCookie = (await workingRequest.storageState()).cookies.find(cookie => cookie.name === "token");
     if (tokenCookie) {
         const token = tokenCookie.value;
-        const response = await workingRequest.post(authEndpoints.validate(), { data: { token: token } });
+        const response = await authRequests.validate({ token: token });
         contextIsAuthorized = response.ok();
     }
     console.log(`Context is ${contextIsAuthorized ? "authorized" : "unauthorized"}`);

@@ -4,7 +4,12 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "validate": "npx tsc --noEmit && npx eslint ."
+    "validate": "npx tsc --noEmit && npx eslint .",
+    "basicTests": "npx playwright test --project=\"basicTests\"",
+    "failingTests": "npx playwright test --project=\"failingTests\"",
+    "executionOrder": "npx playwright test --project=\"executionOrder\" --reporter=\"./src/reporters/ExecOrderReporter.ts\"",
+    "excel-configuration1": "npx playwright test --project=\"excel-configuration1\"",
+    "excel-configuration2": "npx playwright test --project=\"excel-configuration2\""
   },
   "keywords": [],
   "author": "",

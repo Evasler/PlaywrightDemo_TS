@@ -69,9 +69,14 @@ export default defineConfig<ErrorListenerOptionsObj>({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
+      name: 'basicTests',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: /tests\/lab\/(dataHandling|listeners|stepChaining|storageState)\/*\/.*\.spec\.ts/
+      testMatch: /tests\/lab\/(dataHandling|stepChaining|storageState)\/*\/.*\.spec\.ts/
+    },
+    {
+      name: 'failingTests',
+      use: { ...devices['Desktop Chrome'] },
+      testMatch: /tests\/lab\/listeners\/*\/.*\.spec\.ts/
     },
     {
       name: 'executionOrderDependency',
@@ -88,14 +93,14 @@ export default defineConfig<ErrorListenerOptionsObj>({
       dependencies: ['executionOrderDependency']
     },
     {
-      name: 'configuration1',
+      name: 'excel-configuration1',
       testMatch: /excelReporting\/.*/,
       use: {
         ...devices['Desktop Chrome']
       }
     },
     {
-      name: 'configuration2',
+      name: 'excel-configuration2',
       testMatch: /excelReporting\/.*/,
       use: {
         ...devices['Desktop Chrome']

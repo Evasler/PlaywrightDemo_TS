@@ -6,16 +6,16 @@ import { testDataHelper } from "../../helpers/index.js";
 const roomSteps = {
     
     async getAllRooms() {
-        await test.step("getAllRooms", async() => {
-            console.log("getAllRooms");
+        await test.step("Getting all rooms", async() => {
+            console.log("Getting all rooms");
             const response = await roomRequests.getRoom();
             expect(response.status()).toEqual(200);
         });
     },
     
     async createRoom({ payload }: CreateRoomArgs) {
-        await test.step("createRoom", async() => {
-            console.log("createRoom");
+        await test.step(`Creating room "${payload.roomName}"`, async() => {
+            console.log(`Creating room "${payload.roomName}"`);
             const response = await roomRequests.postRoom(payload);
             expect(response.status()).toEqual(200);
             const responseJson = await response.json() as CreateRoomResponse;
@@ -24,8 +24,8 @@ const roomSteps = {
     },
 
     async getRoomId({ roomName }: GetRoomIdArgs) {
-        await test.step("getRoomId", async() => {
-            console.log(`Getting roomId of room with name "${roomName}"`);
+        await test.step(`Getting roomId of room "${roomName}"`, async() => {
+            console.log(`Getting roomId of room "${roomName}"`);
             const response = await roomRequests.getRoom();
             expect(response.status()).toEqual(200);
             const responseJson = await response.json() as GetRoomResponse;
@@ -36,9 +36,10 @@ const roomSteps = {
     },
 
     async deleteRoom({ tempDataIndex }: DeleteRoomArgs) {
-        await test.step("deleteRoom", async () => {
-            console.log("deleteRoom");
-            const response = await roomRequests.deleteRoom(+testDataHelper.getTestData("roomId", tempDataIndex));
+        await test.step("Deleting room with roomId", async () => {
+            const roomId = +testDataHelper.getTestData("roomId", tempDataIndex);
+            console.log(`Deleting room with roomId "${roomId}"`);
+            const response = await roomRequests.deleteRoom(roomId);
             expect(response.status()).toEqual(200);
         });
     }

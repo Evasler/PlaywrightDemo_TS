@@ -7,8 +7,8 @@ import { requestHelper, testDataHelper } from "../../helpers/index.js";
 const authSteps = {
 
     async login({ user }: LoginArgs) {
-        await test.step("login", async() => {
-            console.log("login");
+        await test.step(`Logging in as user "${user}"`, async() => {
+            console.log(`Logging in as user "${user}"`);
             const userCredentialsObj = credentialsUtils.getUserCredentials(user);
             const response = await authRequests.login(userCredentialsObj);
             expect(response.status()).toEqual(200);
@@ -19,9 +19,10 @@ const authSteps = {
     },
 
     async validate(tempDataIndex: number) {
-        await test.step("validate", async() => {
-            console.log("validate");
-            const tokenObj = { token: testDataHelper.getTestData("token", tempDataIndex) };
+        await test.step("Validating session token", async() => {
+            const token = testDataHelper.getTestData("token", tempDataIndex);
+            console.log(`Validating session token "${token}"`);
+            const tokenObj = { token: token };
             const response = await authRequests.validate(tokenObj);
             const valid = (await response.json() as ValidateResponse).valid;
             expect(valid).toBeTruthy();
@@ -29,8 +30,8 @@ const authSteps = {
     },
 
     async logout(token: string) {
-        await test.step("logout", async() => {
-            console.log("logout");
+        await test.step(`Logging out token "${token}"`, async() => {
+            console.log(`Logging out token "${token}"`);
             const tokenObj = { token: token };
             const response = await authRequests.logout(tokenObj);
             expect(response.status()).toEqual(200);

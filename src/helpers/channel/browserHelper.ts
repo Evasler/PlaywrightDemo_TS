@@ -67,8 +67,8 @@ const browserHelper = {
      * Opens a new Tab in the Context of the focused Tab's Context. The new Tab is focused.
      */
     openNewTabInCurrentContext() {
-        stepSequenceHelper.addStep("openNewTabInCurrentContext", async() => {
-            console.log("openNewTabInCurrentContext");
+        stepSequenceHelper.addStep("Opening new Tab in current Context", async() => {
+            console.log("Opening new Tab in current Context");
             const newPage = await workingContext().newPage();
             errorListener.attachTo(newPage);
             tabDataHelper.initializePageType(workingContextIndex(), latestTabIndex(workingContextIndex()));
@@ -81,8 +81,8 @@ const browserHelper = {
      * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Context. 
      */
     openNewTabInNewContext(authenticatedUser?: string) {
-        stepSequenceHelper.addStep("openNewTabInNewContext", async() => {
-            console.log("openNewTabInNewContext");
+        stepSequenceHelper.addStep("Opening new Tab in new Context", async() => {
+            console.log("Opening new Tab in new Context");
             let newContext = await frameworkDataHelper.browser.newContext({ storageState: storageStateHelper.storageStatePath(authenticatedUser) });
             let newTab = await newContext.newPage();
             if (authenticatedUser) {
@@ -109,8 +109,8 @@ const browserHelper = {
      * @param nextPageType 
      */
     switchWorkingTab(contextIndex: number, tabIndex: number, currentPageType: PageType, nextPageType: PageType) {
-        stepSequenceHelper.addStep("switchWorkingTab", () => {
-            console.log("switchWorkingTab");
+        stepSequenceHelper.addStep(`Switching working Tab to [${contextIndex},${tabIndex}] and verifying Page type is ${nextPageType}`, () => {
+            console.log(`Switching working Tab to [${contextIndex},${tabIndex}] and verifying Page type is ${nextPageType}`);
             expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(latestContextIndex());
             expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(latestTabIndex(contextIndex));
             const alreadyWorkingOnTheTab = contextIndex === workingContextIndex() && tabIndex === workingTabIndex();
@@ -127,8 +127,8 @@ const browserHelper = {
      * @param contextIndex 
      */
     closeContext(contextIndex: number) {
-        stepSequenceHelper.addStep("closeContext", async() => {
-            console.log("closeContext");
+        stepSequenceHelper.addStep(`Closing Context [${contextIndex}]`, async() => {
+            console.log(`Closing Context [${contextIndex}]`);
             expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(latestContextIndex());
             expect(contextIndex, `Context [${contextIndex}] is the Working Context. It cannot be closed`).not.toEqual(workingContextIndex());
             for (const page of frameworkDataHelper.browser.contexts()[contextIndex].pages())
@@ -144,8 +144,8 @@ const browserHelper = {
      * @param tabIndex 
      */
     closeTab(contextIndex: number, tabIndex: number) {
-        stepSequenceHelper.addStep("closeTab", async() => {
-            console.log("closeTab");
+        stepSequenceHelper.addStep(`Closing Tab [${contextIndex},${tabIndex}]`, async() => {
+            console.log(`Closing Tab [${contextIndex},${tabIndex}]`);
             expect(contextIndex, `Context [${contextIndex}] not found`).toBeLessThanOrEqual(latestContextIndex());
             expect(tabIndex, `Tab [${contextIndex},${tabIndex}] not found`).toBeLessThanOrEqual(latestTabIndex(contextIndex));
             const attemptingToCloseWorkingTab = contextIndex === workingContextIndex() && tabIndex === workingTabIndex();

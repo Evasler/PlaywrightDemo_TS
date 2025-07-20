@@ -9,24 +9,24 @@ class BlankSteps extends BaseSteps {
     constructor() { super("BlankPage"); }
 
     goToRestfulBookerAdminPage<T extends LoginSteps | AdminPanelSteps>(landingPage: T) {
-        this.addStep("goToRestfulBooker", async() => {
-            console.log("goToRestfulBooker");
+        this.addStep("Going to Restful Booker Admin Page", async() => {
+            console.log("Going to Restful Booker Admin Page");
             await this.workingTab.goto(`${frameworkDataHelper.baseUrl}admin`);
         });
         return landingPage;
     }
 
     goToJsErrorPage(errorSteps: ErrorSteps) {
-        this.addStep("goToJsErrorPage", async() => {
-            console.log("goToJsErrorPage");
+        this.addStep("Going to JavaScript Error Page", async() => {
+            console.log("Going to JavaScript Error Page");
             await this.workingTab.goto(`data:text/html,<script>throw new Error("myJavaScriptError")</script>`);
         });
         return errorSteps;
     }
 
     goToInternalServerErrorPage(errorSteps: ErrorSteps) {
-        this.addStep("goToInternalServerErrorPage", async() => {
-            console.log("goToInternalServerErrorPage");
+        this.addStep("Going to Internal Server Error Page", async() => {
+            console.log("Going to Internal Server Error Page");
             await this.workingTab.route(frameworkDataHelper.baseUrl, async (route) => {
                 const response = await route.fetch();
                 await route.fulfill({
@@ -40,8 +40,8 @@ class BlankSteps extends BaseSteps {
     }
 
     goToConnectionErrorPage(errorSteps: ErrorSteps) {
-        this.addStep("goToConnectionErrorPage", async() => {
-            console.log("goToConnectionErrorPage");
+        this.addStep("Going to Connection Error Page", async() => {
+            console.log("Going to Connection Error Page");
             await this.workingTab.route(frameworkDataHelper.baseUrl, (route) => route.abort());
             await this.workingTab.goto(frameworkDataHelper.baseUrl);
         });

@@ -14,10 +14,9 @@ function storageStatePath(user: string) { return `${authDirectory}/${user}.json`
 
 /**
  * Saves the user's token in a storageState file, based on ./resources/other/restfulBookerStorageStateTemplate.json.
- * @param workingRequest 
  * @param user 
  */
-async function createStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
+async function createStorageStateFileViaAPI(user: string) {
     console.log(`Generating ${storageStatePath(user)}`)
     const credentials = credentialsUtils.getUserCredentials(user);
     const response = await authRequests.login(credentials);
@@ -101,7 +100,6 @@ const storageStateHelper = {
     /**
      * If authenticatedUser's storageState file doesn't exist, it is created.
      * If authenticatedUser's storageState file contains invalid cookies, it is refreshed.
-     * @param workingRequest 
      * @param authenticatedUser 
      * @returns True if a storageState file was created. Otherwise, false.
      */
@@ -109,11 +107,11 @@ const storageStateHelper = {
         if (fileUtils.fileExists(storageStatePath(authenticatedUser))) {
             const workingContextIsAuthorized = await contextIsAuthorizedViaAPI(workingRequest);
             if (!workingContextIsAuthorized) {
-                await createStorageStateFileViaAPI(workingRequest, authenticatedUser);
+                await createStorageStateFileViaAPI(authenticatedUser);
                 return true;
             }
         } else {
-            await createStorageStateFileViaAPI(workingRequest, authenticatedUser);
+            await createStorageStateFileViaAPI(authenticatedUser);
             return true;
         }
         return false;

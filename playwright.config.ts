@@ -9,6 +9,8 @@ import type { ErrorListenerOptionsObj } from './src/types/index.js';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+process.env.reporterStatusFilepath = "./resources/other/reportersStatus.json";
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */

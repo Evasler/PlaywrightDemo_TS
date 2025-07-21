@@ -1,5 +1,7 @@
 import type { TestCase, TestResult } from "@playwright/test/reporter";
 import type { SuiteTag } from "../types/index.js";
+import { expect } from "@playwright/test";
+import fileUtils from "./fileUtils.js";
 
 const testUtils = {
 
@@ -64,6 +66,24 @@ const testUtils = {
             return "Failed";
         else if (result.status === "skipped")
             throw new Error(`Test Result should not be "skipped"`);
+    },
+
+    setReporterStatus(azureReporterStatus?: "ready" | "pending", excelReporterStatus?: "ready" | "pending") {
+        if (!process.env.reporterStatusFilepath)
+            throw new Error("reporterStatusFilepath is not defined");
+        const reporterStatus = JSON.parse(fileUtils.readFile(process.env.reporterStatusFilepath)) as { azureReporter: string, excelReporter: string };
+        reporterStatus.azureReporter = azureReporterStatus ?? reporterStatus.azureReporter;
+        reporterStatus.excelReporter = excelReporterStatus ?? reporterStatus.excelReporter;
+        fileUtils.writeFile(process.env.reporterStatusFilepath, JSON.stringify(reporterStatus, null, 4));
+    },
+
+    async verifyReportersAreReady() {
+        await expect.poll(() => {
+            if (!process.env.reporterStatusFilepath)
+                throw new Error("reporterStatusFilepath is not defined");
+            const reporterStatus = JSON.parse(fileUtils.readFile(process.env.reporterStatusFilepath)) as { azureReporter: string, excelReporter: string };
+            return reporterStatus.azureReporter === "ready" && reporterStatus.excelReporter === "ready";
+        }, { timeout: 60000 }).toBeTruthy();
     }
 };
 

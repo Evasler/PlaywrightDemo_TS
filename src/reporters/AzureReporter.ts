@@ -2,7 +2,7 @@ import type { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } fr
 import { azureReportHelper } from "../helpers/index.js";
 import type { AzureReporterOptions, RunDetails } from "../types/index.js";
 import GlobalReporter from "./GlobalReporter.js";
-import { errorHandlingUtils } from "../utils/index.js";
+import { errorHandlingUtils, testUtils } from "../utils/index.js";
 
 export default class AzureReporter implements Reporter {
 
@@ -10,6 +10,7 @@ export default class AzureReporter implements Reporter {
     private _runDetails!: RunDetails;
 
     constructor(private readonly _options: AzureReporterOptions) {
+        testUtils.setReporterStatus(this._options.enabled ? "pending" : "ready");
         this._throwOptionTypeErrors();
     }
 
@@ -96,6 +97,7 @@ export default class AzureReporter implements Reporter {
                         this._runId = runIdOrError;
                 }
             });
+            GlobalReporter.addReportingStep(() => { testUtils.setReporterStatus("ready"); });
         }
     }
 

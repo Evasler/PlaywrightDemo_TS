@@ -10,7 +10,7 @@ export default class AzureReporter implements Reporter {
     private _runDetails!: RunDetails;
 
     constructor(private readonly _options: AzureReporterOptions) {
-        testUtils.setReporterStatus(this._options.enabled ? "pending" : "ready");
+        testUtils.setReporterStatus({ azureReporterStatus: this._options.enabled ? "pending" : "ready" });
         this._throwOptionTypeErrors();
     }
 
@@ -97,7 +97,7 @@ export default class AzureReporter implements Reporter {
                         this._runId = runIdOrError;
                 }
             });
-            GlobalReporter.addReportingStep(() => { testUtils.setReporterStatus("ready"); });
+            GlobalReporter.addReportingStep(() => { testUtils.setReporterStatus({ azureReporterStatus: "ready" }); });
         }
     }
 

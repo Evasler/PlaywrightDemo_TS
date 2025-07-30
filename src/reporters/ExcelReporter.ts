@@ -7,7 +7,7 @@ import { excelReportHelper } from '../helpers/index.js';
 export default class ExcelReporter implements Reporter {
 
     constructor(private readonly _options: ExcelReporterOptions) {
-        testUtils.setReporterStatus(undefined, this._options.enabled ? "pending" : "ready");
+        testUtils.setReporterStatus({ excelReporterStatus: this._options.enabled ? "pending" : "ready" });
         this._throwOptionErrors();
     }
 
@@ -63,7 +63,7 @@ export default class ExcelReporter implements Reporter {
             );
             if (this._options.mandatoryReporting)
                 GlobalReporter.addReportingStep(async() => { await excelReportHelper.throwReportingErrors(rootSuite); await new Promise(resolve => setTimeout(resolve, 10000)); });
-            GlobalReporter.addReportingStep(() => { testUtils.setReporterStatus(undefined, "ready"); });
+            GlobalReporter.addReportingStep(() => { testUtils.setReporterStatus({ excelReporterStatus: "ready" }); });
         }
     }
 

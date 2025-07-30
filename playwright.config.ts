@@ -1,5 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import type { ErrorListenerOptionsObj } from './src/types/index.js';
+import dotenv from 'dotenv';
 
 /**
  * Read environment variables from file.
@@ -9,7 +10,8 @@ import type { ErrorListenerOptionsObj } from './src/types/index.js';
 // import path from 'path';
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
-process.env.reporterStatusFilepath = "./resources/other/reportersStatus.json";
+dotenv.config({ path: '.env', quiet: true });
+process.env.REPORTER_STATUS_FILEPATH="./resources/other/reportersStatus.json";
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -21,25 +23,25 @@ export default defineConfig<ErrorListenerOptionsObj>({
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.RETRIES ? +process.env.RETRIES : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : 1,
+  workers: process.env.WORKERS ? +process.env.WORKERS : 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ['list'], 
     ['./src/reporters/GlobalReporter.ts'],
     ['./src/reporters/ExcelReporter.ts', 
       { 
-        enabled: false,
-        mandatoryReporting: false,
+        enabled: process.env.EXCEL_REPORTER_ENABLED === 'true',
+        mandatoryReporting: process.env.EXCEL_REPORTER_MANDATORY === 'true',
         filepath: "./excel-report/PlaywrightDemo_TS.xlsx",
         configurationNames: [ "configuration1", "configuration2" ]
       }
     ],
     ['./src/reporters/AzureReporter.ts',
       {
-        enabled: false,
-        mandatoryReporting: false,
+        enabled: process.env.AZURE_REPORTER_ENABLED === 'true',
+        mandatoryReporting: process.env.AZURE_REPORTER_MANDATORY === 'true',
         azureBaseUrl: "https://dev.azure.com/",
         organizationName: "",
         projectName: "",
@@ -73,26 +75,26 @@ export default defineConfig<ErrorListenerOptionsObj>({
     {
       name: 'apiTests-configuration1',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: /tests\/api\/.*/
+      testMatch: /tests\/api\/.*\.spec\.ts/
     },
     {
       name: 'uiTests-configuration2',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: /tests\/ui\/.*/
+      testMatch: /tests\/ui\/.*\.spec\.ts/
     },
     {
       name: 'executionOrder',
-      testMatch: /tests\/executionOrder\/core\/.*/,
+      testMatch: /tests\/executionOrder\/core\/.*\.spec\.ts/,
       dependencies: ['executionOrderDependency']
     },
     {
       name: 'executionOrderDependency',
-      testMatch: /tests\/executionOrder\/dependencies\/global.setup.ts/,
+      testMatch: /tests\/executionOrder\/dependencies\/global\.setup\.ts/,
       teardown: 'executionOrderTeardown'
     },
     {
       name: 'executionOrderTeardown',
-      testMatch: /tests\/executionOrder\/dependencies\/global.teardown.ts/
+      testMatch: /tests\/executionOrder\/dependencies\/global\.teardown\.ts/
     }
     // {
     //   name: 'chromium',

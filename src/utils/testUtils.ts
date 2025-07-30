@@ -68,20 +68,20 @@ const testUtils = {
             throw new Error(`Test Result should not be "skipped"`);
     },
 
-    setReporterStatus(azureReporterStatus?: "ready" | "pending", excelReporterStatus?: "ready" | "pending") {
-        if (!process.env.reporterStatusFilepath)
-            throw new Error("reporterStatusFilepath is not defined");
-        const reporterStatus = JSON.parse(fileUtils.readFile(process.env.reporterStatusFilepath)) as { azureReporter: string, excelReporter: string };
+    setReporterStatus({ azureReporterStatus, excelReporterStatus }: { azureReporterStatus?: "ready" | "pending", excelReporterStatus?: "ready" | "pending" }) {
+        if (!process.env.REPORTER_STATUS_FILEPATH)
+            throw new Error("REPORTER_STATUS_FILEPATH is not defined");
+        const reporterStatus = JSON.parse(fileUtils.readFile(process.env.REPORTER_STATUS_FILEPATH)) as { azureReporter: string, excelReporter: string };
         reporterStatus.azureReporter = azureReporterStatus ?? reporterStatus.azureReporter;
         reporterStatus.excelReporter = excelReporterStatus ?? reporterStatus.excelReporter;
-        fileUtils.writeFile(process.env.reporterStatusFilepath, JSON.stringify(reporterStatus, null, 4));
+        fileUtils.writeFile(process.env.REPORTER_STATUS_FILEPATH, JSON.stringify(reporterStatus, null, 4));
     },
 
     async verifyReportersAreReady() {
         await expect.poll(() => {
-            if (!process.env.reporterStatusFilepath)
-                throw new Error("reporterStatusFilepath is not defined");
-            const reporterStatus = JSON.parse(fileUtils.readFile(process.env.reporterStatusFilepath)) as { azureReporter: string, excelReporter: string };
+            if (!process.env.REPORTER_STATUS_FILEPATH)
+                throw new Error("REPORTER_STATUS_FILEPATH is not defined");
+            const reporterStatus = JSON.parse(fileUtils.readFile(process.env.REPORTER_STATUS_FILEPATH)) as { azureReporter: string, excelReporter: string };
             return reporterStatus.azureReporter === "ready" && reporterStatus.excelReporter === "ready";
         }, { timeout: 60000 }).toBeTruthy();
     }

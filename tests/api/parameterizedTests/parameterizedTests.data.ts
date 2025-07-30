@@ -10,7 +10,7 @@ type ParameterizedTestsDataset = TestDetailsObj & {
 const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     {
         testDetails: {
-            id: 1,
+            id: 0,
             title: "Parameterized Test | Create and delete room 994",
             suiteTags: ["@fullScope"]
         },
@@ -29,7 +29,7 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     },
     {
         testDetails: {
-            id: 2,
+            id: 1,
             title: "Parameterized Test | Create and delete room 995"
         },
         stepData: {

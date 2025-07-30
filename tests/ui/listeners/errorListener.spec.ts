@@ -2,19 +2,19 @@ import extendedTest from "../../../src/fixtures/extendedTest.js";
 import { blankSteps, errorSteps } from "../../../src/pages/index.js";
 import { testUtils } from "../../../src/utils/index.js";
 
-extendedTest(testUtils.fullTitle(0, "Test failure, because errorListener catches a JS error"), async({ openNewTabInNewContext }) => {
+extendedTest(testUtils.fullTitle(5, "Expected test failure, due to errorListener detecting a JS error", ["@fullScope"]), async({ openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)
     .goToJsErrorPage(errorSteps)
     ._execute()
 });
 
-extendedTest(testUtils.fullTitle(1, "Test failure, because errorListener catches an Error Status code"), async({ openNewTabInNewContext }) => {
+extendedTest(testUtils.fullTitle(6, "Expected test failure, due to errorListener detecting an Error Status code", ["@fullScope"]), async({ openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)
     .goToInternalServerErrorPage(errorSteps)
     ._execute()
 });
 
-extendedTest(testUtils.fullTitle(2, "Test failure, because errorListener catches a Connection Error"), async({ openNewTabInNewContext }) => {
+extendedTest(testUtils.fullTitle(7, "Expected test failure, due to errorListener detecting a Connection Error", ["@fullScope"]), async({ openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)
     .goToConnectionErrorPage(errorSteps)
     ._execute()

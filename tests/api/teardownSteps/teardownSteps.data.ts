@@ -1,4 +1,4 @@
-import type { CreateRoomPayload, SetupStepsArgsObj, TeardownStepsArgsObj, TestDetailsObj, CreateRoomArgs, LoginArgs } from "../../../../src/types/index.js";
+import type { CreateRoomPayload, SetupStepsArgsObj, TeardownStepsArgsObj, TestDetailsObj, CreateRoomArgs, LoginArgs } from "../../../src/types/index.js";
 
 type TestData = TestDetailsObj & SetupStepsArgsObj & TeardownStepsArgsObj & {
     stepData: { 
@@ -9,8 +9,8 @@ type TestData = TestDetailsObj & SetupStepsArgsObj & TeardownStepsArgsObj & {
 
 const teardownStepsApiDataset: TestData = {
     testDetails: {
-        id: 1,
-        title: "Teardown Steps | API Test",
+        id: 2,
+        title: "Teardown Steps",
         suiteTags: ["@fullScope"]
     },
     stepData: {

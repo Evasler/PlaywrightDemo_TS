@@ -1,14 +1,14 @@
-import extendedTest from "../../../src/fixtures/extendedTest.js";
-import { requestHelper } from "../../../src/helpers/index.js";
-import { authSteps, roomSteps } from "../../../src/services/index.js";
-import { testUtils } from "../../../src/utils/index.js";
+import extendedTest from "../../src/fixtures/extendedTest.js";
+import { requestHelper } from "../../src/helpers/index.js";
+import { authSteps, roomSteps } from "../../src/services/index.js";
+import { testUtils } from "../../src/utils/index.js";
 
-extendedTest(testUtils.fullTitle(1, "Chained Function Object Model | StepSequenceBuilder"), async() => {
+extendedTest(testUtils.fullTitle(4, "Temporary Data", ["@fullScope"]), async() => {
     await requestHelper.openNewContext();
     await authSteps.login({ user: "administrator" });
     await roomSteps.createRoom({
         payload: {
-            roomName: "998",
+            roomName: "996",
             type: "Double",
             accessible: false,
             description: "Double room description",
@@ -17,11 +17,10 @@ extendedTest(testUtils.fullTitle(1, "Chained Function Object Model | StepSequenc
             features: ["TV"]
         }
     });
-    await requestHelper.openNewContext();
-    await authSteps.login({ user: "administrator" });
+    await roomSteps.getRoomId({ roomName: "996" });
     await roomSteps.createRoom({
         payload: {
-            roomName: "999",
+            roomName: "997",
             type: "Family",
             accessible: false,
             description: "Family room description",
@@ -30,4 +29,7 @@ extendedTest(testUtils.fullTitle(1, "Chained Function Object Model | StepSequenc
             features: ["Views"]
         }
     });
+    await roomSteps.getRoomId({ roomName: "997" });
+    await roomSteps.deleteRoom({ tempDataIndex: 0 });
+    await roomSteps.deleteRoom({ tempDataIndex: 1 });
 });

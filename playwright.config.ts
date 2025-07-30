@@ -71,42 +71,28 @@ export default defineConfig<ErrorListenerOptionsObj>({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'basicTests',
+      name: 'apiTests-configuration1',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: /tests\/lab\/(dataHandling|stepChaining|storageState)\/*\/.*\.spec\.ts/
+      testMatch: /tests\/api\/.*/
     },
     {
-      name: 'failingTests',
+      name: 'uiTests-configuration2',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: /tests\/lab\/listeners\/*\/.*\.spec\.ts/
+      testMatch: /tests\/ui\/.*/
+    },
+    {
+      name: 'executionOrder',
+      testMatch: /tests\/executionOrder\/core\/.*/,
+      dependencies: ['executionOrderDependency']
     },
     {
       name: 'executionOrderDependency',
-      testMatch: /executionOrder\/dependencies\/global.setup.ts/,
+      testMatch: /tests\/executionOrder\/dependencies\/global.setup.ts/,
       teardown: 'executionOrderTeardown'
     },
     {
       name: 'executionOrderTeardown',
-      testMatch: /executionOrder\/dependencies\/global.teardown.ts/
-    },
-    {
-      name: 'executionOrder',
-      testMatch: /executionOrder\/core\/.*/,
-      dependencies: ['executionOrderDependency']
-    },
-    {
-      name: 'excel-configuration1',
-      testMatch: /excelReporting\/.*/,
-      use: {
-        ...devices['Desktop Chrome']
-      }
-    },
-    {
-      name: 'excel-configuration2',
-      testMatch: /excelReporting\/.*/,
-      use: {
-        ...devices['Desktop Chrome']
-      }
+      testMatch: /tests\/executionOrder\/dependencies\/global.teardown.ts/
     }
     // {
     //   name: 'chromium',

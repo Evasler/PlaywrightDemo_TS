@@ -5,11 +5,9 @@
   "main": "index.js",
   "scripts": {
     "validate": "npx tsc --noEmit && npx eslint .",
-    "basicTests": "npx playwright test --project=\"basicTests\"",
-    "failingTests": "npx playwright test --project=\"failingTests\"",
-    "executionOrder": "npx playwright test --project=\"executionOrder\" --reporter=\"./src/reporters/ExecOrderReporter.ts\"",
-    "excel-configuration1": "npx playwright test --project=\"excel-configuration1\"",
-    "excel-configuration2": "npx playwright test --project=\"excel-configuration2\""
+    "apiTests-configuration1": "npx playwright test --project=\"apiTests-configuration1\"",
+    "uiTests-configuration2": "npx playwright test --project=\"uiTests-configuration2\"",
+    "executionOrder": "npx playwright test --project=\"executionOrder\" --reporter=\"./src/reporters/ExecOrderReporter.ts\""
   },
   "keywords": [],
   "author": "",

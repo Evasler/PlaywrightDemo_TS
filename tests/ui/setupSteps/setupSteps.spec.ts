@@ -1,7 +1,7 @@
-import extendedTest from "../../../../src/fixtures/extendedTest.js";
-import { adminPanelSteps, blankSteps, loginSteps } from "../../../../src/pages/index.js";
-import { testUtils } from "../../../../src/utils/index.js";
-import dataset from "./setupStepsUi.data.js";
+import extendedTest from "../../../src/fixtures/extendedTest.js";
+import { adminPanelSteps, blankSteps, loginSteps } from "../../../src/pages/index.js";
+import { testUtils } from "../../../src/utils/index.js";
+import dataset from "./setupSteps.data.js";
 
 extendedTest.use({ setupStepsArgsArray: dataset.setupStepsArgsArray });
 extendedTest(testUtils.fullTitle(dataset.testDetails.id, dataset.testDetails.title, dataset.testDetails.suiteTags), async({ openNewTabInNewContext }) => {

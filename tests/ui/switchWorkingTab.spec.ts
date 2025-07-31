@@ -2,7 +2,7 @@ import extendedTest from "../../src/fixtures/extendedTest.js";
 import { adminPanelSteps, blankSteps, loginSteps } from "../../src/pages/index.js";
 import { testUtils } from "../../src/utils/index.js";
 
-extendedTest(testUtils.fullTitle(17, "Switch Working Tab"), async( { openNewTabInNewContext }) => {
+extendedTest(testUtils.fullTitle(17, "Switch Working Tab", ["@fullScope"]), async( { openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)
     ._openNewTabInNewContext(blankSteps)
     .goToRestfulBookerAdminPage(loginSteps)

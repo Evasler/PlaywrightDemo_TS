@@ -4,9 +4,10 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "validate": "npx tsc --noEmit && npx eslint .",
-    "apiTests-configuration1": "npx playwright test --project=\"apiTests-configuration1\"",
-    "uiTests-configuration2": "npx playwright test --project=\"uiTests-configuration2\"",
+    "tscVerification": "npx tsc --noEmit",
+    "eslintVerification": "npx eslint .",
+    "chromium-prod": "npx playwright test --project=\"chromium-prod\"",
+    "firefox-prod": "npx playwright test --project=\"firefox-prod\"",
     "executionOrder": "npx playwright test --project=\"executionOrder\" --reporter=\"./src/reporters/ExecOrderReporter.ts\""
   },
   "keywords": [],

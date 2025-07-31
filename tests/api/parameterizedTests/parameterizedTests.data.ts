@@ -30,7 +30,8 @@ const parameterizedTestsDatasets: ParameterizedTestsDataset[] = [
     {
         testDetails: {
             id: 1,
-            title: "Parameterized Test | Create and delete room 995"
+            title: "Parameterized Test | Create and delete room 995",
+            suiteTags: ["@fullScope"]
         },
         stepData: {
             roomDetails: {

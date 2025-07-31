@@ -13,6 +13,9 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '.env', quiet: true });
 process.env.REPORTER_STATUS_FILEPATH="./resources/other/reportersStatus.json";
 
+if (!process.env.GREP)
+  throw new Error("Please set GREP in .env file to define the scope of tests to run");
+
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
@@ -35,7 +38,7 @@ export default defineConfig<ErrorListenerOptionsObj>({
         enabled: process.env.EXCEL_REPORTER_ENABLED === 'true',
         mandatoryReporting: process.env.EXCEL_REPORTER_MANDATORY === 'true',
         filepath: "./excel-report/PlaywrightDemo_TS.xlsx",
-        configurationNames: [ "configuration1", "configuration2" ]
+        configurationNames: [ "chromium-prod", "firefox-prod" ]
       }
     ],
     ['./src/reporters/AzureReporter.ts',
@@ -67,20 +70,20 @@ export default defineConfig<ErrorListenerOptionsObj>({
       failOnConnectionError: true,
       failOnRequestError: true
     },
-    headless: false
+    headless: process.env.HEADLESS === 'true'
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'apiTests-configuration1',
+      name: 'chromium-prod',
       use: { ...devices['Desktop Chrome'] },
-      testMatch: /tests\/api\/.*\.spec\.ts/
+      grep: new RegExp(process.env.GREP)
     },
     {
-      name: 'uiTests-configuration2',
-      use: { ...devices['Desktop Chrome'] },
-      testMatch: /tests\/ui\/.*\.spec\.ts/
+      name: 'firefox-prod',
+      use: { ...devices['Desktop Firefox'] },
+      grep: new RegExp(process.env.GREP)
     },
     {
       name: 'executionOrder',

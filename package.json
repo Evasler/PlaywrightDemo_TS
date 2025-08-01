@@ -7,10 +7,10 @@
     "tscVerification": "npx tsc --noEmit",
     "eslintVerification": "npx eslint .",
     "madgeVerification": "npx madge --circular --extensions=ts ./",
-    "automationRobustnessVerification": "npx playwright test --project=*-prod --workers=1 --repeat-each=5 --reporter=dot --trace=retain-on-first-failure --quiet",
     "chromium-prod": "npx playwright test --project=chromium-prod",
     "firefox-prod": "npx playwright test --project=firefox-prod",
-    "executionOrder": "npx playwright test --project=executionOrder --reporter='./src/reporters/ExecOrderReporter.ts'"
+    "executionOrder": "npx playwright test --project=executionOrder --reporter='./src/reporters/ExecOrderReporter.ts'",
+    "automationRobustnessVerification": "npx playwright test --project=*-prod --workers=1 --repeat-each=5 --reporter=dot --trace=retain-on-first-failure --quiet"
   },
   "keywords": [],
   "author": "",

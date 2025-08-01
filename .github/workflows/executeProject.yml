@@ -45,4 +45,10 @@ jobs:
       - name: Project execution
         run: npm run chromium-prod
 
+      - name: Upload Excel report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PlaywrightDemo_TS.xlsx
+          path: excel-report/PlaywrightDemo_TS.xlsx
       

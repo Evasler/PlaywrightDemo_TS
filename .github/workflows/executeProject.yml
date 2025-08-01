@@ -5,13 +5,10 @@ jobs:
   static-code-analysis:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '24.4.1'
+          node-version: '22.16.0'
 
       - name: Install dependencies
         run: npm ci
@@ -34,16 +31,16 @@ jobs:
       EXCEL_REPORTER_ENABLED: "true"
       EXCEL_REPORTER_MANDATORY: "true"
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22.16.0'
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
 
       - name: Project execution
         run: npm run chromium-prod

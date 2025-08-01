@@ -1,8 +1,8 @@
 import type { FullConfig, FullResult, Reporter, Suite, TestCase, TestResult } from "@playwright/test/reporter";
-import { azureReportHelper } from "../helpers/index.js";
 import type { AzureReporterOptions, RunDetails } from "../types/index.js";
 import GlobalReporter from "./GlobalReporter.js";
 import { errorHandlingUtils, testUtils } from "../utils/index.js";
+import azureReportHelper from "../helpers/reporting/azureReportHelper.js";
 
 export default class AzureReporter implements Reporter {
 

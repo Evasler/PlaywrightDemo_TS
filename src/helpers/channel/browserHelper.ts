@@ -1,7 +1,10 @@
 import { type Page, expect } from "@playwright/test";
 import type { PageType } from "../../types/index.js";
 import errorListener from "../../listeners/errorListener.js";
-import { frameworkDataHelper, stepSequenceHelper, storageStateHelper, tabDataHelper } from "../index.js";
+import frameworkDataHelper from "../data/frameworkDataHelper.js";
+import stepSequenceHelper from "../chaining/stepSequenceHelper.js";
+import tabDataHelper from "../data/tabDataHelper.js";
+import storageStateHelper from "../chaining/storageStateHelper.js";
 
 let workingTab: Page;
 

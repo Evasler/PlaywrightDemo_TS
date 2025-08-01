@@ -1,4 +1,4 @@
-import { requestHelper } from "../../helpers/index.js";
+import requestHelper from "../../helpers/channel/requestHelper.js";
 import type { CreateRoomPayload } from "../../types/index.js";
 import roomEndpoints from "./roomEndpoints.js";
 

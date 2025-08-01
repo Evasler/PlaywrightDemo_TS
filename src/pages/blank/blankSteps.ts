@@ -2,7 +2,7 @@ import type { ErrorSteps } from "../error/errorSteps.js";
 import type { AdminPanelSteps } from "../restfulBooker/adminPanel/adminPanelSteps.js";
 import type { LoginSteps } from "../restfulBooker/login/loginSteps.js";
 import BaseSteps from "../base/baseSteps.js";
-import { frameworkDataHelper } from "../../helpers/index.js";
+import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
 
 class BlankSteps extends BaseSteps {
 

@@ -1,8 +1,7 @@
 import { type APIRequestContext, type Page, expect } from "@playwright/test";
 import { credentialsUtils, fileUtils } from "../../utils/index.js";
 import type { StorageState, LoginResponse } from "../../types/index.js";
-import { frameworkDataHelper } from "../index.js";
-import { authRequests } from "../../services/index.js";
+import frameworkDataHelper from "../data/frameworkDataHelper.js";
 
 const authDirectory = ".auth";
 
@@ -16,10 +15,10 @@ function storageStatePath(user: string) { return `${authDirectory}/${user}.json`
  * Saves the user's token in a storageState file, based on ./resources/other/restfulBookerStorageStateTemplate.json.
  * @param user 
  */
-async function createStorageStateFileViaAPI(user: string) {
+async function createStorageStateFileViaAPI(workingRequest: APIRequestContext, user: string) {
     console.log(`Generating ${storageStatePath(user)}`)
     const credentials = credentialsUtils.getUserCredentials(user);
-    const response = await authRequests.login(credentials);
+    const response = await workingRequest.post(`${frameworkDataHelper.apiUrl}auth/login`, { data: credentials });
     expect(response.status()).toEqual(200);
     const responseJson = await response.json() as LoginResponse;
     const storageStateTemplate = JSON.parse(fileUtils.readFile("./resources/other/restfulBookerStorageStateTemplate.json")) as StorageState;
@@ -38,7 +37,7 @@ async function contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
     const tokenCookie = (await workingRequest.storageState()).cookies.find(cookie => cookie.name === "token");
     if (tokenCookie) {
         const token = tokenCookie.value;
-        const response = await authRequests.validate({ token: token });
+        const response = await workingRequest.post(`${frameworkDataHelper.apiUrl}auth/validate`, { data: { token: token } });
         contextIsAuthorized = response.ok();
     }
     console.log(`Context is ${contextIsAuthorized ? "authorized" : "unauthorized"}`);
@@ -107,11 +106,11 @@ const storageStateHelper = {
         if (fileUtils.fileExists(storageStatePath(authenticatedUser))) {
             const workingContextIsAuthorized = await contextIsAuthorizedViaAPI(workingRequest);
             if (!workingContextIsAuthorized) {
-                await createStorageStateFileViaAPI(authenticatedUser);
+                await createStorageStateFileViaAPI(workingRequest, authenticatedUser);
                 return true;
             }
         } else {
-            await createStorageStateFileViaAPI(authenticatedUser);
+            await createStorageStateFileViaAPI(workingRequest, authenticatedUser);
             return true;
         }
         return false;

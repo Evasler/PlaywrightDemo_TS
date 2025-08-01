@@ -2,7 +2,7 @@ import type { FullConfig, Reporter, Suite, TestCase, TestResult } from '@playwri
 import type { ExcelReporterOptions } from '../types/index.js';
 import GlobalReporter from './GlobalReporter.js';
 import { errorHandlingUtils, testUtils } from '../utils/index.js';
-import { excelReportHelper } from '../helpers/index.js';
+import excelReportHelper from '../helpers/reporting/excelReportHelper.js';
 
 export default class ExcelReporter implements Reporter {
 

@@ -1,4 +1,4 @@
-import { frameworkDataHelper } from "../../helpers/index.js";
+import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
 
 const roomEndpoints = {
     room() { return `${frameworkDataHelper.apiUrl}room/` },

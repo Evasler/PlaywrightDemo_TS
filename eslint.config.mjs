@@ -20,10 +20,11 @@ export default tseslint.config(
         "no-empty-pattern": ["error", { "allowObjectPatternsAsParameters": true }],
         "no-restricted-imports": ["error", {
             "patterns": [
-              {
-                "regex": "/helpers/(?!index\.js)",
-                "message": "Exported modules of \"helpers\" directory are listed in \/helpers\/index.js. Please import from there instead."
-              },
+              // Note: Ideally, we'd want an src/helpers/index.ts barrel export. However, with the current structure, this leads to circular dependencies.
+              // {
+              //   "regex": "/helpers/(?!index\.js)",
+              //   "message": "Exported modules of \"helpers\" directory are listed in \/helpers\/index.js. Please import from there instead."
+              // },
               {
                 "regex": "/pages/(?!index\.js)",
                 "message": "Exported modules of \"pages\" directory are listed in \/pages\/index.js. Please import from there instead."

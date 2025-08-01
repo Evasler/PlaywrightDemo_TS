@@ -1,5 +1,5 @@
 import extendedTest from "../../../src/fixtures/extendedTest.js";
-import { requestHelper } from "../../../src/helpers/index.js";
+import requestHelper from "../../../src/helpers/channel/requestHelper.js";
 import { authSteps, roomSteps } from "../../../src/services/index.js";
 import { testUtils } from "../../../src/utils/index.js";
 import dataset from "./teardownSteps.data.js";

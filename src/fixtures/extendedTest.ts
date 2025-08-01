@@ -2,9 +2,13 @@
 
 import { test as base } from "@playwright/test";
 import type { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../types/index.js";
-import { browserHelper, extraStepsHelper, frameworkDataHelper, tabDataHelper, testDataHelper } from "../helpers/index.js";
 import type { BaseSteps } from "../pages/index.js";
 import { fileUtils, testUtils } from "../utils/index.js";
+import tabDataHelper from "../helpers/data/tabDataHelper.js";
+import testDataHelper from "../helpers/data/testDataHelper.js";
+import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
+import extraStepsHelper from "../helpers/data/extraStepsHelper.js";
+import browserHelper from "../helpers/channel/browserHelper.js";
 
 const extendedTest = base.extend<
     { openNewTabInNewContext: <T extends BaseSteps>(page: T, authenticatedUser?: string) => T } &

@@ -1,7 +1,7 @@
 import { test } from "@playwright/test";
-import { requestHelper } from "../index.js";
 import type { ExtraStepsArgs } from "../../types/index.js";
 import { authSteps, roomSteps } from "../../services/index.js";
+import requestHelper from "../channel/requestHelper.js";
 
 /**
  * Better used in a fixture.

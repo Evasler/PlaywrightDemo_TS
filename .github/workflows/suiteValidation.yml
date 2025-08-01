@@ -2,7 +2,7 @@ name: Suite Validation
 on:
   workflow_dispatch:
 jobs:
-  validate-code:
+  static-code-analysis:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -16,5 +16,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Validate code with TSC and ESLint
-        run: npm run validate
+      - name: TSC verification
+        run: npm run tscVerification
+
+      - name: ESLint verification
+        run: npm run eslintVerification
+
+      - name: Madge verification
+        run: npm run madgeVerification
+
+      

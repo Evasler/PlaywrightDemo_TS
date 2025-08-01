@@ -1,4 +1,5 @@
 /* eslint @typescript-eslint/no-invalid-void-type: 0 */
+/* eslint @typescript-eslint/no-unused-vars: 0 */
 
 import { test as base } from "@playwright/test";
 import type { ErrorListenerOptionsObj, SetupStepsArgsObj, TeardownStepsArgsObj } from "../types/index.js";
@@ -11,15 +12,32 @@ import extraStepsHelper from "../helpers/data/extraStepsHelper.js";
 import browserHelper from "../helpers/channel/browserHelper.js";
 
 const extendedTest = base.extend<
-    { openNewTabInNewContext: <T extends BaseSteps>(page: T, authenticatedUser?: string) => T } &
+    { verifyReportersAreReady: void } &
     { skipRepeatIfTraceExists: void } &
-    ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, object
+    { initTestData: void } &
+    { performExtraSteps: void } &
+    { openNewTabInNewContext: <T extends BaseSteps>(page: T, authenticatedUser?: string) => T } &
+    ErrorListenerOptionsObj & SetupStepsArgsObj & TeardownStepsArgsObj, 
+    object
 >({
     setupStepsArgsArray: [ undefined, { option: true }],
     teardownStepsArgsArray: [ undefined, { option: true }],
     errorListenerOptions: [ { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false }, { option: true }],
-    openNewTabInNewContext: [ async ({ playwright, browser, baseURL, setupStepsArgsArray, teardownStepsArgsArray, errorListenerOptions }, use) => {
+
+    verifyReportersAreReady: [ async ({}, use) => {
         await testUtils.verifyReportersAreReady();
+        await use();
+    }, { box: true }],
+
+    skipRepeatIfTraceExists: [ async ({ verifyReportersAreReady }, use, testInfo) => {
+        const repeatMutedOutputDir = testInfo.outputDir.replace(new RegExp(`-repeat${testInfo.repeatEachIndex}$`), "");
+        testInfo.outputDir = repeatMutedOutputDir;
+        const traceForTestPointExists = fileUtils.fileExists(`${repeatMutedOutputDir}/trace.zip`);
+        testInfo.skip(traceForTestPointExists, `Skipping test point, because trace file already exists: ${repeatMutedOutputDir}/trace.zip`);            
+        await use();
+    }, { box: true }],
+
+    initTestData: [ async ({ skipRepeatIfTraceExists, playwright, browser, baseURL, errorListenerOptions }, use) => {
         if (!baseURL)
             throw new Error("baseURL not defined in playwright.config.ts");
         tabDataHelper.resetPageTypes();
@@ -30,23 +48,24 @@ const extendedTest = base.extend<
             browser: browser, 
             errorListenerOptions: errorListenerOptions
         });
+        await use();
+    }, { box: true }],
+
+    performExtraSteps: [ async ({ initTestData, setupStepsArgsArray, teardownStepsArgsArray }, use) => {
         if (setupStepsArgsArray)
             await extraStepsHelper.execute("setupSteps", setupStepsArgsArray);
+        await use();
+        if (teardownStepsArgsArray)
+            await extraStepsHelper.execute("teardownSteps", teardownStepsArgsArray);
+        await browserHelper.closeAllContexts();
+    }, { box: true, auto: true }],
+
+    openNewTabInNewContext: [ async ({}, use) => {
         await use((page, authenticatedUser) => {
             browserHelper.openNewTabInNewContext(authenticatedUser);
             return page;
         });
-        if (teardownStepsArgsArray)
-            await extraStepsHelper.execute("teardownSteps", teardownStepsArgsArray);
-        await browserHelper.closeAllContexts();
-    }, { scope: "test", box: true, auto: true }],
-    skipRepeatIfTraceExists: [ async ({}, use, testInfo) => {
-        const repeatMutedOutputDir = testInfo.outputDir.replace(new RegExp(`-repeat${testInfo.repeatEachIndex}$`), "");
-        testInfo.outputDir = repeatMutedOutputDir;
-        const traceForTestPointExists = fileUtils.fileExists(`${repeatMutedOutputDir}/trace.zip`);
-        testInfo.skip(traceForTestPointExists, `Skipping test point, because trace file already exists: ${repeatMutedOutputDir}/trace.zip`);            
-        await use();
-    }, { scope: "test", box: true, auto: true }],
+    }, { box: true }]
 });
 
 export default extendedTest;

@@ -79,8 +79,8 @@ const requestHelper = {
      * Opens a new Request Context. The new Request Context is focused. If needed it can be focused again by switchWorkingContext.
      * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Request Context.
      */
-    async openNewContext(authenticatedUser?: string) {
-        await test.step(`Opening new Context${authenticatedUser ? ` for user ${authenticatedUser}` : ""}`, async () => {
+    openNewContext(authenticatedUser?: string) {
+        return test.step(`Opening new Context${authenticatedUser ? ` for user ${authenticatedUser}` : ""}`, async () => {
             console.log(`Opening new Context${authenticatedUser ? ` for user ${authenticatedUser}` : ""}`);
             let newContext = await frameworkDataHelper.apiRequest.newContext({ storageState: storageStateHelper.storageStatePath(authenticatedUser) });
             if (authenticatedUser) {
@@ -97,8 +97,8 @@ const requestHelper = {
      * Opens a new Request Context. The new Request Context is focused. It cannot be focused again.
      * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Request Context.
      */
-    async openNewThrowAwayContext(authenticatedUser?: string) {
-        await test.step(`Opening new Throw Away Context${authenticatedUser ? ` for user ${authenticatedUser}` : ""}`, async () => {
+    openNewThrowAwayContext(authenticatedUser?: string) {
+        return test.step(`Opening new Throw Away Context${authenticatedUser ? ` for user ${authenticatedUser}` : ""}`, async () => {
             console.log(`Opening new Throw Away Context${authenticatedUser ? ` for user ${authenticatedUser}` : ""}`);
             let newContext = await frameworkDataHelper.apiRequest.newContext({ storageState: storageStateHelper.storageStatePath(authenticatedUser) });
             if (authenticatedUser) {
@@ -115,8 +115,8 @@ const requestHelper = {
      * Sets the focused Request Context.
      * @param requestContextIndex 
      */
-    async switchWorkingContext(requestContextIndex: number) {
-        await test.step(`Switching working Context to [${requestContextIndex}]`, () => {
+    switchWorkingContext(requestContextIndex: number) {
+        return test.step(`Switching working Context to [${requestContextIndex}]`, () => {
             console.log(`Switching working Context to [${requestContextIndex}]`);
             expect(requestContextIndex, `Context [${requestContextIndex}] not found`).toBeLessThan(requestContexts.length);
             expect(requestContextIndex, `Already working on context [${requestContextIndex}]`).not.toEqual(this.workingRequestContextIndex);

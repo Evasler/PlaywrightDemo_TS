@@ -7,8 +7,8 @@ import requestHelper from "../../helpers/channel/requestHelper.js";
 
 const authSteps = {
 
-    async login({ user }: LoginArgs) {
-        await test.step(`Logging in as user "${user}"`, async() => {
+    login({ user }: LoginArgs) {
+        return test.step(`Logging in as user "${user}"`, async() => {
             console.log(`Logging in as user "${user}"`);
             const userCredentialsObj = credentialsUtils.getUserCredentials(user);
             const response = await authRequests.login(userCredentialsObj);
@@ -19,8 +19,8 @@ const authSteps = {
         });
     },
 
-    async validate(tempDataIndex: number) {
-        await test.step("Validating session token", async() => {
+    validate(tempDataIndex: number) {
+        return test.step("Validating session token", async() => {
             const token = testDataHelper.getTestData("token", tempDataIndex);
             console.log(`Validating session token "${token}"`);
             const tokenObj = { token: token };
@@ -30,8 +30,8 @@ const authSteps = {
         });
     },
 
-    async logout(token: string) {
-        await test.step(`Logging out token "${token}"`, async() => {
+    logout(token: string) {
+        return test.step(`Logging out token "${token}"`, async() => {
             console.log(`Logging out token "${token}"`);
             const tokenObj = { token: token };
             const response = await authRequests.logout(tokenObj);

@@ -5,16 +5,16 @@ import testDataHelper from "../../helpers/data/testDataHelper.js";
 
 const roomSteps = {
     
-    async getAllRooms() {
-        await test.step("Getting all rooms", async() => {
+    getAllRooms() {
+        return test.step("Getting all rooms", async() => {
             console.log("Getting all rooms");
             const response = await roomRequests.getRoom();
             expect(response.status()).toEqual(200);
         });
     },
-    
-    async createRoom({ payload }: CreateRoomArgs) {
-        await test.step(`Creating room "${payload.roomName}"`, async() => {
+
+    createRoom({ payload }: CreateRoomArgs) {
+        return test.step(`Creating room "${payload.roomName}"`, async() => {
             console.log(`Creating room "${payload.roomName}"`);
             const response = await roomRequests.postRoom(payload);
             expect(response.status()).toEqual(200);
@@ -23,8 +23,8 @@ const roomSteps = {
         });
     },
 
-    async getRoomId({ roomName }: GetRoomIdArgs) {
-        await test.step(`Getting roomId of room "${roomName}"`, async() => {
+    getRoomId({ roomName }: GetRoomIdArgs) {
+        return test.step(`Getting roomId of room "${roomName}"`, async() => {
             console.log(`Getting roomId of room "${roomName}"`);
             const response = await roomRequests.getRoom();
             expect(response.status()).toEqual(200);
@@ -35,8 +35,8 @@ const roomSteps = {
         });
     },
 
-    async deleteRoom({ tempDataIndex }: DeleteRoomArgs) {
-        await test.step("Deleting room with roomId", async () => {
+    deleteRoom({ tempDataIndex }: DeleteRoomArgs) {
+        return test.step("Deleting room with roomId", async () => {
             const roomId = +testDataHelper.getTestData("roomId", tempDataIndex);
             console.log(`Deleting room with roomId "${roomId}"`);
             const response = await roomRequests.deleteRoom(roomId);

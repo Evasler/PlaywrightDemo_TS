@@ -1,6 +1,6 @@
-import extendedTest from "../../../src/fixtures/extendedTest.js";
-import { adminPanelSteps, blankSteps, loginSteps } from "../../../src/pages/index.js";
-import { testUtils } from "../../../src/utils/index.js";
+import extendedTest from "../../src/fixtures/extendedTest.js";
+import { adminPanelSteps, blankSteps, loginSteps } from "../../src/pages/index.js";
+import { testUtils } from "../../src/utils/index.js";
 
 extendedTest.use( { errorListenerOptions: { failOnJsError: false, failOnConnectionError: false, failOnRequestError: false } });
 extendedTest.describe("Initial Page without storageState", () => {

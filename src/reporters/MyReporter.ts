@@ -1,22 +1,30 @@
-import type { Reporter, FullConfig, Suite, TestCase, TestError } from '@playwright/test/reporter';
+import type {
+  Reporter,
+  FullConfig,
+  Suite,
+  TestCase,
+  TestError,
+} from "@playwright/test/reporter";
 
 export default class MyReporter implements Reporter {
-
   private _testId = 1;
   private _testCount = 0;
 
   onBegin(config: FullConfig, suite: Suite) {
-    console.log('\n');
+    console.log("\n");
     this._testCount = suite.allTests().length;
   }
 
   onTestBegin(test: TestCase) {
     const project = test.parent.project();
-    console.log(`(${this._testId++}/${this._testCount}) ${project ? project.name : "projectlessSuite"} > ${test.title}`)
+    console.log(
+      `(${this._testId++}/${this._testCount}) ${project ? project.name : "projectlessSuite"} > ${test.title}`,
+    );
   }
 
-  async onExit(): Promise<void> { // eslint-disable-line @typescript-eslint/require-await
-    console.log('\n');
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async onExit(): Promise<void> {
+    console.log("\n");
   }
 
   onStdOut(chunk: string | Buffer): void {
@@ -24,11 +32,8 @@ export default class MyReporter implements Reporter {
   }
 
   onError(error: TestError): void {
-    if (error.message)
-      console.log(error.message);
-    if (error.cause)
-      console.log(error.message);
-    if (error.stack)
-      console.log(error.stack);
+    if (error.message) console.log(error.message);
+    if (error.cause) console.log(error.message);
+    if (error.stack) console.log(error.stack);
   }
 }

@@ -1,6 +1,11 @@
 import { expect } from "@playwright/test";
 import adminPanelLocators from "./adminPanelLocators.js";
 import BaseSteps from "../../base/baseSteps.js";
+import type {
+  DeleteRoomArgs,
+  VerifyRoomVisibilityArgs,
+} from "../../../types/index.js";
+import testDataHelper from "../../../helpers/data/testDataHelper.js";
 
 class AdminPanelSteps extends BaseSteps {
   constructor() {
@@ -15,71 +20,55 @@ class AdminPanelSteps extends BaseSteps {
     return this;
   }
 
-  deleteRoom(roomInfo: {
-    roomName: string;
-    type: string;
-    accessible: string;
-    price: string;
-    roomDetails: string;
-  }) {
-    this.addStep(
-      `Deleting Room [${roomInfo.roomName}, ${roomInfo.type}, ${roomInfo.accessible}, ${roomInfo.price}, ${roomInfo.roomDetails}]`,
-      async () => {
-        console.log(
-          `Deleting Room [${roomInfo.roomName}, ${roomInfo.type}, ${roomInfo.accessible}, ${roomInfo.price}, ${roomInfo.roomDetails}]`,
-        );
-        await adminPanelLocators
-          .deleteButton(
-            roomInfo.roomName,
-            roomInfo.type,
-            roomInfo.accessible,
-            roomInfo.price,
-            roomInfo.roomDetails,
-          )
-          .click();
-      },
-    );
+  deleteRoom({ tempDataIndex }: DeleteRoomArgs) {
+    this.addStep(`Deleting Room`, async () => {
+      const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
+      const type = testDataHelper.getTestData("roomType", tempDataIndex);
+      const accessible = testDataHelper.getTestData(
+        "roomAccessible",
+        tempDataIndex,
+      );
+      const price = testDataHelper.getTestData("roomPrice", tempDataIndex);
+      const features = testDataHelper.getTestData(
+        "roomFeatures",
+        tempDataIndex,
+      );
+      console.log(`Deleting Room "${roomName}"`);
+      await adminPanelLocators
+        .deleteButton(roomName, type, accessible, price, features)
+        .click();
+    });
     return this;
   }
 
-  verifyRoomVisibility(
-    roomInfo: {
-      roomName: string;
-      type: string;
-      accessible: string;
-      price: string;
-      roomDetails: string;
-    },
-    shouldBeVisible: boolean,
-  ) {
-    this.addStep(
-      `Verifying Room [${roomInfo.roomName}, ${roomInfo.type}, ${roomInfo.accessible}, ${roomInfo.price}, ${roomInfo.roomDetails}] is ${shouldBeVisible ? "" : "not "}visible`,
-      async () => {
-        console.log(
-          `Verifying Room [${roomInfo.roomName}, ${roomInfo.type}, ${roomInfo.accessible}, ${roomInfo.price}, ${roomInfo.roomDetails}] is ${shouldBeVisible ? "" : "not "}visible`,
-        );
-        if (shouldBeVisible)
-          await expect(
-            adminPanelLocators.row(
-              roomInfo.roomName,
-              roomInfo.type,
-              roomInfo.accessible,
-              roomInfo.price,
-              roomInfo.roomDetails,
-            ),
-          ).toBeVisible();
-        else
-          await expect(
-            adminPanelLocators.row(
-              roomInfo.roomName,
-              roomInfo.type,
-              roomInfo.accessible,
-              roomInfo.price,
-              roomInfo.roomDetails,
-            ),
-          ).toBeHidden();
-      },
-    );
+  verifyRoomVisibility({
+    tempDataIndex,
+    shouldBeVisible,
+  }: VerifyRoomVisibilityArgs) {
+    this.addStep(`Verifying Room visibility`, async () => {
+      const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
+      const type = testDataHelper.getTestData("roomType", tempDataIndex);
+      const accessible = testDataHelper.getTestData(
+        "roomAccessible",
+        tempDataIndex,
+      );
+      const price = testDataHelper.getTestData("roomPrice", tempDataIndex);
+      const features = testDataHelper.getTestData(
+        "roomFeatures",
+        tempDataIndex,
+      );
+      console.log(
+        `Verifying Room "${roomName}" is ${shouldBeVisible ? "" : "not "}visible`,
+      );
+      if (shouldBeVisible)
+        await expect(
+          adminPanelLocators.row(roomName, type, accessible, price, features),
+        ).toBeVisible();
+      else
+        await expect(
+          adminPanelLocators.row(roomName, type, accessible, price, features),
+        ).toBeHidden();
+    });
     return this;
   }
 }

@@ -8,6 +8,7 @@ import type {
 } from "../../types/index.js";
 import roomRequests from "./roomRequests.js";
 import testDataHelper from "../../helpers/data/testDataHelper.js";
+import { createRoomPayload } from "../../../resources/payloads/createRoomPayload.js";
 
 const roomSteps = {
   getAllRooms() {
@@ -18,18 +19,25 @@ const roomSteps = {
     });
   },
 
-  createRoom({ payload }: CreateRoomArgs) {
-    return test.step(`Creating room "${payload.roomName}"`, async () => {
+  createRoom({ hardData }: CreateRoomArgs = { hardData: {} }) {
+    return test.step(`Creating room`, async () => {
+      const payload = createRoomPayload(hardData);
       console.log(`Creating room "${payload.roomName}"`);
       const response = await roomRequests.postRoom(payload);
       expect(response.status()).toEqual(200);
       const responseJson = (await response.json()) as CreateRoomResponse;
       expect(responseJson.success).toBeTruthy();
+      testDataHelper.pushTestData("roomName", payload.roomName);
+      testDataHelper.pushTestData("roomType", payload.type);
+      testDataHelper.pushTestData("roomAccessible", String(payload.accessible));
+      testDataHelper.pushTestData("roomPrice", String(payload.roomPrice));
+      testDataHelper.pushTestData("roomFeatures", payload.features.join(", "));
     });
   },
 
-  getRoomId({ roomName }: GetRoomIdArgs) {
-    return test.step(`Getting roomId of room "${roomName}"`, async () => {
+  getRoomId({ tempDataIndex }: GetRoomIdArgs) {
+    return test.step(`Getting roomId"`, async () => {
+      const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
       console.log(`Getting roomId of room "${roomName}"`);
       const response = await roomRequests.getRoom();
       expect(response.status()).toEqual(200);

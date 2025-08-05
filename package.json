@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "tscVerification": "npx tsc --noEmit",
+    "prettierVerification": "npx prettier --check .",
     "eslintVerification": "npx eslint .",
     "madgeVerification": "npx madge --circular --extensions=ts ./",
     "chromium-prod": "npx playwright test --project=chromium-prod",
@@ -18,6 +19,7 @@
   "description": "",
   "devDependencies": {
     "@eslint/js": "^9.31.0",
+    "@faker-js/faker": "^9.9.0",
     "@playwright/test": "^1.50.1",
     "@types/node": "^24.0.13",
     "dotenv": "^17.2.0",

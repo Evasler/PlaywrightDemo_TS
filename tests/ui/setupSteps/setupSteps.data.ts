@@ -1,20 +1,17 @@
 import type {
+  DeleteRoomArgs,
   SetupStepsArgsObj,
   TeardownStepsArgsObj,
   TestDetailsObj,
+  VerifyRoomVisibilityArgs,
 } from "../../../src/types/index.js";
 
 type TestData = TestDetailsObj &
   SetupStepsArgsObj &
   TeardownStepsArgsObj & {
     stepData: {
-      roomInfo: {
-        roomName: string;
-        type: string;
-        accessible: string;
-        price: string;
-        roomDetails: string;
-      }[];
+      verifyRoomVisibilityArgs: VerifyRoomVisibilityArgs[];
+      deleteRoomArgs: DeleteRoomArgs[];
     };
   };
 
@@ -24,57 +21,24 @@ const setupStepsDataset: TestData = {
     title: "Setup Steps",
     suiteTags: ["@fullScope"],
   },
-  setupStepsArgsArray: [
+  setupData: [
     {
       loginArgs: { user: "administrator" },
-      createRoomArgsArray: [
-        {
-          payload: {
-            roomName: "initialRoom",
-            type: "Double",
-            accessible: false,
-            description: "Double room description",
-            image: "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
-            roomPrice: 350,
-            features: ["TV"],
-          },
-        },
-      ],
+      createRoomArgsArray: [{ hardData: {} }],
     },
     {
       loginArgs: { user: "administrator" },
-      createRoomArgsArray: [
-        {
-          payload: {
-            roomName: "otherRoom",
-            type: "Family",
-            accessible: false,
-            description: "Family room description",
-            image: "https://www.mwtestconsultancy.co.uk/img/room1.jpg",
-            roomPrice: 400,
-            features: ["TV", "WiFi"],
-          },
-        },
-      ],
+      createRoomArgsArray: [{ hardData: {} }],
     },
   ],
   stepData: {
-    roomInfo: [
-      {
-        roomName: "initialRoom",
-        type: "Double",
-        accessible: "false",
-        price: "350",
-        roomDetails: "TV",
-      },
-      {
-        roomName: "otherRoom",
-        type: "Family",
-        accessible: "false",
-        price: "400",
-        roomDetails: "TV, WiFi",
-      },
+    verifyRoomVisibilityArgs: [
+      { tempDataIndex: 0, shouldBeVisible: true },
+      { tempDataIndex: 0, shouldBeVisible: false },
+      { tempDataIndex: 1, shouldBeVisible: true },
+      { tempDataIndex: 1, shouldBeVisible: false },
     ],
+    deleteRoomArgs: [{ tempDataIndex: 0 }, { tempDataIndex: 1 }],
   },
 };
 

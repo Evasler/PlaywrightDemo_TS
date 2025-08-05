@@ -1,7 +1,8 @@
 import type { TestCase, TestResult } from "@playwright/test/reporter";
-import type { SuiteTag } from "../types/index.js";
+import type { FakerConfigArgs, SuiteTag } from "../types/index.js";
 import { expect } from "@playwright/test";
 import fileUtils from "./fileUtils.js";
+import { faker } from "@faker-js/faker";
 
 const testUtils = {
   fullTitle(id: number, title: string, suiteTags?: SuiteTag[]) {
@@ -119,6 +120,13 @@ const testUtils = {
         { timeout: 60000 },
       )
       .toBeTruthy();
+  },
+
+  fakerConfig({ seed, defaultRefDateISO }: FakerConfigArgs) {
+    if (defaultRefDateISO) faker.setDefaultRefDate(defaultRefDateISO);
+    console.log(
+      `fakerConfigArgs: { seed: ${faker.seed(seed)}, defaultRefDateISO: "${faker.defaultRefDate().toISOString()}" }`,
+    );
   },
 };
 

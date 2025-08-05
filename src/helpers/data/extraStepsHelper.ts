@@ -14,22 +14,20 @@ const extraStepsHelper = {
    * @param extraStepsArgsArray
    * @returns A playwright step, which wraps all performed actions.
    */
-  execute(
-    steps: "setupSteps" | "teardownSteps",
-    extraStepsArgsArray: ExtraStepsArgs[],
-  ) {
+  execute(steps: "setup" | "teardown", extraStepsArgsArray: ExtraStepsArgs[]) {
     return test.step(steps, async () => {
-      for (const stepsArgs of extraStepsArgsArray) {
+      for (const extraStepsArgs of extraStepsArgsArray) {
         await requestHelper.openNewThrowAwayContext();
-        if (stepsArgs.loginArgs) await authSteps.login(stepsArgs.loginArgs);
-        if (stepsArgs.createRoomArgsArray)
-          for (const createRoomArgs of stepsArgs.createRoomArgsArray)
+        if (extraStepsArgs.loginArgs)
+          await authSteps.login(extraStepsArgs.loginArgs);
+        if (extraStepsArgs.createRoomArgsArray)
+          for (const createRoomArgs of extraStepsArgs.createRoomArgsArray)
             await roomSteps.createRoom(createRoomArgs);
-        if (stepsArgs.getRoomIdArgsArray)
-          for (const getRoomIdArgs of stepsArgs.getRoomIdArgsArray)
+        if (extraStepsArgs.getRoomIdArgsArray)
+          for (const getRoomIdArgs of extraStepsArgs.getRoomIdArgsArray)
             await roomSteps.getRoomId(getRoomIdArgs);
-        if (stepsArgs.deleteRoomArgsArray)
-          for (const deleteRoomArgs of stepsArgs.deleteRoomArgsArray)
+        if (extraStepsArgs.deleteRoomArgsArray)
+          for (const deleteRoomArgs of extraStepsArgs.deleteRoomArgsArray)
             await roomSteps.deleteRoom(deleteRoomArgs);
       }
     });

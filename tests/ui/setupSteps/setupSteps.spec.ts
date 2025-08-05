@@ -8,10 +8,7 @@ import { testUtils } from "../../../src/utils/index.js";
 import setupStepsDataset from "./setupSteps.data.js";
 
 extendedTest.use({
-  setupStepsArgsArray: [
-    setupStepsDataset.setupStepsArgsArray,
-    { scope: "test" },
-  ],
+  setupData: [setupStepsDataset.setupData, { scope: "test" }],
 });
 extendedTest(
   testUtils.fullTitle(
@@ -24,12 +21,20 @@ extendedTest(
       .goToRestfulBookerAdminPage(loginSteps)
       .populateCredentials("administrator")
       .clickLogin(adminPanelSteps)
-      .verifyRoomVisibility(setupStepsDataset.stepData.roomInfo[0], true)
-      .deleteRoom(setupStepsDataset.stepData.roomInfo[0])
-      .verifyRoomVisibility(setupStepsDataset.stepData.roomInfo[0], false)
-      .verifyRoomVisibility(setupStepsDataset.stepData.roomInfo[1], true)
-      .deleteRoom(setupStepsDataset.stepData.roomInfo[1])
-      .verifyRoomVisibility(setupStepsDataset.stepData.roomInfo[1], false)
+      .verifyRoomVisibility(
+        setupStepsDataset.stepData.verifyRoomVisibilityArgs[0],
+      )
+      .deleteRoom(setupStepsDataset.stepData.deleteRoomArgs[0])
+      .verifyRoomVisibility(
+        setupStepsDataset.stepData.verifyRoomVisibilityArgs[1],
+      )
+      .verifyRoomVisibility(
+        setupStepsDataset.stepData.verifyRoomVisibilityArgs[2],
+      )
+      .deleteRoom(setupStepsDataset.stepData.deleteRoomArgs[1])
+      .verifyRoomVisibility(
+        setupStepsDataset.stepData.verifyRoomVisibilityArgs[3],
+      )
       ._execute();
   },
 );

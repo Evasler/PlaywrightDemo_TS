@@ -10,11 +10,15 @@ export interface LoginArgs {
   user: string;
 }
 export interface CreateRoomArgs {
-  payload: CreateRoomPayload;
+  hardData: Partial<CreateRoomPayload>;
 }
 export interface GetRoomIdArgs {
-  roomName: string;
+  tempDataIndex: number;
 }
 export interface DeleteRoomArgs {
   tempDataIndex: number;
+}
+export interface VerifyRoomVisibilityArgs {
+  tempDataIndex: number;
+  shouldBeVisible: boolean;
 }

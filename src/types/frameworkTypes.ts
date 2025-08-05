@@ -1,7 +1,14 @@
 import type { ExtraStepsArgs } from "./stepArgsTypes.js";
 
 export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
-export type TestDataKeys = "token" | "roomId";
+export type TestDataKeys =
+  | "token"
+  | "roomId"
+  | "roomName"
+  | "roomType"
+  | "roomAccessible"
+  | "roomPrice"
+  | "roomFeatures";
 export type LogLevel =
   | "test"
   | "describe"
@@ -38,11 +45,18 @@ export interface TestDetailsObj {
     suiteTags?: SuiteTag[];
   };
 }
+export interface FakerConfigArgs {
+  seed?: number;
+  defaultRefDateISO?: string;
+}
+export interface FakerConfigArgsObj {
+  fakerConfigArgs: FakerConfigArgs;
+}
 export interface SetupStepsArgsObj {
-  setupStepsArgsArray?: ExtraStepsArgs[];
+  setupData?: ExtraStepsArgs[];
 }
 export interface TeardownStepsArgsObj {
-  teardownStepsArgsArray?: ExtraStepsArgs[];
+  teardownData?: ExtraStepsArgs[];
 }
 export interface ExcelReporterOptions {
   enabled: boolean;

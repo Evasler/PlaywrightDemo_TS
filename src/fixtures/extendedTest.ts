@@ -4,6 +4,7 @@
 import { test as base } from "@playwright/test";
 import type {
   ErrorListenerOptionsObj,
+  FakerConfigArgsObj,
   SetupStepsArgsObj,
   TeardownStepsArgsObj,
 } from "../types/index.js";
@@ -24,12 +25,13 @@ const extendedTest = base.extend<
       authenticatedUser?: string,
     ) => T;
   } & ErrorListenerOptionsObj &
+    FakerConfigArgsObj &
     SetupStepsArgsObj &
     TeardownStepsArgsObj,
   object
 >({
-  setupStepsArgsArray: [undefined, { option: true }],
-  teardownStepsArgsArray: [undefined, { option: true }],
+  setupData: [undefined, { option: true }],
+  teardownData: [undefined, { option: true }],
   errorListenerOptions: [
     {
       failOnJsError: false,
@@ -38,6 +40,7 @@ const extendedTest = base.extend<
     },
     { option: true },
   ],
+  fakerConfigArgs: [{}, { option: true }],
 
   verifyReportersAreReady: [
     async ({}, use) => {
@@ -74,6 +77,7 @@ const extendedTest = base.extend<
         browser,
         baseURL,
         errorListenerOptions,
+        fakerConfigArgs,
       },
       use,
     ) => {
@@ -87,21 +91,18 @@ const extendedTest = base.extend<
         browser: browser,
         errorListenerOptions: errorListenerOptions,
       });
+      testUtils.fakerConfig(fakerConfigArgs);
       await use();
     },
     { box: true },
   ],
 
   performExtraSteps: [
-    async (
-      { initTestData, setupStepsArgsArray, teardownStepsArgsArray },
-      use,
-    ) => {
-      if (setupStepsArgsArray)
-        await extraStepsHelper.execute("setupSteps", setupStepsArgsArray);
+    async ({ initTestData, setupData, teardownData }, use) => {
+      if (setupData) await extraStepsHelper.execute("setup", setupData);
       await use();
-      if (teardownStepsArgsArray)
-        await extraStepsHelper.execute("teardownSteps", teardownStepsArgsArray);
+      if (teardownData)
+        await extraStepsHelper.execute("teardown", teardownData);
       await browserHelper.closeAllContexts();
     },
     { box: true, auto: true },

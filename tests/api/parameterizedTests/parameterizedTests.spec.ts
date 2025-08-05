@@ -14,12 +14,8 @@ for (const dataset of parameterizedTestsDatasets)
     async () => {
       await requestHelper.openNewContext();
       await authSteps.login({ user: "administrator" });
-      await roomSteps.createRoom({ payload: dataset.stepData.roomDetails });
-      await roomSteps.getRoomId({
-        roomName: dataset.stepData.roomDetails.roomName,
-      });
-      await roomSteps.deleteRoom({
-        tempDataIndex: dataset.stepData.roomTempDataIndex,
-      });
+      await roomSteps.createRoom(dataset.stepData.createRoomArgs);
+      await roomSteps.getRoomId(dataset.stepData.getRoomIdArgs);
+      await roomSteps.deleteRoom(dataset.stepData.deleteRoomArgs);
     },
   );

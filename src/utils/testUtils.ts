@@ -124,6 +124,7 @@ const testUtils = {
 
   fakerConfig({ seed, defaultRefDateISO }: FakerConfigArgs) {
     if (defaultRefDateISO) faker.setDefaultRefDate(defaultRefDateISO);
+    else faker.setDefaultRefDate(new Date());
     console.log(
       `fakerConfigArgs: { seed: ${faker.seed(seed)}, defaultRefDateISO: "${faker.defaultRefDate().toISOString()}" }`,
     );

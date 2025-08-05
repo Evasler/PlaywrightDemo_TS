@@ -4,7 +4,7 @@ import { testUtils } from "../../src/utils/index.js";
 
 extendedTest(
   testUtils.fullTitle(
-    5,
+    6,
     "Expected test failure, due to errorListener detecting a JS error",
     ["@fullScope"],
   ),
@@ -17,7 +17,7 @@ extendedTest(
 
 extendedTest(
   testUtils.fullTitle(
-    6,
+    7,
     "Expected test failure, due to errorListener detecting an Error Status code",
     ["@fullScope"],
   ),
@@ -30,7 +30,7 @@ extendedTest(
 
 extendedTest(
   testUtils.fullTitle(
-    7,
+    8,
     "Expected test failure, due to errorListener detecting a Connection Error",
     ["@fullScope"],
   ),

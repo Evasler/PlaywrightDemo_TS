@@ -3,7 +3,7 @@ import type { RoomType, SuiteTag } from "../../../src/types/index.js";
 const parameterizedTestsDatasets = [
   {
     testDetails: {
-      id: 0,
+      id: 1,
       title: "Parameterized Test | Create and delete Single room",
       suiteTags: ["@fullScope"] as SuiteTag[],
     },
@@ -15,7 +15,7 @@ const parameterizedTestsDatasets = [
   },
   {
     testDetails: {
-      id: 1,
+      id: 2,
       title: "Parameterized Test | Create and delete Family room",
       suiteTags: ["@fullScope"] as SuiteTag[],
     },

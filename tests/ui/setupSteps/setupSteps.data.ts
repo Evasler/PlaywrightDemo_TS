@@ -2,7 +2,7 @@ import type { SuiteTag } from "../../../src/types/index.js";
 
 const setupStepsDataset = {
   testDetails: {
-    id: 8,
+    id: 9,
     title: "Setup Steps",
     suiteTags: ["@fullScope"] as SuiteTag[],
   },

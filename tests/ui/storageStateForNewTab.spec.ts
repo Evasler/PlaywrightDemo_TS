@@ -16,7 +16,7 @@ extendedTest.use({
 extendedTest.describe("Initial Page without storageState", () => {
   extendedTest(
     testUtils.fullTitle(
-      11,
+      12,
       "Login page displayed, when the new tab is instantiated in the current context, which was instantiated without storageState",
       ["@fullScope"],
     ),
@@ -32,7 +32,7 @@ extendedTest.describe("Initial Page without storageState", () => {
   );
   extendedTest(
     testUtils.fullTitle(
-      12,
+      13,
       "Login page displayed, when the new tab is instantiated in a new context without storageState, while previous context was instantiated without storageState",
       ["@fullScope"],
     ),
@@ -48,7 +48,7 @@ extendedTest.describe("Initial Page without storageState", () => {
   );
   extendedTest(
     testUtils.fullTitle(
-      13,
+      14,
       "Admin Panel page displayed, when the new tab is instantiated in a new context with storageState, while previous context was instantiated without storageState",
       ["@fullScope"],
     ),
@@ -67,7 +67,7 @@ extendedTest.describe("Initial Page without storageState", () => {
 extendedTest.describe("Starting Page with storageState", () => {
   extendedTest(
     testUtils.fullTitle(
-      14,
+      15,
       "Admin Panel page displayed, when the new tab is instantiated in the current context, which was instantiated with storageState",
       ["@fullScope"],
     ),
@@ -83,7 +83,7 @@ extendedTest.describe("Starting Page with storageState", () => {
   );
   extendedTest(
     testUtils.fullTitle(
-      15,
+      16,
       "Login page displayed, when the new tab is instantiated in a new context without storageState, while previous context was instantiated with storageState",
       ["@fullScope"],
     ),
@@ -99,7 +99,7 @@ extendedTest.describe("Starting Page with storageState", () => {
   );
   extendedTest(
     testUtils.fullTitle(
-      16,
+      17,
       "Admin Panel page displayed, when the new tab is instantiated in a new context with storageState, while previous context was instantiated with storageState",
       ["@fullScope"],
     ),

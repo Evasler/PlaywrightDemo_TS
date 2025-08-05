@@ -4,7 +4,7 @@ import { authSteps, roomSteps } from "../../src/services/index.js";
 import { testUtils } from "../../src/utils/index.js";
 
 extendedTest(
-  testUtils.fullTitle(4, "Temporary Data", ["@fullScope"]),
+  testUtils.fullTitle(5, "Temporary Data", ["@fullScope"]),
   async () => {
     await requestHelper.openNewContext();
     await authSteps.login("administrator");

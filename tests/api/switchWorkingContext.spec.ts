@@ -4,7 +4,7 @@ import { authSteps } from "../../src/services/index.js";
 import { testUtils } from "../../src/utils/index.js";
 
 extendedTest(
-  testUtils.fullTitle(3, "Switch Working Context", ["@fullScope"]),
+  testUtils.fullTitle(4, "Switch Working Context", ["@fullScope"]),
   async () => {
     await requestHelper.openNewContext();
     await requestHelper.openNewContext();

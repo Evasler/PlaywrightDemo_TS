@@ -16,7 +16,7 @@ extendedTest.use({
 extendedTest.describe("Initial Tab without storageState", () => {
   extendedTest(
     testUtils.fullTitle(
-      9,
+      10,
       "Login page displayed, when initial tab is instantiated without a storageState",
       ["@fullScope"],
     ),
@@ -32,7 +32,7 @@ extendedTest.describe("Initial Tab without storageState", () => {
 extendedTest.describe("Initial Tab with storageState", () => {
   extendedTest(
     testUtils.fullTitle(
-      10,
+      11,
       "Admin Panel displayed, when initial tab is instantiated with a storageState",
       ["@fullScope"],
     ),

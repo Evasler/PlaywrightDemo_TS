@@ -7,7 +7,7 @@ import {
 import { testUtils } from "../../src/utils/index.js";
 
 extendedTest(
-  testUtils.fullTitle(17, "Switch Working Tab", ["@fullScope"]),
+  testUtils.fullTitle(18, "Switch Working Tab", ["@fullScope"]),
   async ({ openNewTabInNewContext }) => {
     await openNewTabInNewContext(blankSteps)
       ._openNewTabInNewContext(blankSteps)

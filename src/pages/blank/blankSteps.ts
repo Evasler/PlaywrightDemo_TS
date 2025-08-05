@@ -6,7 +6,7 @@ import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
 
 class BlankSteps extends BaseSteps {
   constructor() {
-    super("BlankPage");
+    super("Blank");
   }
 
   goToRestfulBookerAdminPage<T extends LoginSteps | AdminPanelSteps>(

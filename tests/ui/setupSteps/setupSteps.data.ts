@@ -1,34 +1,19 @@
-import type {
-  DeleteRoomArgs,
-  SetupStepsArgsObj,
-  TeardownStepsArgsObj,
-  TestDetailsObj,
-  VerifyRoomVisibilityArgs,
-} from "../../../src/types/index.js";
+import type { SuiteTag } from "../../../src/types/index.js";
 
-type TestData = TestDetailsObj &
-  SetupStepsArgsObj &
-  TeardownStepsArgsObj & {
-    stepData: {
-      verifyRoomVisibilityArgs: VerifyRoomVisibilityArgs[];
-      deleteRoomArgs: DeleteRoomArgs[];
-    };
-  };
-
-const setupStepsDataset: TestData = {
+const setupStepsDataset = {
   testDetails: {
     id: 8,
     title: "Setup Steps",
-    suiteTags: ["@fullScope"],
+    suiteTags: ["@fullScope"] as SuiteTag[],
   },
   setupData: [
     {
-      loginArgs: { user: "administrator" },
-      createRoomArgsArray: [{ hardData: {} }],
+      loginArgs: "administrator",
+      createRoomArgsArray: [{}],
     },
     {
-      loginArgs: { user: "administrator" },
-      createRoomArgsArray: [{ hardData: {} }],
+      loginArgs: "administrator",
+      createRoomArgsArray: [{}],
     },
   ],
   stepData: {
@@ -38,7 +23,7 @@ const setupStepsDataset: TestData = {
       { tempDataIndex: 1, shouldBeVisible: true },
       { tempDataIndex: 1, shouldBeVisible: false },
     ],
-    deleteRoomArgs: [{ tempDataIndex: 0 }, { tempDataIndex: 1 }],
+    deleteRoomArgs: [0, 1],
   },
 };
 

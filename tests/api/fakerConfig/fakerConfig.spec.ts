@@ -16,7 +16,7 @@ extendedTest(
   ),
   async () => {
     await requestHelper.openNewContext();
-    await authSteps.login({ user: "administrator" });
+    await authSteps.login("administrator");
     await roomSteps.getRoomId(fakerConfigDataset.stepData.getRoomIdArgs);
     await roomSteps.deleteRoom(fakerConfigDataset.stepData.deleteRoomArgs);
   },

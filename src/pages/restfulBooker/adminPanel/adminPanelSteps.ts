@@ -1,10 +1,6 @@
 import { expect } from "@playwright/test";
 import adminPanelLocators from "./adminPanelLocators.js";
 import BaseSteps from "../../base/baseSteps.js";
-import type {
-  DeleteRoomArgs,
-  VerifyRoomVisibilityArgs,
-} from "../../../types/index.js";
 import testDataHelper from "../../../helpers/data/testDataHelper.js";
 
 class AdminPanelSteps extends BaseSteps {
@@ -20,7 +16,7 @@ class AdminPanelSteps extends BaseSteps {
     return this;
   }
 
-  deleteRoom({ tempDataIndex }: DeleteRoomArgs) {
+  deleteRoom(tempDataIndex: number) {
     this.addStep(`Deleting Room`, async () => {
       const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
       const type = testDataHelper.getTestData("roomType", tempDataIndex);
@@ -44,7 +40,10 @@ class AdminPanelSteps extends BaseSteps {
   verifyRoomVisibility({
     tempDataIndex,
     shouldBeVisible,
-  }: VerifyRoomVisibilityArgs) {
+  }: {
+    tempDataIndex: number;
+    shouldBeVisible: boolean;
+  }) {
     this.addStep(`Verifying Room visibility`, async () => {
       const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
       const type = testDataHelper.getTestData("roomType", tempDataIndex);

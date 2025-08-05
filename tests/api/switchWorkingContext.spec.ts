@@ -8,8 +8,8 @@ extendedTest(
   async () => {
     await requestHelper.openNewContext();
     await requestHelper.openNewContext();
-    await authSteps.login({ user: "administrator" });
+    await authSteps.login("administrator");
     await requestHelper.switchWorkingContext(0);
-    await authSteps.login({ user: "administrator" });
+    await authSteps.login("administrator");
   },
 );

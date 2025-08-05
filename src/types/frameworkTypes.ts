@@ -1,6 +1,4 @@
-import type { ExtraStepsArgs } from "./stepArgsTypes.js";
-
-export type PageType = "BlankPage" | "LoginPage" | "AdminPanel" | "Error";
+export type Component = "Blank" | "Login" | "AdminPanel" | "Error";
 export type TestDataKeys =
   | "token"
   | "roomId"
@@ -9,13 +7,6 @@ export type TestDataKeys =
   | "roomAccessible"
   | "roomPrice"
   | "roomFeatures";
-export type LogLevel =
-  | "test"
-  | "describe"
-  | "specFile"
-  | "fixture"
-  | "projectDependency"
-  | "reporter";
 export type SuiteTag = "@smoke" | "@regression" | "@fullScope";
 export interface StorageState {
   cookies: {
@@ -35,28 +26,9 @@ export interface ErrorListenerOptions {
   failOnConnectionError: boolean;
   failOnRequestError: boolean;
 }
-export interface ErrorListenerOptionsObj {
-  errorListenerOptions: ErrorListenerOptions;
-}
-export interface TestDetailsObj {
-  testDetails: {
-    id: number;
-    title: string;
-    suiteTags?: SuiteTag[];
-  };
-}
 export interface FakerConfigArgs {
   seed?: number;
   defaultRefDateISO?: string;
-}
-export interface FakerConfigArgsObj {
-  fakerConfigArgs: FakerConfigArgs;
-}
-export interface SetupStepsArgsObj {
-  setupData?: ExtraStepsArgs[];
-}
-export interface TeardownStepsArgsObj {
-  teardownData?: ExtraStepsArgs[];
 }
 export interface ExcelReporterOptions {
   enabled: boolean;

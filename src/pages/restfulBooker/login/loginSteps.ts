@@ -6,7 +6,7 @@ import type { AdminPanelSteps } from "../adminPanel/adminPanelSteps.js";
 
 class LoginSteps extends BaseSteps {
   constructor() {
-    super("LoginPage");
+    super("Login");
   }
 
   verifyLoginIsVisible() {

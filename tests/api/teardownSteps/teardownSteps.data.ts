@@ -1,35 +1,24 @@
-import type {
-  TeardownStepsArgsObj,
-  TestDetailsObj,
-  LoginArgs,
-} from "../../../src/types/index.js";
+import type { SuiteTag } from "../../../src/types/index.js";
 
-type TestData = TestDetailsObj &
-  TeardownStepsArgsObj & {
-    stepData: {
-      loginArgs: LoginArgs;
-    };
-  };
-
-const teardownStepsDataset: TestData = {
+const teardownStepsDataset = {
   testDetails: {
     id: 2,
     title: "Teardown Steps",
-    suiteTags: ["@fullScope"],
+    suiteTags: ["@fullScope"] as SuiteTag[],
   },
   stepData: {
-    loginArgs: { user: "administrator" },
+    loginArgs: "administrator",
   },
   teardownData: [
     {
-      loginArgs: { user: "administrator" },
-      getRoomIdArgsArray: [{ tempDataIndex: 0 }],
-      deleteRoomArgsArray: [{ tempDataIndex: 0 }],
+      loginArgs: "administrator",
+      getRoomIdArgsArray: [0],
+      deleteRoomArgsArray: [0],
     },
     {
-      loginArgs: { user: "administrator" },
-      getRoomIdArgsArray: [{ tempDataIndex: 1 }],
-      deleteRoomArgsArray: [{ tempDataIndex: 1 }],
+      loginArgs: "administrator",
+      getRoomIdArgsArray: [1],
+      deleteRoomArgsArray: [1],
     },
   ],
 };

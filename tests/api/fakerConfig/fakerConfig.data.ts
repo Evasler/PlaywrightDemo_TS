@@ -1,38 +1,21 @@
-import type {
-  DeleteRoomArgs,
-  FakerConfigArgsObj,
-  GetRoomIdArgs,
-  SetupStepsArgsObj,
-  TeardownStepsArgsObj,
-  TestDetailsObj,
-} from "../../../src/types/index.js";
+import type { SuiteTag } from "../../../src/types/index.js";
 
-type TestData = TestDetailsObj &
-  SetupStepsArgsObj &
-  FakerConfigArgsObj &
-  TeardownStepsArgsObj & {
-    stepData: {
-      getRoomIdArgs: GetRoomIdArgs;
-      deleteRoomArgs: DeleteRoomArgs;
-    };
-  };
-
-const fakerConfigDataset: TestData = {
+const fakerConfigDataset = {
   testDetails: {
     id: 8,
     title: "Faker Configuration",
-    suiteTags: ["@fullScope"],
+    suiteTags: ["@fullScope"] as SuiteTag[],
   },
   fakerConfigArgs: { seed: 0, defaultRefDateISO: "2000-01-01T00:00:00.000Z" },
   setupData: [
     {
-      loginArgs: { user: "administrator" },
-      createRoomArgsArray: [{ hardData: {} }],
+      loginArgs: "administrator",
+      createRoomArgsArray: [{}],
     },
   ],
   stepData: {
-    getRoomIdArgs: { tempDataIndex: 0 },
-    deleteRoomArgs: { tempDataIndex: 0 },
+    getRoomIdArgs: 0,
+    deleteRoomArgs: 0,
   },
 };
 

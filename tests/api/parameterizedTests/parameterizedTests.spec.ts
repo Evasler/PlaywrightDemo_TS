@@ -13,7 +13,7 @@ for (const dataset of parameterizedTestsDatasets)
     ),
     async () => {
       await requestHelper.openNewContext();
-      await authSteps.login({ user: "administrator" });
+      await authSteps.login("administrator");
       await roomSteps.createRoom(dataset.stepData.createRoomArgs);
       await roomSteps.getRoomId(dataset.stepData.getRoomIdArgs);
       await roomSteps.deleteRoom(dataset.stepData.deleteRoomArgs);

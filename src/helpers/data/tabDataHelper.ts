@@ -1,58 +1,62 @@
-import type { PageType } from "../../types/index.js";
+import type { Component } from "../../types/index.js";
 
-const defaultPageType: PageType = "BlankPage";
-const pageTypes: PageType[][] = [];
+const initialComponent: Component = "Blank";
+const components: Component[][] = [];
 
 /**
- * Stores the PageType of each tab for all contexts.
+ * Stores the Component of each tab for all contexts.
  * Allows providing feedback, in case of erroneous tab-switching, while writting Tests in a method-chaining manner.
  */
 const tabDataHelper = {
   /**
    * @param contextIndex
    * @param tabIndex
-   * @returns The pageType of the tab.
+   * @returns The component of the tab.
    */
-  pageType(contextIndex: number, tabIndex: number) {
-    return pageTypes[contextIndex][tabIndex];
+  component(contextIndex: number, tabIndex: number) {
+    return components[contextIndex][tabIndex];
   },
 
   /**
-   * Initializes the array of PageTypes for a new context.
+   * Initializes the array of components for a new context.
    */
-  initializeContextPageTypes() {
-    pageTypes.push(new Array<PageType>());
+  initializeContextComponents() {
+    components.push(new Array<Component>());
   },
 
   /**
-   * Sets defaultPageType as the pageType of the tab.
+   * Sets initialComponent as the component of the tab.
    * @param contextIndex
    * @param tabIndex
    */
-  initializePageType(contextIndex: number, tabIndex: number) {
-    this.updatePageType(contextIndex, tabIndex, defaultPageType);
+  initializeComponent(contextIndex: number, tabIndex: number) {
+    this.updateComponent(contextIndex, tabIndex, initialComponent);
   },
 
   /**
-   * Deletes the context's array of PageTypes.
+   * Deletes the context's array of components.
    * @param contextIndex
    */
-  removeContextPageTypes(contextIndex: number) {
-    pageTypes.splice(contextIndex, 1);
+  removeContextComponents(contextIndex: number) {
+    components.splice(contextIndex, 1);
   },
 
   /**
-   * Sets the pageType of the tab.
+   * Sets the component of the tab.
    * @param contextIndex
    * @param tabIndex
-   * @param pageType
+   * @param component
    */
-  updatePageType(contextIndex: number, tabIndex: number, pageType: PageType) {
-    pageTypes[contextIndex][tabIndex] = pageType;
+  updateComponent(
+    contextIndex: number,
+    tabIndex: number,
+    component: Component,
+  ) {
+    components[contextIndex][tabIndex] = component;
   },
 
-  resetPageTypes() {
-    pageTypes.length = 0;
+  resetComponents() {
+    components.length = 0;
   },
 };
 

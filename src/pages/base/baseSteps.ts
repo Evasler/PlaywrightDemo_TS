@@ -1,10 +1,10 @@
 import stepSequenceHelper from "../../helpers/chaining/stepSequenceHelper.js";
 import browserHelper from "../../helpers/channel/browserHelper.js";
 import testDataHelper from "../../helpers/data/testDataHelper.js";
-import type { PageType, TestDataKeys } from "../../types/index.js";
+import type { Component, TestDataKeys } from "../../types/index.js";
 
 export default abstract class BaseSteps {
-  constructor(protected readonly _stepsType: PageType) {}
+  constructor(protected readonly _component: Component) {}
 
   protected get workingTab() {
     return browserHelper.workingTab;
@@ -43,8 +43,8 @@ export default abstract class BaseSteps {
     browserHelper.switchWorkingTab(
       contextIndex,
       pageIndex,
-      this._stepsType,
-      page._stepsType,
+      this._component,
+      page._component,
     );
     return page;
   }

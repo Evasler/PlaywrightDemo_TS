@@ -1,4 +1,3 @@
-import type { LogLevel } from "../types/index.js";
 import path from "path";
 
 const reset = "\x1b[0m";
@@ -27,7 +26,13 @@ const terminalUtils = {
   printLogLevelMessage(
     filepath: string,
     title: string,
-    level: LogLevel,
+    level:
+      | "test"
+      | "describe"
+      | "specFile"
+      | "fixture"
+      | "projectDependency"
+      | "reporter",
     message: string,
   ) {
     let textColor: string;

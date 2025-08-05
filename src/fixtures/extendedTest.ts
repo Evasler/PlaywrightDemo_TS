@@ -3,10 +3,9 @@
 
 import { test as base } from "@playwright/test";
 import type {
-  ErrorListenerOptionsObj,
-  FakerConfigArgsObj,
-  SetupStepsArgsObj,
-  TeardownStepsArgsObj,
+  ErrorListenerOptions,
+  ExtraStepsArgs,
+  FakerConfigArgs,
 } from "../types/index.js";
 import type { BaseSteps } from "../pages/index.js";
 import { fileUtils, testUtils } from "../utils/index.js";
@@ -24,10 +23,11 @@ const extendedTest = base.extend<
       page: T,
       authenticatedUser?: string,
     ) => T;
-  } & ErrorListenerOptionsObj &
-    FakerConfigArgsObj &
-    SetupStepsArgsObj &
-    TeardownStepsArgsObj,
+  } & {
+    errorListenerOptions: ErrorListenerOptions;
+  } & { fakerConfigArgs: FakerConfigArgs } & {
+    setupData?: ExtraStepsArgs[];
+  } & { teardownData?: ExtraStepsArgs[] },
   object
 >({
   setupData: [undefined, { option: true }],
@@ -83,7 +83,7 @@ const extendedTest = base.extend<
     ) => {
       if (!baseURL)
         throw new Error("baseURL not defined in playwright.config.ts");
-      tabDataHelper.resetPageTypes();
+      tabDataHelper.resetComponents();
       testDataHelper.resetTestData();
       frameworkDataHelper.init({
         apiRequest: playwright.request,

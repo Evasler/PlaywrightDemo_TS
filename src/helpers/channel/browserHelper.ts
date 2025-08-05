@@ -1,5 +1,5 @@
 import { type Page, expect } from "@playwright/test";
-import type { PageType } from "../../types/index.js";
+import type { Component } from "../../types/index.js";
 import errorListener from "../../listeners/errorListener.js";
 import frameworkDataHelper from "../data/frameworkDataHelper.js";
 import stepSequenceHelper from "../chaining/stepSequenceHelper.js";
@@ -79,7 +79,7 @@ const browserHelper = {
         console.log("Opening new Tab in current Context");
         const newPage = await workingContext().newPage();
         errorListener.attachTo(newPage);
-        tabDataHelper.initializePageType(
+        tabDataHelper.initializeComponent(
           workingContextIndex(),
           latestTabIndex(workingContextIndex()),
         );
@@ -119,8 +119,8 @@ const browserHelper = {
         }
       }
       errorListener.attachTo(newTab);
-      tabDataHelper.initializeContextPageTypes();
-      tabDataHelper.initializePageType(latestContextIndex(), 0);
+      tabDataHelper.initializeContextComponents();
+      tabDataHelper.initializeComponent(latestContextIndex(), 0);
       updateWorkingTab(latestContextIndex(), 0);
     });
   },
@@ -129,20 +129,20 @@ const browserHelper = {
    * Verifies the target Tab's pageType and sets the focused Tab.
    * @param contextIndex
    * @param tabIndex
-   * @param currentPageType
-   * @param nextPageType
+   * @param currentComponent
+   * @param nextComponent
    */
   switchWorkingTab(
     contextIndex: number,
     tabIndex: number,
-    currentPageType: PageType,
-    nextPageType: PageType,
+    currentComponent: Component,
+    nextComponent: Component,
   ) {
     stepSequenceHelper.addStep(
-      `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Page type is ${nextPageType}`,
+      `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Component is ${nextComponent}`,
       () => {
         console.log(
-          `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Page type is ${nextPageType}`,
+          `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Component is ${nextComponent}`,
         );
         expect(
           contextIndex,
@@ -159,12 +159,12 @@ const browserHelper = {
           alreadyWorkingOnTheTab,
           `Already working on tab [${contextIndex},${tabIndex}]`,
         ).toBeFalsy();
-        const actualPageType = tabDataHelper.pageType(contextIndex, tabIndex);
-        expect(actualPageType).toBe(nextPageType);
-        tabDataHelper.updatePageType(
+        const actualPageType = tabDataHelper.component(contextIndex, tabIndex);
+        expect(actualPageType).toBe(nextComponent);
+        tabDataHelper.updateComponent(
           workingContextIndex(),
           workingTabIndex(),
-          currentPageType,
+          currentComponent,
         );
         updateWorkingTab(contextIndex, tabIndex);
       },
@@ -193,7 +193,7 @@ const browserHelper = {
           [contextIndex].pages())
           await page.close();
         await frameworkDataHelper.browser.contexts()[contextIndex].close();
-        tabDataHelper.removeContextPageTypes(contextIndex);
+        tabDataHelper.removeContextComponents(contextIndex);
       },
     );
   },
@@ -227,7 +227,7 @@ const browserHelper = {
           .contexts()
           [contextIndex].pages()
           [tabIndex].close();
-        tabDataHelper.removeContextPageTypes(contextIndex);
+        tabDataHelper.removeContextComponents(contextIndex);
       },
     );
   },

@@ -1,10 +1,8 @@
 import { test, expect } from "@playwright/test";
 import type {
-  CreateRoomArgs,
-  DeleteRoomArgs,
-  GetRoomIdArgs,
   CreateRoomResponse,
   GetRoomResponse,
+  CreateRoomPayload,
 } from "../../types/index.js";
 import roomRequests from "./roomRequests.js";
 import testDataHelper from "../../helpers/data/testDataHelper.js";
@@ -19,7 +17,7 @@ const roomSteps = {
     });
   },
 
-  createRoom({ hardData }: CreateRoomArgs = { hardData: {} }) {
+  createRoom(hardData: Partial<CreateRoomPayload> = {}) {
     return test.step(`Creating room`, async () => {
       const payload = createRoomPayload(hardData);
       console.log(`Creating room "${payload.roomName}"`);
@@ -35,7 +33,7 @@ const roomSteps = {
     });
   },
 
-  getRoomId({ tempDataIndex }: GetRoomIdArgs) {
+  getRoomId(tempDataIndex: number) {
     return test.step(`Getting roomId"`, async () => {
       const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
       console.log(`Getting roomId of room "${roomName}"`);
@@ -50,7 +48,7 @@ const roomSteps = {
     });
   },
 
-  deleteRoom({ tempDataIndex }: DeleteRoomArgs) {
+  deleteRoom(tempDataIndex: number) {
     return test.step("Deleting room with roomId", async () => {
       const roomId = +testDataHelper.getTestData("roomId", tempDataIndex);
       console.log(`Deleting room with roomId "${roomId}"`);

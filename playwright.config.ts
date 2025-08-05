@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import type { ErrorListenerOptionsObj } from "./src/types/index.js";
+import type { ErrorListenerOptions } from "./src/types/index.js";
 import dotenv from "dotenv";
 
 /**
@@ -21,7 +21,7 @@ if (!process.env.GREP)
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig<ErrorListenerOptionsObj>({
+export default defineConfig<{ errorListenerOptions: ErrorListenerOptions }>({
   testDir: "./tests",
   /* Run tests in files in parallel */
   fullyParallel: true,

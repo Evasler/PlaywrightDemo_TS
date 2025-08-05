@@ -1,4 +1,11 @@
 const generalUtils = {
+
+  padCenteredString(str: string, length: number) {
+    const paddingCharCount = length - str.length - 2;
+    if (paddingCharCount < 1)
+      return str;
+    return ` ${str} `.padStart(Math.ceil(paddingCharCount / 2) + str.length + 2, "=").padEnd(length, "=");
+  },
   padNumber(number: number, digitCount: number) {
     return number.toString().padStart(digitCount, "0");
   },

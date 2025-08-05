@@ -2,6 +2,7 @@ import { test } from "@playwright/test";
 import type { ExtraStepsArgs } from "../../types/index.js";
 import { authSteps, roomSteps } from "../../services/index.js";
 import requestHelper from "../channel/requestHelper.js";
+import { generalUtils, terminalUtils } from "../../utils/index.js";
 
 /**
  * Better used in a fixture.
@@ -16,6 +17,11 @@ const extraStepsHelper = {
    */
   execute(steps: "setup" | "teardown", extraStepsArgsArray: ExtraStepsArgs[]) {
     return test.step(steps, async () => {
+      if (extraStepsArgsArray.length > 0)
+        terminalUtils.printColoredText(
+          generalUtils.padCenteredString(steps.toUpperCase(), 80),
+          "blue",
+        );
       for (const extraStepsArgs of extraStepsArgsArray) {
         await requestHelper.openNewThrowAwayContext();
         if (extraStepsArgs.loginArgs)

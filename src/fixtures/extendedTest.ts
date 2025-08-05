@@ -8,7 +8,7 @@ import type {
   FakerConfigArgs,
 } from "../types/index.js";
 import type { BaseSteps } from "../pages/index.js";
-import { fileUtils, testUtils } from "../utils/index.js";
+import { fileUtils, generalUtils, terminalUtils, testUtils } from "../utils/index.js";
 import tabDataHelper from "../helpers/data/tabDataHelper.js";
 import testDataHelper from "../helpers/data/testDataHelper.js";
 import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
@@ -100,6 +100,10 @@ const extendedTest = base.extend<
   performExtraSteps: [
     async ({ initTestData, setupData, teardownData }, use) => {
       if (setupData) await extraStepsHelper.execute("setup", setupData);
+      terminalUtils.printColoredText(
+        generalUtils.padCenteredString("TEST", 80),
+        "blue",
+      );
       await use();
       if (teardownData)
         await extraStepsHelper.execute("teardown", teardownData);

@@ -3,6 +3,8 @@ import type { FakerConfigArgs, SuiteTag } from "../types/index.js";
 import { expect } from "@playwright/test";
 import fileUtils from "./fileUtils.js";
 import { faker } from "@faker-js/faker";
+import terminalUtils from "./terminalUtils.js";
+import generalUtils from "./generalUtils.js";
 
 const testUtils = {
   fullTitle(id: number, title: string, suiteTags?: SuiteTag[]) {
@@ -125,8 +127,12 @@ const testUtils = {
   fakerConfig({ seed, defaultRefDateISO }: FakerConfigArgs) {
     if (defaultRefDateISO) faker.setDefaultRefDate(defaultRefDateISO);
     else faker.setDefaultRefDate(new Date());
+    terminalUtils.printColoredText(
+      generalUtils.padCenteredString("FAKER", 80),
+      "blue",
+    );
     console.log(
-      `fakerConfigArgs: { seed: ${faker.seed(seed)}, defaultRefDateISO: "${faker.defaultRefDate().toISOString()}" }`,
+      `{ seed: ${faker.seed(seed)}, defaultRefDateISO: "${faker.defaultRefDate().toISOString()}" }`,
     );
   },
 };

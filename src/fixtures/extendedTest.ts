@@ -1,14 +1,24 @@
 /* eslint @typescript-eslint/no-invalid-void-type: 0 */
 /* eslint @typescript-eslint/no-unused-vars: 0 */
 
-import { test as base } from "@playwright/test";
+import {
+  test as base,
+  type APIRequest,
+  type Browser,
+  type TestInfo,
+} from "@playwright/test";
 import type {
   ErrorListenerOptions,
   ExtraStepsArgs,
   FakerConfigArgs,
 } from "../types/index.js";
 import type { BaseSteps } from "../pages/index.js";
-import { fileUtils, generalUtils, terminalUtils, testUtils } from "../utils/index.js";
+import {
+  fileUtils,
+  generalUtils,
+  terminalUtils,
+  testUtils,
+} from "../utils/index.js";
 import tabDataHelper from "../helpers/data/tabDataHelper.js";
 import testDataHelper from "../helpers/data/testDataHelper.js";
 import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
@@ -16,22 +26,18 @@ import extraStepsHelper from "../helpers/data/extraStepsHelper.js";
 import browserHelper from "../helpers/channel/browserHelper.js";
 
 const extendedTest = base.extend<
-  { verifyReportersAreReady: void } & { skipRepeatIfTraceExists: void } & {
-    initTestData: void;
-  } & { performExtraSteps: void } & {
+  {
+    errorListenerOptions: ErrorListenerOptions;
+  } & { fakerConfigArgs: FakerConfigArgs } & {
+    setupData?: ExtraStepsArgs[];
+  } & { teardownData?: ExtraStepsArgs[] } & { autoFixture: void } & {
     openNewTabInNewContext: <T extends BaseSteps>(
       page: T,
       authenticatedUser?: string,
     ) => T;
-  } & {
-    errorListenerOptions: ErrorListenerOptions;
-  } & { fakerConfigArgs: FakerConfigArgs } & {
-    setupData?: ExtraStepsArgs[];
-  } & { teardownData?: ExtraStepsArgs[] },
+  },
   object
 >({
-  setupData: [undefined, { option: true }],
-  teardownData: [undefined, { option: true }],
   errorListenerOptions: [
     {
       failOnJsError: false,
@@ -41,75 +47,45 @@ const extendedTest = base.extend<
     { option: true },
   ],
   fakerConfigArgs: [{}, { option: true }],
+  setupData: [undefined, { option: true }],
+  teardownData: [undefined, { option: true }],
 
-  verifyReportersAreReady: [
-    async ({}, use) => {
-      await testUtils.verifyReportersAreReady();
-      await use();
-    },
-    { box: true },
-  ],
-
-  skipRepeatIfTraceExists: [
-    async ({ verifyReportersAreReady }, use, testInfo) => {
-      const repeatMutedOutputDir = testInfo.outputDir.replace(
-        new RegExp(`-repeat${testInfo.repeatEachIndex}$`),
-        "",
-      );
-      testInfo.outputDir = repeatMutedOutputDir;
-      const traceForTestPointExists = fileUtils.fileExists(
-        `${repeatMutedOutputDir}/trace.zip`,
-      );
-      testInfo.skip(
-        traceForTestPointExists,
-        `Skipping test point, because trace file already exists: ${repeatMutedOutputDir}/trace.zip`,
-      );
-      await use();
-    },
-    { box: true },
-  ],
-
-  initTestData: [
+  autoFixture: [
     async (
       {
-        skipRepeatIfTraceExists,
         playwright,
         browser,
         baseURL,
         errorListenerOptions,
         fakerConfigArgs,
+        setupData,
+        teardownData,
       },
       use,
+      testInfo,
     ) => {
-      if (!baseURL)
-        throw new Error("baseURL not defined in playwright.config.ts");
-      tabDataHelper.resetComponents();
-      testDataHelper.resetTestData();
-      frameworkDataHelper.init({
-        apiRequest: playwright.request,
-        baseUrl: baseURL,
-        browser: browser,
-        errorListenerOptions: errorListenerOptions,
-      });
-      testUtils.fakerConfig(fakerConfigArgs);
-      await use();
-    },
-    { box: true },
-  ],
-
-  performExtraSteps: [
-    async ({ initTestData, setupData, teardownData }, use) => {
+      await testUtils.verifyReportersAreReady();
+      skipRepeatIfTestTraceExists(testInfo);
+      initTestData(
+        baseURL,
+        playwright.request,
+        browser,
+        errorListenerOptions,
+        fakerConfigArgs,
+      );
       if (setupData) await extraStepsHelper.execute("setup", setupData);
       terminalUtils.printColoredText(
         generalUtils.padCenteredString("TEST", 80),
         "blue",
       );
+
       await use();
+
       if (teardownData)
         await extraStepsHelper.execute("teardown", teardownData);
       await browserHelper.closeAllContexts();
     },
-    { box: true, auto: true },
+    { auto: true },
   ],
 
   openNewTabInNewContext: [
@@ -119,8 +95,42 @@ const extendedTest = base.extend<
         return page;
       });
     },
-    { box: true },
+    {},
   ],
 });
 
 export default extendedTest;
+
+function skipRepeatIfTestTraceExists(testInfo: TestInfo) {
+  const repeatMutedOutputDir = testInfo.outputDir.replace(
+    new RegExp(`-repeat${testInfo.repeatEachIndex}$`),
+    "",
+  );
+  testInfo.outputDir = repeatMutedOutputDir;
+  const traceForTestPointExists = fileUtils.fileExists(
+    `${repeatMutedOutputDir}/trace.zip`,
+  );
+  testInfo.skip(
+    traceForTestPointExists,
+    `Skipping test point, because trace file already exists: ${repeatMutedOutputDir}/trace.zip`,
+  );
+}
+
+function initTestData(
+  baseUrl: string | undefined,
+  apiRequest: APIRequest,
+  browser: Browser,
+  errorListenerOptions: ErrorListenerOptions,
+  fakerConfigArgs: FakerConfigArgs,
+) {
+  if (!baseUrl) throw new Error("baseURL not defined in playwright.config.ts");
+  tabDataHelper.resetComponents();
+  testDataHelper.resetTestData();
+  frameworkDataHelper.init({
+    apiRequest: apiRequest,
+    baseUrl: baseUrl,
+    browser: browser,
+    errorListenerOptions: errorListenerOptions,
+  });
+  testUtils.fakerConfig(fakerConfigArgs);
+}

@@ -11,9 +11,14 @@ const uniqueEnforcer = new UniqueEnforcer();
 
 export function createRoomPayload(
   hardData: Partial<CreateRoomPayload> = {},
+  existingRoomNames: string[],
 ): CreateRoomPayload {
   const {
-    roomName = `RM. ${generalUtils.padNumber(uniqueEnforcer.enforce(() => faker.number.int({ min: 1, max: 999 })), 3)}`,
+    roomName = uniqueEnforcer.enforce(
+      () =>
+        `RM. ${generalUtils.padNumber(faker.number.int({ min: 1, max: 999 }), 3)}`,
+      { exclude: existingRoomNames },
+    ),
     type = faker.helpers.arrayElement(roomType),
     accessible = faker.datatype.boolean(),
     description = faker.lorem.paragraph(),

@@ -2,8 +2,7 @@ name: Plain Execution
 on:
   workflow_dispatch:
 jobs:
-  project-execution:
-    needs: static-code-analysis
+  plain-execution:
     runs-on: ubuntu-latest
     env:
       GREP: "@fullScope"

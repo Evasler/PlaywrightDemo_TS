@@ -1,4 +1,4 @@
-name: Execute Project
+name: Static Code Analysis
 on:
   workflow_dispatch:
 jobs:

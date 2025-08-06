@@ -6,17 +6,10 @@ env:
   GREP: "@fullScope"
   HEADLESS: "true"
   WORKERS: "5"
-  EXCEL_REPORTER_ENABLED: "true"
-  EXCEL_REPORTER_MANDATORY: "true"
-  SHARD_COUNT: "5"
 
 jobs:
   robustness-execution:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        shard: [1, 2, 3, 4, 5]
-      fail-fast: false
 
     steps:
       - uses: actions/checkout@v4
@@ -31,4 +24,12 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Project execution
-        run: npm run robustnessVerification --shard=${{ matrix.shard }}/$SHARD_COUNT
+        run: npm run robustnessVerification
+
+      - name: Upload test-results
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results
+          retention-days: 7

@@ -4,6 +4,7 @@ import { authSteps, roomSteps } from "../../../src/services/index.js";
 import { testUtils } from "../../../src/utils/index.js";
 import fakerConfigDataset from "./fakerConfig.data.js";
 
+extendedTest.describe.configure({ mode: "serial" });
 extendedTest.use({
   fakerConfigArgs: [fakerConfigDataset.fakerConfigArgs, { scope: "test" }],
   setupData: [fakerConfigDataset.setupData, { scope: "test" }],

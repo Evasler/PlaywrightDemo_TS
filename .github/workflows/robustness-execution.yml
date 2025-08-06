@@ -1,0 +1,40 @@
+name: Robustness Execution
+on:
+  workflow_dispatch:
+    inputs:
+      shard-count:
+        description: "Number of shards to run"
+        required: true
+        default: "5"
+        type: string
+
+env:
+  GREP: "@fullScope"
+  HEADLESS: "true"
+  WORKERS: "5"
+  EXCEL_REPORTER_ENABLED: "true"
+  EXCEL_REPORTER_MANDATORY: "true"
+
+jobs:
+  robustness-execution:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: ${{ fromJson(format('[{0}]', join(range(1, parseFloat(github.event.inputs.shard-count)), ','))) }}
+        total-shards: ["${{ github.event.inputs.shard-count }}"]
+      fail-fast: false
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Project execution
+        run: npm run robustnessVerification --shard=${{ matrix.shard }}/${{ matrix.total-shards }}

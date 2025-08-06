@@ -101,7 +101,7 @@ const testUtils = {
       excelReporterStatus ?? reporterStatus.excelReporter;
     fileUtils.writeFile(
       process.env.REPORTER_STATUS_FILEPATH,
-      JSON.stringify(reporterStatus, null, 2),
+      `${JSON.stringify(reporterStatus, null, 2)}\n`,
     );
   },
 

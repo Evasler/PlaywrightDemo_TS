@@ -11,7 +11,7 @@
     "chromium-prod": "npx playwright test --project=chromium-prod",
     "firefox-prod": "npx playwright test --project=firefox-prod",
     "executionOrder": "npx playwright test --project=executionOrder --reporter=./src/reporters/ExecOrderReporter.ts",
-    "automationRobustnessVerification": "npx playwright test --project=*-prod --workers=1 --repeat-each=5 --reporter=dot --trace=retain-on-first-failure --quiet"
+    "robustnessVerification": "npx playwright test --project=*-prod --workers=1 --repeat-each=5 --reporter=dot --trace=retain-on-first-failure --quiet --shard=$npm_config_shard"
   },
   "keywords": [],
   "author": "",

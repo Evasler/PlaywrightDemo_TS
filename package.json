@@ -6,7 +6,7 @@
   "scripts": {
     "tscAnalysis": "npx tsc --noEmit",
     "prettierAnalysis": "npx prettier --check .",
-    "": "npx eslint .",
+    "eslintAnalysis": "npx eslint .",
     "madgeAnalysis": "npx madge --circular --extensions=ts ./",
     "chromium-prod": "npx playwright test --project=chromium-prod",
     "firefox-prod": "npx playwright test --project=firefox-prod",

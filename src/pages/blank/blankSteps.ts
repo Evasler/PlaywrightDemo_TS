@@ -50,8 +50,11 @@ class BlankSteps extends BaseSteps {
   goToConnectionErrorPage(errorSteps: ErrorSteps) {
     this.addStep("Going to Connection Error Page", async () => {
       console.log("Going to Connection Error Page");
-      await this.workingTab.route(frameworkDataHelper.baseUrl, (route) =>
-        route.abort(),
+      await this.workingTab.route(
+        frameworkDataHelper.baseUrl,
+        async (route) => {
+          await route.abort();
+        },
       );
       await this.workingTab.goto(frameworkDataHelper.baseUrl);
     });

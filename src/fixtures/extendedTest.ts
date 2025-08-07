@@ -24,6 +24,7 @@ import testDataHelper from "../helpers/data/testDataHelper.js";
 import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
 import extraStepsHelper from "../helpers/data/extraStepsHelper.js";
 import browserHelper from "../helpers/channel/browserHelper.js";
+import stepSequenceHelper from "../helpers/chaining/stepSequenceHelper.js";
 
 const extendedTest = base.extend<
   {
@@ -126,6 +127,7 @@ function initTestData(
   if (!baseUrl) throw new Error("baseURL not defined in playwright.config.ts");
   tabDataHelper.resetComponents();
   testDataHelper.resetTestData();
+  stepSequenceHelper.resetStepSequence();
   frameworkDataHelper.init({
     apiRequest: apiRequest,
     baseUrl: baseUrl,

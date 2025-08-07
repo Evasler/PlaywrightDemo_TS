@@ -1,4 +1,4 @@
-import type { Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
 
 /**
@@ -12,19 +12,23 @@ const errorListener = {
   attachTo(page: Page) {
     if (frameworkDataHelper.errorListenerOptions.failOnJsError)
       page.on("pageerror", (error) => {
-        throw new Error(`Uncaught JS error: ${error.message}`);
+        expect(error, `Uncaught JS error: ${error.message}`).toBeUndefined();
       });
     if (frameworkDataHelper.errorListenerOptions.failOnConnectionError)
       page.on("requestfailed", (request) => {
-        throw new Error(`Request failed: ${request.url()}`);
+        expect(
+          request.failure(),
+          `Request failed [${request.failure()?.errorText}]: ${request.url()}`,
+        ).toBeUndefined();
       });
     if (frameworkDataHelper.errorListenerOptions.failOnRequestError)
       page.on("requestfinished", async (request) => {
         const response = await request.response();
-        if (response !== null && response.status() >= 400)
-          throw new Error(
+        if (response !== null)
+          expect(
+            response.status(),
             `Error code: "${response.status()} ${response.statusText()}" from ${response.url()}`,
-          );
+          ).toBeLessThan(400);
       });
   },
 };

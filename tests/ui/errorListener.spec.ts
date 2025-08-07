@@ -2,7 +2,7 @@ import extendedTest from "../../src/fixtures/extendedTest.js";
 import { blankSteps, errorSteps } from "../../src/pages/index.js";
 import { testUtils } from "../../src/utils/index.js";
 
-extendedTest(
+extendedTest.fail(
   testUtils.fullTitle(
     6,
     "Expected test failure, due to errorListener detecting a JS error",
@@ -15,7 +15,7 @@ extendedTest(
   },
 );
 
-extendedTest(
+extendedTest.fail(
   testUtils.fullTitle(
     7,
     "Expected test failure, due to errorListener detecting an Error Status code",
@@ -28,7 +28,7 @@ extendedTest(
   },
 );
 
-extendedTest(
+extendedTest.fail(
   testUtils.fullTitle(
     8,
     "Expected test failure, due to errorListener detecting a Connection Error",

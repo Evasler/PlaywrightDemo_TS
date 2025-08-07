@@ -37,6 +37,14 @@ const stepSequenceHelper = {
   },
 
   /**
+   * Resets the stepSequence promise to a resolved state.
+   * This is necessary when a test is marked with Playwright's .fail() flag.
+   */
+  resetStepSequence() {
+    stepSequence = Promise.resolve();
+  },
+
+  /**
    * Adds a step to the stepSequence promise.
    * If a step fails, the error's callstack will be updated to point to the proper row of the .spec.ts file.
    * @param title

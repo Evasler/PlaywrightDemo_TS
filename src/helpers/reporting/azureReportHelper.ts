@@ -185,7 +185,7 @@ const azureReportHelper = {
           parseInt(_testId),
           _projectConfiguration,
         );
-        if (!testPointId) return;
+        if (!testPointId) continue;
         const testResultId = await runsSteps.getResultId(
           runId,
           String(testPointId),

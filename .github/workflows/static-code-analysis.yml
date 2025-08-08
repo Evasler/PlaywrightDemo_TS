@@ -1,6 +1,7 @@
 name: Static Code Analysis
 on:
   workflow_dispatch:
+  workflow_call:
 jobs:
   static-code-analysis:
     runs-on: ubuntu-latest

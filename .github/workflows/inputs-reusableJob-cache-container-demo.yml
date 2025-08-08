@@ -1,4 +1,4 @@
-name: Docker & Cached node_modules Execution
+name: Inputs, Reusable Job, Cache & Container Demo
 on:
   workflow_dispatch:
     inputs:
@@ -35,10 +35,13 @@ on:
         default: "false"
         type: boolean
 jobs:
-  docker-cached-node_modules-execution:
+  static-code-analysis:
+    uses: ./.github/workflows/static-code-analysis.yml
+  npm-script-execution:
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.54.0-noble
+    needs: static-code-analysis
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

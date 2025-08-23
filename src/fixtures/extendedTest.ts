@@ -1,5 +1,4 @@
 /* eslint @typescript-eslint/no-invalid-void-type: 0 */
-/* eslint @typescript-eslint/no-unused-vars: 0 */
 
 import {
   test as base,
@@ -29,9 +28,10 @@ import stepSequenceHelper from "../helpers/chaining/stepSequenceHelper.js";
 const extendedTest = base.extend<
   {
     errorListenerOptions: ErrorListenerOptions;
-  } & { fakerConfigArgs: FakerConfigArgs } & {
+    fakerConfigArgs: FakerConfigArgs;
     setupData?: ExtraStepsArgs[];
-  } & { teardownData?: ExtraStepsArgs[] } & { autoFixture: void } & {
+    teardownData?: ExtraStepsArgs[];
+    autoFixture: void;
     openNewTabInNewContext: <T extends BaseSteps>(
       page: T,
       authenticatedUser?: string,

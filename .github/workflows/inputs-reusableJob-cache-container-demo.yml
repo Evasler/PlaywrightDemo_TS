@@ -32,7 +32,7 @@ on:
       excel_report:
         description: "Upload Excel report"
         required: true
-        default: "false"
+        default: false
         type: boolean
 jobs:
   static-code-analysis:

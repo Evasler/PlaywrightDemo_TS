@@ -1,3 +1,10 @@
+/**
+ * @description This module provides functionality for managing browser storage state files
+ * for authenticated users. It supports both API and UI-based authentication
+ * methods to create, validate, and refresh storage state files, which are used
+ * to maintain authentication between test runs.
+ */
+
 import { type APIRequestContext, type Page, expect } from "@playwright/test";
 import { credentialsUtils, fileUtils } from "../../utils/index.js";
 import type { StorageState, LoginResponse } from "../../types/index.js";
@@ -6,16 +13,23 @@ import frameworkDataHelper from "../data/frameworkDataHelper.js";
 const authDirectory = ".auth";
 
 /**
- * @param user
- * @returns The relative path to the user's storageState file.
+ * Generates the relative path to a user's storage state file.
+ *
+ * @param user - The username identifier for the storage state file
+ * @returns The relative path to the user's storageState file
  */
 function storageStatePath(user: string) {
   return `${authDirectory}/${user}.json`;
 }
 
 /**
- * Saves the user's token in a storageState file, based on ./resources/other/restfulBookerStorageStateTemplate.json.
- * @param user
+ * Creates a storage state file via API authentication.
+ *
+ * This function authenticates a user through API calls, obtains an authentication token,
+ * and saves it in a storage state file based on the template file.
+ *
+ * @param workingRequest - The Playwright API request context to use for authentication
+ * @param user - The username identifier for the storage state file
  */
 async function createStorageStateFileViaAPI(
   workingRequest: APIRequestContext,
@@ -44,8 +58,13 @@ async function createStorageStateFileViaAPI(
 }
 
 /**
- * @param workingRequest
- * @returns True, if the context's cookies include a valid token. Otherwise, false.
+ * Checks if a request context is authorized via API.
+ *
+ * This function verifies if the current API request context contains valid
+ * authentication cookies by validating the token with the server.
+ *
+ * @param workingRequest - The Playwright API request context to check
+ * @returns A boolean indicating whether the context is authorized
  */
 async function contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
   let contextIsAuthorized = false;
@@ -67,9 +86,13 @@ async function contextIsAuthorizedViaAPI(workingRequest: APIRequestContext) {
 }
 
 /**
- * The user is logged in via UI and their storageState file is created.
- * @param workingTab
- * @param user
+ * Creates a storage state file via UI authentication.
+ *
+ * This function logs in a user through the UI interface, waits for successful authentication,
+ * and then saves the browser context's storage state to a file.
+ *
+ * @param workingTab - The Playwright Page object to use for UI authentication
+ * @param user - The username identifier for the storage state file
  */
 async function createStorageStateFileViaUI(workingTab: Page, user: string) {
   console.log(`Generating ${storageStatePath(user)}`);
@@ -89,9 +112,13 @@ async function createStorageStateFileViaUI(workingTab: Page, user: string) {
 }
 
 /**
- * Visits the login page.
- * @param workingTab
- * @returns True, if the context's cookies are valid. Otherwise, false.
+ * Checks if a browser context is authorized via UI verification.
+ *
+ * This function navigates to the admin page and checks for the presence of
+ * UI elements that indicate successful authentication.
+ *
+ * @param workingTab - The Playwright Page object to check
+ * @returns A boolean indicating whether the browser context is authorized
  */
 async function contextIsAuthorizedViaUI(workingTab: Page) {
   if (workingTab.url() !== `${frameworkDataHelper.baseUrl}admin`)
@@ -109,13 +136,17 @@ async function contextIsAuthorizedViaUI(workingTab: Page) {
 }
 
 /**
- * Facilitates the creation of storageState files.
- * Furthemore, ensures the validity of said storageState files.
+ * Helper module for managing authentication storage state files.
+ *
+ * This module provides utilities for creating, validating, and refreshing storage state files
+ * that maintain authentication between test runs, supporting both API and UI authentication methods.
  */
 const storageStateHelper = {
   /**
-   * @param user
-   * @returns The relative path to the user's storageState file, if it exists. Otherwise, undefined.
+   * Gets the path to a user's storage state file if it exists.
+   *
+   * @param user - The username identifier for the storage state file
+   * @returns The relative path to the user's storageState file if it exists, otherwise undefined
    */
   storageStatePath(user?: string) {
     if (!user) return undefined;
@@ -124,10 +155,15 @@ const storageStateHelper = {
   },
 
   /**
-   * If authenticatedUser's storageState file doesn't exist, it is created.
-   * If authenticatedUser's storageState file contains invalid cookies, it is refreshed.
-   * @param authenticatedUser
-   * @returns True if a storageState file was created. Otherwise, false.
+   * Creates or refreshes a storage state file using API authentication if needed.
+   *
+   * This method checks if the storage state file exists and if its content is valid.
+   * If the file doesn't exist or contains invalid authentication data, it creates
+   * or refreshes the file using API authentication.
+   *
+   * @param workingRequest - The Playwright API request context to use for authentication
+   * @param authenticatedUser - The username identifier for the storage state file
+   * @returns A boolean indicating whether a new storage state file was created
    */
   async createStorageStateFileIfNeededViaAPI(
     workingRequest: APIRequestContext,
@@ -148,11 +184,15 @@ const storageStateHelper = {
   },
 
   /**
-   * If authenticatedUser's storageState file doesn't exist, it is created.
-   * If authenticatedUser's storageState file contains invalid cookies, it is refreshed.
-   * @param workingTab
-   * @param authenticatedUser
-   * @returns True if a storageState file was created. Otherwise, false.
+   * Creates or refreshes a storage state file using UI authentication if needed.
+   *
+   * This method checks if the storage state file exists and if its content is valid.
+   * If the file doesn't exist or contains invalid authentication data, it creates
+   * or refreshes the file using UI-based authentication.
+   *
+   * @param workingTab - The Playwright Page object to use for UI authentication
+   * @param authenticatedUser - The username identifier for the storage state file
+   * @returns A boolean indicating whether a new storage state file was created
    */
   async createStorageStateFileIfNeededViaUI(
     workingTab: Page,

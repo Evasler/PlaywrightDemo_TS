@@ -1,44 +1,51 @@
+/**
+ * @description This module provides functionality for managing browser automation in Playwright tests.
+ * It handles browser contexts and tabs (pages).
+ * The module maintains a concept of "working tab" which represents the currently focused browser tab.
+ */
+
 import { type Page, expect } from "@playwright/test";
-import type { Component } from "../../types/index.js";
+import type { ComponentType } from "../../types/index.js";
 import errorListener from "../../listeners/errorListener.js";
 import frameworkDataHelper from "../data/frameworkDataHelper.js";
 import stepSequenceHelper from "../chaining/stepSequenceHelper.js";
 import tabDataHelper from "../data/tabDataHelper.js";
 import storageStateHelper from "../chaining/storageStateHelper.js";
 
+/** The currently focused browser tab */
 let workingTab: Page;
 
 /**
- * The focused Tab's Context.
+ * @returns The browser context of the currently focused tab
  */
 function workingContext() {
   return workingTab.context();
 }
 
 /**
- * The index of the focused Tab's Context.
+ * @returns The index of the working context
  */
 function workingContextIndex() {
   return frameworkDataHelper.browser.contexts().indexOf(workingContext());
 }
 
 /**
- * The index of the focused Tab.
+ * @returns The index of the working tab within its context
  */
 function workingTabIndex() {
   return workingContext().pages().indexOf(workingTab);
 }
 
 /**
- * The index of the latest Context in the browser.
+ * @returns The index of the most recently created browser context
  */
 function latestContextIndex() {
   return frameworkDataHelper.browser.contexts().length - 1;
 }
 
 /**
- * @param contextIndex
- * @returns The index of the latest Tab in the Context.
+ * @param contextIndex - The index of the context to check
+ * @returns The index of the most recently created tab in a specific context
  */
 function latestTabIndex(contextIndex: number) {
   return (
@@ -47,9 +54,10 @@ function latestTabIndex(contextIndex: number) {
 }
 
 /**
- * Sets the focused Tab.
- * @param contextIndex
- * @param tabIndex
+ * Updates the working tab reference to point to a specific tab
+ *
+ * @param contextIndex - The index of the context containing the tab
+ * @param tabIndex - The index of the tab within its context
  */
 function updateWorkingTab(contextIndex: number, tabIndex: number) {
   workingTab = frameworkDataHelper.browser.contexts()[contextIndex].pages()[
@@ -58,19 +66,28 @@ function updateWorkingTab(contextIndex: number, tabIndex: number) {
 }
 
 /**
- * Manages all actions related to the Browser, Contexts and Tabs.
- * Holds a reference to the focused tab.
+ * Helper module for managing browser context and tab operations.
+ *
+ * This helper maintains the concept of a "working tab" which is the currently focused tab
+ * that subsequent operations will act upon. It provides a fluent pattern for browser automation
+ * with proper error handling and validation.
  */
 const browserHelper = {
   /**
-   * The focused Tab.
+   * @returns The currently focused tab in the browser
    */
   get workingTab() {
     return workingTab;
   },
 
   /**
-   * Opens a new Tab in the Context of the focused Tab's Context. The new Tab is focused.
+   * Opens a new tab in the current browser context and sets it as the working tab
+   *
+   * This method:
+   * - Creates a new page in the same context as the current working tab
+   * - Attaches the error listener to the new page
+   * - Initializes component tracking for the new tab
+   * - Sets the new tab as the working tab
    */
   openNewTabInCurrentContext() {
     stepSequenceHelper.addStep(
@@ -79,7 +96,7 @@ const browserHelper = {
         console.log("Opening new Tab in current Context");
         const newPage = await workingContext().newPage();
         errorListener.attachTo(newPage);
-        tabDataHelper.initializeComponent(
+        tabDataHelper.initializeComponentType(
           workingContextIndex(),
           latestTabIndex(workingContextIndex()),
         );
@@ -92,8 +109,19 @@ const browserHelper = {
   },
 
   /**
-   * Opens a new Tab in a new Context. The new Tab is focused.
-   * @param authenticatedUser Allows avoiding the login process, by loading the user's storageState file in the Context.
+   * Opens a new tab in a new browser context and sets it as the working tab
+   *
+   * This method:
+   * - Creates a new browser context
+   * - Creates a new page within that context
+   * - Optionally applies authentication state for a specific user
+   * - Regenerates storage state via API if needed
+   * - Attaches error listener to the new page
+   * - Initializes component tracking for the new context and tab
+   * - Sets the new tab as the working tab
+   *
+   * @param authenticatedUser Optional username to load storage state for,
+   * allowing tests to skip login processes
    */
   openNewTabInNewContext(authenticatedUser?: string) {
     stepSequenceHelper.addStep("Opening new Tab in new Context", async () => {
@@ -119,24 +147,33 @@ const browserHelper = {
         }
       }
       errorListener.attachTo(newTab);
-      tabDataHelper.initializeContextComponents();
-      tabDataHelper.initializeComponent(latestContextIndex(), 0);
+      tabDataHelper.initializeContextComponentTypes();
+      tabDataHelper.initializeComponentType(latestContextIndex(), 0);
       updateWorkingTab(latestContextIndex(), 0);
     });
   },
 
   /**
-   * Verifies the target Tab's pageType and sets the focused Tab.
-   * @param contextIndex
-   * @param tabIndex
-   * @param currentComponent
-   * @param nextComponent
+   * Switches the working tab to a different tab and performs component validation
+   *
+   * This method:
+   * - Verifies the target context and tab indices are valid
+   * - Ensures we're not already on the requested tab
+   * - Verifies the target tab has the expected component type
+   * - Updates the component type of the previous working tab
+   * - Sets the target tab as the working tab
+   *
+   * @param contextIndex - The index of the target context
+   * @param tabIndex - The index of the target tab within its context
+   * @param currentComponent - Component type to set on the current working tab before switching
+   * @param nextComponent - Expected component type of the target tab
+   * @throws Will throw an error if target indices are invalid or component type doesn't match
    */
   switchWorkingTab(
     contextIndex: number,
     tabIndex: number,
-    currentComponent: Component,
-    nextComponent: Component,
+    currentComponent: ComponentType,
+    nextComponent: ComponentType,
   ) {
     stepSequenceHelper.addStep(
       `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Component is ${nextComponent}`,
@@ -159,9 +196,12 @@ const browserHelper = {
           alreadyWorkingOnTheTab,
           `Already working on tab [${contextIndex},${tabIndex}]`,
         ).toBeFalsy();
-        const actualPageType = tabDataHelper.component(contextIndex, tabIndex);
+        const actualPageType = tabDataHelper.componentType(
+          contextIndex,
+          tabIndex,
+        );
         expect(actualPageType).toBe(nextComponent);
-        tabDataHelper.updateComponent(
+        tabDataHelper.updateComponentType(
           workingContextIndex(),
           workingTabIndex(),
           currentComponent,
@@ -172,8 +212,17 @@ const browserHelper = {
   },
 
   /**
-   * Gracefully closes the Context.
-   * @param contextIndex
+   * Gracefully closes a browser context and all its tabs
+   *
+   * This method:
+   * - Validates the target context index
+   * - Ensures we're not trying to close the working context
+   * - Closes all pages in the context
+   * - Closes the context itself
+   * - Updates tracking data to reflect the changes
+   *
+   * @param contextIndex - The index of the context to close
+   * @throws Will throw an error if trying to close an invalid context or the working context
    */
   closeContext(contextIndex: number) {
     stepSequenceHelper.addStep(
@@ -193,15 +242,23 @@ const browserHelper = {
           [contextIndex].pages())
           await page.close();
         await frameworkDataHelper.browser.contexts()[contextIndex].close();
-        tabDataHelper.removeContextComponents(contextIndex);
+        tabDataHelper.removeContextComponentTypes(contextIndex);
       },
     );
   },
 
   /**
-   * Closes the Tab.
-   * @param contextIndex
-   * @param tabIndex
+   * Closes a specific tab in a browser context
+   *
+   * This method:
+   * - Validates the target context and tab indices
+   * - Ensures we're not trying to close the working tab
+   * - Closes the specified tab
+   * - Updates tracking data to reflect the changes
+   *
+   * @param contextIndex - The index of the context containing the tab
+   * @param tabIndex - The index of the tab to close
+   * @throws Will throw an error if trying to close an invalid tab or the working tab
    */
   closeTab(contextIndex: number, tabIndex: number) {
     stepSequenceHelper.addStep(
@@ -227,13 +284,17 @@ const browserHelper = {
           .contexts()
           [contextIndex].pages()
           [tabIndex].close();
-        tabDataHelper.removeContextComponents(contextIndex);
+        tabDataHelper.removeContextComponentTypes(contextIndex);
       },
     );
   },
 
   /**
-   * Gracefully closes all Contexts.
+   * Gracefully closes all browser contexts and their tabs
+   *
+   * This method iterates through all browser contexts, closes all their pages,
+   * and then closes the contexts themselves. This provides a clean way to reset
+   * the browser state.
    */
   async closeAllContexts() {
     for (const context of frameworkDataHelper.browser.contexts()) {
@@ -243,7 +304,10 @@ const browserHelper = {
   },
 
   /**
-   * Gracefully closes the Browser.
+   * Completely closes the browser instance
+   *
+   * This method closes all contexts first using closeAllContexts() and then
+   * closes the browser itself, releasing all resources.
    */
   async closeBrowser() {
     await this.closeAllContexts();

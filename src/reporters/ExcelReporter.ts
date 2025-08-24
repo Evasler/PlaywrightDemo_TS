@@ -10,7 +10,17 @@ import GlobalReporter from "./GlobalReporter.js";
 import { errorHandlingUtils, testUtils } from "../utils/index.js";
 import excelReportHelper from "../helpers/reporting/excelReportHelper.js";
 
+/**
+ * Reporter that manages test result reporting to Excel workbooks.
+ *
+ * This reporter updates test results in a predefined Excel file structure,
+ * validating configuration options and ensuring proper worksheet setup.
+ */
 export default class ExcelReporter implements Reporter {
+  /**
+   * Initialize the Excel reporter with the provided options from playwright.config
+   * @param _options Configuration options for the Excel reporter
+   */
   constructor(private readonly _options: ExcelReporterOptions) {
     testUtils.setReporterStatus({
       excelReporterStatus: this._options.enabled ? "pending" : "ready",
@@ -19,7 +29,8 @@ export default class ExcelReporter implements Reporter {
   }
 
   /**
-   * Checks if all of ExcelReporter's options inside playwright.config are defined properly.
+   * Validates that all required options for the Excel reporter are defined with correct types.
+   * Reports errors if any options are missing or have incorrect types.
    */
   private _throwOptionErrors() {
     const optionTypeErrors = [
@@ -33,9 +44,10 @@ export default class ExcelReporter implements Reporter {
   }
 
   /**
-   * @param optionName
-   * @param expectedPropertyType
-   * @returns An array containing the error message, if the option was not defined properly. Otherwise, an empty array.
+   * Validates the type of a specific option and returns any errors.
+   * @param optionName The name of the option to validate
+   * @param expectedPropertyType The expected type of the option
+   * @returns Array of error messages if validation fails, otherwise an empty array
    */
   private _optionTypeErrors(
     optionName: keyof ExcelReporterOptions,
@@ -67,9 +79,11 @@ export default class ExcelReporter implements Reporter {
   }
 
   /**
-   * Before the execution, if reporting is enabled and mandatory and errors occur, they are printed and the execution is stopped.
-   * @param config
-   * @param rootSuite
+   * Called at the beginning of the test run.
+   * If reporting is enabled, initializes Excel reporting and validates file structure.
+   * If reporting is mandatory and errors occur, they are reported and execution is stopped.
+   * @param config Playwright full configuration
+   * @param rootSuite The root suite containing all test cases
    */
   onBegin(config: FullConfig, rootSuite: Suite): void {
     if (this._options.enabled) {
@@ -80,7 +94,6 @@ export default class ExcelReporter implements Reporter {
       if (this._options.mandatoryReporting)
         GlobalReporter.addReportingStep(async () => {
           await excelReportHelper.throwReportingErrors(rootSuite);
-          await new Promise((resolve) => setTimeout(resolve, 10000));
         });
       GlobalReporter.addReportingStep(() => {
         testUtils.setReporterStatus({ excelReporterStatus: "ready" });
@@ -89,9 +102,10 @@ export default class ExcelReporter implements Reporter {
   }
 
   /**
-   * At the end of the test, if reporting is enabled, its result is updated in the Excel report.
-   * @param test
-   * @param result
+   * Called when a test ends.
+   * If reporting is enabled, updates the test result in the Excel report.
+   * @param test The test that has ended
+   * @param result The result of the test
    */
   onTestEnd(test: TestCase, result: TestResult): void {
     GlobalReporter.addReportingStep(async () => {
@@ -101,8 +115,8 @@ export default class ExcelReporter implements Reporter {
   }
 
   /**
-   * At the end of the execution, if reporting is enabled, Azure's Test Run's state is updated.
-   * A list of the tests, which were not reported, is printed.
+   * Called at the end of the test run.
+   * If reporting is enabled, prints warnings for any tests that couldn't be reported.
    */
   onEnd() {
     GlobalReporter.addReportingStep(() => {

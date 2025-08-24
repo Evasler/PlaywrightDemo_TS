@@ -1,5 +1,11 @@
 /* eslint @typescript-eslint/no-invalid-void-type: 0 */
 
+/**
+ * @description This module extends Playwright's base test fixture with custom fixtures for
+ * error handling, data preparation, browser context management, and test lifecycle hooks.
+ * It provides a foundation for creating more maintainable and feature-rich tests.
+ */
+
 import {
   test as base,
   type APIRequest,
@@ -25,13 +31,43 @@ import extraStepsHelper from "../helpers/data/extraStepsHelper.js";
 import browserHelper from "../helpers/channel/browserHelper.js";
 import stepSequenceHelper from "../helpers/chaining/stepSequenceHelper.js";
 
+/**
+ * Extended test fixture that enhances Playwright's base test fixture with additional capabilities
+ */
 const extendedTest = base.extend<
   {
+    /**
+     * Configuration options for error listener behavior.
+     * Controls whether tests fail on JavaScript errors, connection errors, or request errors.
+     */
     errorListenerOptions: ErrorListenerOptions;
+
+    /**
+     * Configuration for the faker library used to generate test data
+     */
     fakerConfigArgs: FakerConfigArgs;
+
+    /**
+     * Optional array of extra steps to execute during test setup
+     */
     setupData?: ExtraStepsArgs[];
+
+    /**
+     * Optional array of extra steps to execute during test teardown
+     */
     teardownData?: ExtraStepsArgs[];
+
+    /**
+     * Automatic fixture that handles test initialization, execution, and cleanup
+     */
     autoFixture: void;
+
+    /**
+     * Opens a new browser tab in a new context
+     * @param page - The page object representing the current page
+     * @param authenticatedUser - Optional username for authentication in the new context
+     * @returns The same page object for method chaining
+     */
     openNewTabInNewContext: <T extends BaseSteps>(
       page: T,
       authenticatedUser?: string,
@@ -51,6 +87,16 @@ const extendedTest = base.extend<
   setupData: [undefined, { option: true }],
   teardownData: [undefined, { option: true }],
 
+  /**
+   * Automatic fixture that runs before and after each test
+   * Handles:
+   * - Verifying reporters have performed all necessary validations
+   * - Skipping tests if trace files already exist
+   * - Initializing test data
+   * - Executing setup steps
+   * - Executing teardown steps
+   * - Closing all browser contexts
+   */
   autoFixture: [
     async (
       {
@@ -66,7 +112,7 @@ const extendedTest = base.extend<
       testInfo,
     ) => {
       await testUtils.verifyReportersAreReady();
-      skipRepeatIfTestTraceExists(testInfo);
+      skipRepeatIfTestPointTraceExists(testInfo);
       initTestData(
         baseURL,
         playwright.request,
@@ -89,6 +135,9 @@ const extendedTest = base.extend<
     { auto: true },
   ],
 
+  /**
+   * Fixture for opening a new tab in a new browser context and starting the step chain for a UI test
+   */
   openNewTabInNewContext: [
     async ({}, use) => {
       await use((page, authenticatedUser) => {
@@ -102,7 +151,13 @@ const extendedTest = base.extend<
 
 export default extendedTest;
 
-function skipRepeatIfTestTraceExists(testInfo: TestInfo) {
+/**
+ * Skips test execution if a trace file already exists for the current test point.
+ * This prevents redundant test executions, when using `--repeat-each=<n>` along with trace: `'retain-on-first-failure'`.
+ *
+ * @param testInfo - Playwright TestInfo object containing test metadata
+ */
+function skipRepeatIfTestPointTraceExists(testInfo: TestInfo) {
   const repeatMutedOutputDir = testInfo.outputDir.replace(
     new RegExp(`-repeat${testInfo.repeatEachIndex}$`),
     "",
@@ -117,6 +172,16 @@ function skipRepeatIfTestTraceExists(testInfo: TestInfo) {
   );
 }
 
+/**
+ * Initializes test data and framework components for a test run
+ *
+ * @param baseUrl - Base URL for the application under test
+ * @param apiRequest - Playwright APIRequest object for making API calls
+ * @param browser - Playwright Browser instance
+ * @param errorListenerOptions - Configuration for error handling behavior
+ * @param fakerConfigArgs - Configuration for fake data generation
+ * @throws Error if baseURL is not defined in the configuration
+ */
 function initTestData(
   baseUrl: string | undefined,
   apiRequest: APIRequest,
@@ -125,7 +190,7 @@ function initTestData(
   fakerConfigArgs: FakerConfigArgs,
 ) {
   if (!baseUrl) throw new Error("baseURL not defined in playwright.config.ts");
-  tabDataHelper.resetComponents();
+  tabDataHelper.resetComponentTypes();
   testDataHelper.resetTestData();
   stepSequenceHelper.resetStepSequence();
   frameworkDataHelper.init({

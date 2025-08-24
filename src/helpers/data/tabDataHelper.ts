@@ -1,62 +1,94 @@
-import type { Component } from "../../types/index.js";
+/**
+ * @description This module provides a mechanism for tracking component types across browser tabs
+ * in Playwright tests. It maintains a data structure that records which component type is
+ * loaded in each browser tab across multiple browser contexts, facilitating validation during
+ * tab switching operations.
+ */
 
-const initialComponent: Component = "Blank";
-const components: Component[][] = [];
+import type { ComponentType } from "../../types/index.js";
+
+/** Default component type for newly created browser tabs */
+const initialComponentType: ComponentType = "Blank";
+
+/** Multi-dimensional array storing component types for all tabs in all contexts */
+const componentTypes: ComponentType[][] = [];
 
 /**
- * Stores the Component of each tab for all contexts.
- * Allows providing feedback, in case of erroneous tab-switching, while writting Tests in a method-chaining manner.
+ * Helper module for managing component type tracking across browser tabs.
+ *
+ * This module maintains a record of which component type is loaded in each browser tab,
+ * allowing tests to validate that tab switching operations are targeting the correct
+ * component types. It provides a clean interface for tracking component state across
+ * multiple browser contexts and tabs, enhancing error messages when tabs contain
+ * unexpected content.
  */
 const tabDataHelper = {
   /**
-   * @param contextIndex
-   * @param tabIndex
-   * @returns The component of the tab.
+   * Retrieves the component type of a specific tab
+   *
+   * @param contextIndex - The index of the browser context
+   * @param tabIndex - The index of the tab within the context
+   * @returns The component type loaded in the specified tab
    */
-  component(contextIndex: number, tabIndex: number) {
-    return components[contextIndex][tabIndex];
+  componentType(contextIndex: number, tabIndex: number) {
+    return componentTypes[contextIndex][tabIndex];
   },
 
   /**
-   * Initializes the array of components for a new context.
+   * Initializes the array of component types for a new browser context
+   *
+   * This method is called when a new browser context is created to prepare
+   * for tracking component types within that context.
    */
-  initializeContextComponents() {
-    components.push(new Array<Component>());
+  initializeContextComponentTypes() {
+    componentTypes.push(new Array<ComponentType>());
   },
 
   /**
-   * Sets initialComponent as the component of the tab.
-   * @param contextIndex
-   * @param tabIndex
+   * Sets the initial default component type for a newly created tab
+   *
+   * @param contextIndex - The index of the browser context
+   * @param tabIndex - The index of the tab within the context
    */
-  initializeComponent(contextIndex: number, tabIndex: number) {
-    this.updateComponent(contextIndex, tabIndex, initialComponent);
+  initializeComponentType(contextIndex: number, tabIndex: number) {
+    this.updateComponentType(contextIndex, tabIndex, initialComponentType);
   },
 
   /**
-   * Deletes the context's array of components.
-   * @param contextIndex
+   * Removes component tracking for an entire browser context
+   *
+   * This method is called when a browser context is closed to clean up
+   * the tracking data for that context.
+   *
+   * @param contextIndex - The index of the browser context to remove
    */
-  removeContextComponents(contextIndex: number) {
-    components.splice(contextIndex, 1);
+  removeContextComponentTypes(contextIndex: number) {
+    componentTypes.splice(contextIndex, 1);
   },
 
   /**
-   * Sets the component of the tab.
-   * @param contextIndex
-   * @param tabIndex
-   * @param component
+   * Updates the component type of a specific tab
+   *
+   * @param contextIndex - The index of the browser context
+   * @param tabIndex - The index of the tab within the context
+   * @param component - The new component type to set for the tab
    */
-  updateComponent(
+  updateComponentType(
     contextIndex: number,
     tabIndex: number,
-    component: Component,
+    component: ComponentType,
   ) {
-    components[contextIndex][tabIndex] = component;
+    componentTypes[contextIndex][tabIndex] = component;
   },
 
-  resetComponents() {
-    components.length = 0;
+  /**
+   * Resets all component type tracking data
+   *
+   * This method clears all component type tracking information across all contexts and tabs.
+   * It's typically called at the start of a test to ensure a clean state.
+   */
+  resetComponentTypes() {
+    componentTypes.length = 0;
   },
 };
 

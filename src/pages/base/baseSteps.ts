@@ -1,10 +1,10 @@
 import stepSequenceHelper from "../../helpers/chaining/stepSequenceHelper.js";
 import browserHelper from "../../helpers/channel/browserHelper.js";
 import testDataHelper from "../../helpers/data/testDataHelper.js";
-import type { Component, TestDataKeys } from "../../types/index.js";
+import type { ComponentType, TestDataKeys } from "../../types/index.js";
 
 export default abstract class BaseSteps {
-  constructor(protected readonly _component: Component) {}
+  constructor(protected readonly _component: ComponentType) {}
 
   protected get workingTab() {
     return browserHelper.workingTab;

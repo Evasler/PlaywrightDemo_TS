@@ -1,16 +1,32 @@
+/**
+ * @description This module provides a mechanism for chaining test steps in Playwright tests while
+ * maintaining readable error stacks. It enables a fluent pattern for test steps, ensuring
+ * sequential execution and proper error reporting that points directly to the test file.
+ */
+
 import { test } from "@playwright/test";
 import config from "../../../playwright.config.js";
 
+/**
+ * Regular expression that matches stack trace lines pointing to spec files.
+ * Uses the testDir from Playwright config and accounts for different path separators.
+ */
 const testFilePath = new RegExp(
   `${(config.testDir ?? "").replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+.spec.ts:[0-9]+:[0-9]+`,
 );
+
+/**
+ * A Promise chain that ensures test steps execute sequentially.
+ * This is initialized as a resolved Promise and extended with each test step.
+ */
 let stepSequence = Promise.resolve();
 
 /**
- * Searches the callstack for a row pointing to a .spec.ts file.
- * Throws an error if none or multiple rows match.
- * @param callstack
- * @returns The row pointing to a .spec.ts file.
+ * Searches the callstack for a line pointing to a .spec.ts file.
+ *
+ * @param callStack - The error stack trace as a string
+ * @returns The line from the stack trace that points to the spec file
+ * @throws Error if no matching line or multiple matching lines are found
  */
 function getTestCallRowInStack(callStack: string) {
   const testCallRows = callStack
@@ -24,31 +40,60 @@ function getTestCallRowInStack(callStack: string) {
 }
 
 /**
- * Facilitates the sequential execution of a Test's steps, while writting Tests in a method-chaining manner.
- * When a step fails, the error's callstack is overwritten.
- * The new callstack points to the .spec.ts file's row, that includes the method call, which caused the failure.
+ * Helper object that facilitates sequential execution of test steps with improved error reporting.
+ *
+ * This helper enables method chaining in tests by:
+ * 1. Managing a promise chain to ensure steps run in sequence
+ * 2. Modifying error stack traces to point to the line containing the failed step,
+ * rather than the line containing `await`
+ * 3. Providing a clean pattern for adding steps and executing the sequence
+ *
+ * @example
+ * // In a page object file:
+ * function doSomething() {
+ *   stepSequenceHelper.addStep("Do something", async () => {
+ *     // Step implementation
+ *   });
+ *   return this; // Enable chaining
+ * }
+ *
+ * // In a test file:
+ * test("should perform actions in sequence", async () => {
+ *   await myPage
+ *     .doSomething()
+ *     .doSomethingElse()
+ *     .andAnother()
+ *     ._execute(); // Run the sequence
+ * });
  */
 const stepSequenceHelper = {
   /**
-   * A promise to ensure the sequential execution of the Test's steps.
+   * @returns A Promise chain representing the pending test steps
    */
   get stepSequence() {
     return stepSequence;
   },
 
   /**
-   * Resets the stepSequence promise to a resolved state.
-   * This is necessary when a test is marked with Playwright's .fail() flag.
+   * Resets the step sequence to a resolved Promise.
+   *
+   * This is necessary when a test is marked with Playwright's `.fail()` flag.
+   * When a test fails, the step sequence is a rejected Promise.
+   * However, since the expected outcome is `failed`, the worker will be reused for the next test execution.
+   * Hence, the added steps will not be executed and the error from the previous test will be propagated.
    */
   resetStepSequence() {
     stepSequence = Promise.resolve();
   },
 
   /**
-   * Adds a step to the stepSequence promise.
-   * If a step fails, the error's callstack will be updated to point to the proper row of the .spec.ts file.
-   * @param title
-   * @param callback
+   * Adds a new step to the sequence and handles error stack trace modification.
+   *
+   * When a step fails, the error stack is modified to point to the line containing the failed step,
+   * rather than the line containing `await`
+   *
+   * @param title - The name of the step to display in test reports
+   * @param callback - The function to execute as part of this step
    */
   addStep(title: string, callback: () => void | Promise<void>) {
     const myError = new Error();

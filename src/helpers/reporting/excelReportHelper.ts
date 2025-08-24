@@ -1,3 +1,10 @@
+/**
+ * @description This module provides functionality for managing Excel-based test reporting.
+ * It handles validating the Excel file structure, updating test results, and reporting errors
+ * when test results cannot be properly recorded. The module enforces a specific worksheet
+ * structure and naming convention to maintain consistent reporting.
+ */
+
 import type { Suite, TestCase, TestResult } from "@playwright/test/reporter";
 import Excel from "exceljs";
 import {
@@ -8,17 +15,32 @@ import {
   testUtils,
 } from "../../utils/index.js";
 
+/** Array to track tests that couldn't be reported to Excel */
 const unreportedTestTitles: string[] = [];
+
+/** Path to the Excel report file */
 let filepath: string;
+
+/** Allowed configuration names for test projects */
 let configurationNames: string[] = [];
 
+/**
+ * Generates the worksheet name for a specific test type
+ *
+ * @param testType - The type of test (API or UI)
+ * @returns The standardized worksheet name for the test type
+ */
 function getWorksheetName(testType: "API" | "UI") {
   return `FullScope (${testType})`;
 }
 
 /**
- * Performs a write operation on the Excel Report.
- * @returns True, if the operation was successful. Otherwise, false.
+ * Validates that the Excel report file can be opened and written to
+ *
+ * This function attempts to read and write the Excel file to verify that it's not locked
+ * by another process and has proper write permissions.
+ *
+ * @returns A boolean indicating whether the Excel file is writable
  */
 async function excelIsWritable() {
   try {
@@ -31,10 +53,14 @@ async function excelIsWritable() {
 }
 
 /**
- * Checks that the excel file exists and is writable.
- * It, also, checks that "FullScope (UI)" and "FullScope (API)" worksheets exist and have the proper structure.
- * @param projectName
- * @returns An array containing the error messages, if there were errors. Otherwise, an empty array.
+ * Validates the Excel report file's existence and structure
+ *
+ * This function checks if:
+ * 1. The Excel file exists in the specified location
+ * 2. The file is writable (not locked by another process)
+ * 3. Required worksheets exist with the correct column headers
+ *
+ * @returns An array of error messages, or an empty array if no errors were found
  */
 async function getExcelFileErrors() {
   const excelFileErrors = [];
@@ -52,9 +78,14 @@ async function getExcelFileErrors() {
 }
 
 /**
- * Checks that worksheetName exist and has the proper structure.
- * @param worksheetName
- * @returns An array containing the error messages, if there were errors. Otherwise, an empty array.
+ * Validates that a worksheet exists and has the expected column headers
+ *
+ * This function verifies that:
+ * 1. The specified worksheet exists in the Excel file
+ * 2. The worksheet's first row contains the expected column headers in the correct order
+ *
+ * @param worksheetName - The name of the worksheet to validate
+ * @returns An array of error messages, or an empty array if no errors were found
  */
 async function getWorksheetErrors(worksheetName: string) {
   const worksheetErrors = [];
@@ -86,9 +117,13 @@ async function getWorksheetErrors(worksheetName: string) {
 }
 
 /**
- * Gets the configurations specified by projectName.
- * @param projectName
- * @returns An array containing the error message, if there was an error. Otherwise, an empty array.
+ * Validates that a project name includes exactly one configuration
+ *
+ * This function checks if the project name contains exactly one of the configured
+ * configuration names. This ensures that test results can be properly categorized in the Excel report.
+ *
+ * @param projectName - The Playwright project name to validate
+ * @returns An array of error messages, or an empty array if no errors were found
  */
 function getProjectErrors(projectName: string) {
   const projectErrors = [];
@@ -107,11 +142,17 @@ function getProjectErrors(projectName: string) {
 }
 
 /**
- * Checks if a test point exists.
- * @param test
- * @param projectName
- * @param excelFileIsValid
- * @returns An array containing the error message, if there was an error or if the test point doesn't exist. Otherwise, an empty array.
+ * Validates a test case's file path, title format, and existence in the Excel report
+ *
+ * This function performs multiple validations:
+ * 1. Verifies the test file path correctly indicates the test type (API or UI)
+ * 2. Ensures the test title follows the required format (containing a numeric ID)
+ * 3. Checks that a matching test point exists in the Excel report (if the Excel file is valid)
+ *
+ * @param test - The Playwright test case to validate
+ * @param projectName - The name of the project the test belongs to
+ * @param excelFileIsValid - Flag indicating if the Excel file passed basic validation
+ * @returns An array of error messages, or an empty array if no errors were found
  */
 async function getTestErrors(
   test: TestCase,
@@ -157,8 +198,10 @@ async function getTestErrors(
 }
 
 /**
- * @param worksheetName
- * @returns The worksheet.
+ * Retrieves a worksheet from the Excel report file
+ *
+ * @param worksheetName - The name of the worksheet to retrieve
+ * @returns The worksheet object, or undefined if not found
  */
 async function getWorksheet(worksheetName: string) {
   const workbook = await new Excel.Workbook().xlsx.readFile(filepath);
@@ -167,8 +210,13 @@ async function getWorksheet(worksheetName: string) {
 }
 
 /**
- * @param test
- * @returns True if the test point exists. Otherwise, false.
+ * Checks if a test point exists in the Excel report
+ *
+ * This function searches for a row in the appropriate worksheet that matches
+ * the test ID and configuration of the provided test case.
+ *
+ * @param test - The Playwright test case to check for
+ * @returns A boolean indicating whether the test point exists in the Excel report
  */
 async function testPointExists(test: TestCase) {
   let _testId;
@@ -200,19 +248,37 @@ async function testPointExists(test: TestCase) {
 }
 
 /**
- * Facilitates all Excel actions performed by ExcelReporter.
+ * Helper module for managing Excel-based test reporting.
+ *
+ * This module provides functionality to validate, update, and maintain an Excel report
+ * for test results. It ensures that the Excel file structure is valid and that each test
+ * has a corresponding entry in the report. When tests are executed, it updates the
+ * appropriate cells with results, error messages, and timing information.
  */
 const excelReportHelper = {
+  /**
+   * Initializes the Excel reporter with file path and configuration information
+   *
+   * @param excelData - Configuration object containing file path and configuration names
+   * @param excelData.filepath - Path to the Excel report file
+   * @param excelData.configurationNames - Array of configuration names used in the test run
+   */
   init(excelData: { filepath: string; configurationNames: string[] }) {
     filepath = excelData.filepath;
     configurationNames = excelData.configurationNames;
   },
 
   /**
-   * Updates the result of the test, based on Playwright's test result.
-   * The title of a test is added to the unreportedTestTitles array, if there was an error or if no test point exists for that test.
-   * @param test
-   * @param result
+   * Updates the test result in the Excel report
+   *
+   * This method:
+   * 1. Locates the appropriate row in the Excel file for the test
+   * 2. Updates result, error message, duration, and date cells
+   * 3. Saves the Excel file with the updated information
+   * 4. Tracks tests that couldn't be reported for later warning
+   *
+   * @param test - The Playwright test case that was executed
+   * @param result - The test execution result
    */
   async updateResult(test: TestCase, result: TestResult) {
     let _testId;
@@ -269,7 +335,10 @@ const excelReportHelper = {
   },
 
   /**
-   * Lists the title of all tests, which weren't reported.
+   * Logs warnings for tests that couldn't be reported to Excel
+   *
+   * This method generates warning messages for any tests that couldn't be properly
+   * reported to the Excel file, typically due to missing test points or Excel file errors.
    */
   printUnreportedTestResultsWarning() {
     if (unreportedTestTitles.length > 0)
@@ -282,9 +351,17 @@ const excelReportHelper = {
   },
 
   /**
-   * Checks if all tests of rootSuite can be reported on Excel.
-   * Lists all error messages and stops the execution, if there are any errors.
-   * @param rootSuite
+   * Validates all test cases in a test suite against the Excel report
+   *
+   * This method performs comprehensive validation for all tests:
+   * 1. Checks Excel file structure and permissions
+   * 2. Validates the project's configuration naming
+   * 3. Verifies each test case has a corresponding entry in the Excel report
+   *
+   * If any validation errors are found, they are reported and the test execution stops.
+   *
+   * @param rootSuite - The Playwright root suite containing all test projects and tests
+   * @throws If any validation errors are found, preventing test execution
    */
   async throwReportingErrors(rootSuite: Suite) {
     const excelFileErrors: string[] = [];

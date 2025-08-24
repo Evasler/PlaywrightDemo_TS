@@ -1,3 +1,10 @@
+/**
+ * @description This module provides integration between Playwright tests and Azure DevOps Test Plans.
+ * It manages test result reporting to Azure DevOps, including test runs creation, test point validation,
+ * and result updates. The helper handles authentication, error reporting, and maintains a clean
+ * interface for reporting test outcomes.
+ */
+
 import type { APIRequestContext } from "@playwright/test";
 import type { Suite, TestCase, TestResult } from "@playwright/test/reporter";
 import { request } from "@playwright/test";
@@ -10,20 +17,41 @@ import RunsSteps from "../../azureServices/Test/Runs/RunsSteps.js";
 import PlansSteps from "../../azureServices/Test/Plans/PlansSteps.js";
 import type { ResultDetails, RunDetails } from "../../types/index.js";
 
+/** Array of test titles that couldn't be reported to Azure */
 const unreportedTestTitles: string[] = [];
+
+/** Authorized API request context for Azure DevOps API calls */
 let authorizedContext: APIRequestContext;
+
+/** Helper for interacting with Azure DevOps Test Runs */
 let runsSteps: RunsSteps;
+
+/** Helper for interacting with Azure DevOps Test Plans */
 let plansSteps: PlansSteps;
+
+/** Base URL for the Azure DevOps project */
 let projectBaseUrl: string;
+
+/** Personal access token for authenticating with Azure DevOps */
 let personalAccessToken: string;
+
+/** ID of the test plan containing the test cases */
 let planId: number;
+
+/** IDs of the test suites containing the test cases */
 let suiteIds: number[];
+
+/** Test configuration names used to match test cases */
 let configurationNames: string[] = [];
 
 /**
- * Gets a Test Point by Test Case ID.
- * @param test
- * @returns An array containing the error message, if there was an error. Otherwise, an empty array.
+ * Checks for errors when retrieving a test point by test case ID.
+ *
+ * This function attempts to find a test point across all configured suites
+ * and returns any errors encountered during the process.
+ *
+ * @param test - The Playwright test case to look up in Azure DevOps
+ * @returns An array containing error messages if any were encountered, otherwise an empty array
  */
 async function getRequestErrors(test: TestCase) {
   let _testId;
@@ -44,9 +72,13 @@ async function getRequestErrors(test: TestCase) {
 }
 
 /**
- * Gets the configurations specified by projectName.
- * @param projectName
- * @returns An array containing the error message, if there was an error. Otherwise, an empty array.
+ * Validates if a project name contains one of the required configuration names.
+ *
+ * This function checks if the project name includes exactly one of the expected
+ * configuration names, which is necessary for proper test reporting to Azure DevOps.
+ *
+ * @param projectName - The name of the Playwright project to validate
+ * @returns An array of error messages if validation fails, otherwise an empty array
  */
 function getProjectErrors(projectName: string) {
   const projectErrors = [];
@@ -66,11 +98,17 @@ function getProjectErrors(projectName: string) {
 }
 
 /**
- * Checks if a test point exists.
- * @param test
- * @param projectName
- * @param requestWasSuccessful
- * @returns An array containing the error message, if there was an error or if the test point doesn't exist. Otherwise, an empty array.
+ * Validates a test case title and checks if the corresponding test point exists in Azure DevOps.
+ *
+ * This function performs several validations:
+ * 1. Checks if the test title has the correct format (should include ":")
+ * 2. Verifies the test ID is a number
+ * 3. If the request to Azure was successful, checks if the test point exists in Azure DevOps
+ *
+ * @param test - The Playwright test case to validate
+ * @param projectName - The name of the Playwright project
+ * @param requestWasSuccessful - Whether previous API requests to Azure were successful
+ * @returns An array of error messages if validation fails, otherwise an empty array
  */
 async function getTestErrors(
   test: TestCase,
@@ -100,8 +138,13 @@ async function getTestErrors(
 }
 
 /**
- * @param test
- * @returns False if there was an error or if the test point doesn't exist. Otherwise, true.
+ * Checks if a test point for a given test case exists in Azure DevOps.
+ *
+ * This function attempts to find a test point for the specified test case
+ * across all configured test suites and with the appropriate configuration.
+ *
+ * @param test - The Playwright test case to check
+ * @returns True if the test point exists, false otherwise or if an error occurred
  */
 async function testPointExists(test: TestCase) {
   let _testId;
@@ -128,9 +171,23 @@ async function testPointExists(test: TestCase) {
 }
 
 /**
- * Facilitates all Azure actions performed by AzureReporter.
+ * Helper module for integrating Playwright test reporting with Azure DevOps Test Plans.
+ *
+ * This module provides a comprehensive set of functions to handle Azure DevOps test reporting,
+ * including creating test runs, validating test cases, updating test results, and handling
+ * errors in the reporting process.
  */
 const azureReportHelper = {
+  /**
+   * Initializes the Azure report helper with connection and test plan details.
+   *
+   * @param azureData - Configuration object containing Azure DevOps connection details
+   * @param azureData.projectBaseUrl - Base URL for the Azure DevOps project API
+   * @param azureData.personalAccessToken - PAT for authenticating with Azure DevOps
+   * @param azureData.planId - ID of the test plan containing the test cases
+   * @param azureData.suiteIds - Array of test suite IDs containing the test cases
+   * @param azureData.configurationNames - Array of configuration names to match with tests
+   */
   init(azureData: {
     projectBaseUrl: string;
     personalAccessToken: string;
@@ -146,7 +203,10 @@ const azureReportHelper = {
   },
 
   /**
-   * Opens a new Request Context, which is authorized to perform API calls to Azure.
+   * Creates an authorized API request context for Azure DevOps API calls.
+   *
+   * This method initializes a new request context with the Personal Access Token
+   * for authentication and instantiates the RunsSteps and PlansSteps helpers.
    */
   async openAuthorizedContext() {
     authorizedContext = await request.newContext({
@@ -160,10 +220,20 @@ const azureReportHelper = {
   },
 
   /**
-   * Updates the result of the test run, based on Playwright's test result.
-   * @param runId
-   * @param test
-   * @param result
+   * Updates the test result in Azure DevOps based on Playwright's test result.
+   *
+   * This method:
+   * 1. Extracts the test ID and configuration from the test case
+   * 2. Finds the corresponding test point ID in Azure DevOps
+   * 3. Gets the result ID for the test point in the current run
+   * 4. Maps the Playwright test status to an Azure DevOps outcome
+   * 5. Updates the test result with details including duration and error message
+   *
+   * If the test is in the unreportedTestTitles list, it will be skipped.
+   *
+   * @param runId - The ID of the Azure DevOps test run
+   * @param test - The Playwright test case that was executed
+   * @param result - The Playwright test result with status and timing information
    */
   async updateResult(runId: number, test: TestCase, result: TestResult) {
     let _testId;
@@ -213,7 +283,10 @@ const azureReportHelper = {
   },
 
   /**
-   * Lists the title of all tests, which weren't reported.
+   * Logs warnings for tests that couldn't be reported to Azure DevOps.
+   *
+   * This method outputs warning messages for all test titles that were tracked
+   * as unreported during the test run.
    */
   printUnreportedTestResultsWarning() {
     if (unreportedTestTitles.length > 0)
@@ -226,9 +299,19 @@ const azureReportHelper = {
   },
 
   /**
-   * Checks if all tests of rootSuite can be reported on Azure.
-   * Lists all error messages and stops the execution, if there are any errors.
-   * @param rootSuite
+   * Validates all tests in the suite for Azure reporting compatibility.
+   *
+   * This method performs comprehensive validation of all tests to ensure they can be
+   * properly reported to Azure DevOps. It collects and reports errors for:
+   * 1. API request errors when checking test points
+   * 2. Project configuration errors (missing or multiple configurations)
+   * 3. Test title format and ID errors
+   * 4. Missing test points in Azure DevOps
+   *
+   * If any errors are found, it will report them and stop test execution.
+   *
+   * @param rootSuite - The root Playwright test suite containing all tests
+   * @throws Error if any tests cannot be reported to Azure DevOps
    */
   async throwReportingErrors(rootSuite: Suite) {
     const requestErrors: string[] = [];
@@ -262,10 +345,16 @@ const azureReportHelper = {
   },
 
   /**
-   * Gets the test point IDs for all tests of rootSuite.
-   * The title of a test is added to the unreportedTestTitles array, if there was an error or if no test point exists for that test.
-   * @param rootSuite
-   * @returns An array containing all existing test point IDs for all tests of rootSuite.
+   * Gets all test point IDs for tests in the suite that exist in Azure DevOps.
+   *
+   * This method iterates through all tests in the suite and:
+   * 1. Extracts the test ID and configuration
+   * 2. Checks if a corresponding test point exists in Azure DevOps
+   * 3. Collects all found test point IDs
+   * 4. Tracks tests that couldn't be reported in the unreportedTestTitles array
+   *
+   * @param rootSuite - The root Playwright test suite containing all tests
+   * @returns An array of test point IDs that exist in Azure DevOps
    */
   async getPointIds(rootSuite: Suite) {
     const pointIds = [];
@@ -301,9 +390,13 @@ const azureReportHelper = {
   },
 
   /**
-   * Creates a test run.
-   * @param runDetails
-   * @returns The error message, if there was an error. Otherwise, the test run ID.
+   * Creates a test run in Azure DevOps and handles any user-facing errors.
+   *
+   * This method wraps the creation of a test run to provide better error handling,
+   * making it suitable for user-facing scenarios where clear error messages are needed.
+   *
+   * @param runDetails - Details for the test run to create
+   * @returns Either an error message if creation failed, or the ID of the created test run
    */
   async createRunAndCatchUserError(runDetails: RunDetails) {
     const runIdAndUserError =
@@ -312,9 +405,13 @@ const azureReportHelper = {
   },
 
   /**
-   * Updates the test run.
-   * @param runId
-   * @param runDetails
+   * Updates an existing test run in Azure DevOps with new details.
+   *
+   * This method can be used to update properties of a test run such as
+   * its name, state, or completion date.
+   *
+   * @param runId - The ID of the Azure DevOps test run to update
+   * @param runDetails - New details to apply to the test run
    */
   async updateRun(runId: number, runDetails: RunDetails) {
     await runsSteps.updateRun(runId, runDetails);

@@ -11,10 +11,20 @@ import GlobalReporter from "./GlobalReporter.js";
 import { errorHandlingUtils, testUtils } from "../utils/index.js";
 import azureReportHelper from "../helpers/reporting/azureReportHelper.js";
 
+/**
+ * Reporter for sending test results to Azure DevOps.
+ * Creates a test run in Azure DevOps and updates test case results.
+ */
 export default class AzureReporter implements Reporter {
+  /** ID of the test run in Azure DevOps */
   private _runId?: number;
+  /** Details of the test run in Azure DevOps */
   private _runDetails!: RunDetails;
 
+  /**
+   * Initialize the Azure reporter with the provided options from playwright.config
+   * @param _options Configuration options for the Azure reporter
+   */
   constructor(private readonly _options: AzureReporterOptions) {
     testUtils.setReporterStatus({
       azureReporterStatus: this._options.enabled ? "pending" : "ready",
@@ -23,7 +33,8 @@ export default class AzureReporter implements Reporter {
   }
 
   /**
-   * Checks if all of AzureReporter's options inside playwright.config are defined properly.
+   * Validates that all required options for the Azure reporter are defined with correct types.
+   * Reports errors if any options are missing or have incorrect types.
    */
   private _throwOptionTypeErrors() {
     const optionTypeErrors = [
@@ -43,9 +54,10 @@ export default class AzureReporter implements Reporter {
   }
 
   /**
-   * @param optionName
-   * @param expectedPropertyType
-   * @returns An array containing the error message, if the option was not defined properly. Otherwise, an empty array.
+   * Validates the type of a specific option and returns any errors.
+   * @param optionName The name of the option to validate
+   * @param expectedPropertyType The expected type of the option
+   * @returns Array of error messages if validation fails, otherwise an empty array
    */
   private _optionTypeErrors(
     optionName: keyof AzureReporterOptions,
@@ -77,10 +89,11 @@ export default class AzureReporter implements Reporter {
   }
 
   /**
-   * Before the execution, if reporting is enabled, a Test Run is created on Azure.
-   * If reporting is mandatory and errors occur, they are printed and the execution is stopped.
-   * @param config
-   * @param rootSuite
+   * Called at the beginning of the test run.
+   * If reporting is enabled, initializes Azure connection and creates a test run.
+   * If reporting is mandatory and errors occur, they are reported and execution is stopped.
+   * @param config Playwright full configuration
+   * @param rootSuite The root suite containing all test cases
    */
   onBegin(config: FullConfig, rootSuite: Suite): void {
     if (this._options.enabled) {
@@ -133,9 +146,10 @@ export default class AzureReporter implements Reporter {
   }
 
   /**
-   * At the end of the test, if reporting is enabled, its result is updated in Azure's Test Run.
-   * @param test
-   * @param result
+   * Called when a test ends.
+   * If reporting is enabled, updates the test result in Azure DevOps.
+   * @param test The test that has ended
+   * @param result The result of the test
    */
   onTestEnd(test: TestCase, result: TestResult): void {
     if (this._options.enabled)
@@ -146,9 +160,9 @@ export default class AzureReporter implements Reporter {
   }
 
   /**
-   * At the end of the execution, if reporting is enabled, Azure's Test Run's state is updated.
-   * A list of the tests, which were not reported, is printed.
-   * @param result
+   * Called at the end of the test run.
+   * If reporting is enabled, updates the Azure Test Run state and prints warnings about unreported tests.
+   * @param result The overall result of the test run
    */
   onEnd(result: FullResult) {
     GlobalReporter.addReportingStep(async () => {

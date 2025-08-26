@@ -1,4 +1,4 @@
-import { createRoomPayload } from "../../../resources/payloads/createRoomPayload.js";
+import postRoomPayload from "./payloads/postRoomPayload.js";
 import requestHelper from "../../helpers/channel/requestHelper.js";
 import testDataHelper from "../../helpers/data/testDataHelper.js";
 import type { PostRoomHardData } from "../../types/index.js";
@@ -12,7 +12,7 @@ const roomRequests = {
       });
     },
     post(hardData: PostRoomHardData, existingRoomNames: string[]) {
-      const payload = createRoomPayload(hardData, existingRoomNames);
+      const payload = postRoomPayload(hardData, existingRoomNames);
       console.log(`Creating room "${payload.roomName}"`);
       testDataHelper.pushTestData("roomName", payload.roomName);
       testDataHelper.pushTestData("roomType", payload.type);

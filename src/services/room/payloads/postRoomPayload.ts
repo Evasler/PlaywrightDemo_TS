@@ -2,14 +2,14 @@ import {
   roomFeature,
   roomType,
   type PostRoomHardData,
-} from "../../src/types/index.js";
+} from "../../../types/index.js";
 import { faker } from "@faker-js/faker";
-import { generalUtils } from "../../src/utils/index.js";
+import { generalUtils } from "../../../utils/index.js";
 import { UniqueEnforcer } from "enforce-unique";
 
 const uniqueEnforcer = new UniqueEnforcer();
 
-export function createRoomPayload(
+function postRoomPayload(
   hardData: PostRoomHardData = {},
   existingRoomNames: string[],
 ) {
@@ -36,3 +36,5 @@ export function createRoomPayload(
     features,
   };
 }
+
+export default postRoomPayload;

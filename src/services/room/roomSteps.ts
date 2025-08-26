@@ -12,7 +12,7 @@ const roomSteps = {
   getAllRooms() {
     return test.step("Getting all rooms", async () => {
       console.log("Getting all rooms");
-      const response = await roomRequests.getRoom();
+      const response = await roomRequests.room.get();
       expect(response.status()).toEqual(200);
     });
   },
@@ -24,7 +24,7 @@ const roomSteps = {
       );
       const payload = createRoomPayload(hardData, existingRoomNames);
       console.log(`Creating room "${payload.roomName}"`);
-      const response = await roomRequests.postRoom(payload);
+      const response = await roomRequests.room.post(payload);
       expect(response.status()).toEqual(200);
       const responseJson = (await response.json()) as CreateRoomResponse;
       expect(responseJson.success).toBeTruthy();
@@ -52,7 +52,7 @@ const roomSteps = {
     return test.step("Deleting room with roomId", async () => {
       const roomId = +testDataHelper.getTestData("roomId", tempDataIndex);
       console.log(`Deleting room with roomId "${roomId}"`);
-      const response = await roomRequests.deleteRoom(roomId);
+      const response = await roomRequests.roomId.delete(roomId);
       expect(response.status()).toEqual(200);
     });
   },
@@ -61,7 +61,7 @@ const roomSteps = {
 export default roomSteps;
 
 async function getRoomResponseJson() {
-  const response = await roomRequests.getRoom();
+  const response = await roomRequests.room.get();
   expect(response.status()).toEqual(200);
   return (await response.json()) as GetRoomResponse;
 }

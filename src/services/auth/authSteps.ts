@@ -10,7 +10,7 @@ const authSteps = {
     return test.step(`Logging in as user "${user}"`, async () => {
       console.log(`Logging in as user "${user}"`);
       const userCredentialsObj = credentialsUtils.getUserCredentials(user);
-      const response = await authRequests.login(userCredentialsObj);
+      const response = await authRequests.login.post(userCredentialsObj);
       expect(response.status()).toEqual(200);
       const token = ((await response.json()) as LoginResponse).token;
       testDataHelper.pushTestData("token", token);
@@ -23,7 +23,7 @@ const authSteps = {
       const token = testDataHelper.getTestData("token", tempDataIndex);
       console.log(`Validating session token "${token}"`);
       const tokenObj = { token: token };
-      const response = await authRequests.validate(tokenObj);
+      const response = await authRequests.validate.post(tokenObj);
       const valid = ((await response.json()) as ValidateResponse).valid;
       expect(valid).toBeTruthy();
     });
@@ -33,7 +33,7 @@ const authSteps = {
     return test.step(`Logging out token "${token}"`, async () => {
       console.log(`Logging out token "${token}"`);
       const tokenObj = { token: token };
-      const response = await authRequests.logout(tokenObj);
+      const response = await authRequests.logout.post(tokenObj);
       expect(response.status()).toEqual(200);
     });
   },

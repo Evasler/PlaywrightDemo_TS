@@ -1,38 +1,23 @@
 import { test, expect } from "@playwright/test";
-import type {
-  CreateRoomResponse,
-  GetRoomResponse,
-  CreateRoomPayload,
-} from "../../types/index.js";
-import roomRequests from "./roomRequests.js";
+import type { PostRoomHardData } from "../../types/index.js";
 import testDataHelper from "../../helpers/data/testDataHelper.js";
-import { createRoomPayload } from "../../../resources/payloads/createRoomPayload.js";
+import roomResponses from "./roomResponses.js";
 
 const roomSteps = {
   getAllRooms() {
     return test.step("Getting all rooms", async () => {
       console.log("Getting all rooms");
-      const response = await roomRequests.room.get();
-      expect(response.status()).toEqual(200);
+      await roomResponses.room.get._200();
     });
   },
 
-  createRoom(hardData: Partial<CreateRoomPayload> = {}) {
+  createRoom(hardData: PostRoomHardData = {}) {
     return test.step(`Creating room`, async () => {
-      const existingRoomNames = (await getRoomResponseJson()).rooms.map(
+      const getRoomResponseJson = await roomResponses.room.get._200();
+      const existingRoomNames = getRoomResponseJson.rooms.map(
         (room) => room.roomName,
       );
-      const payload = createRoomPayload(hardData, existingRoomNames);
-      console.log(`Creating room "${payload.roomName}"`);
-      const response = await roomRequests.room.post(payload);
-      expect(response.status()).toEqual(200);
-      const responseJson = (await response.json()) as CreateRoomResponse;
-      expect(responseJson.success).toBeTruthy();
-      testDataHelper.pushTestData("roomName", payload.roomName);
-      testDataHelper.pushTestData("roomType", payload.type);
-      testDataHelper.pushTestData("roomAccessible", String(payload.accessible));
-      testDataHelper.pushTestData("roomPrice", String(payload.roomPrice));
-      testDataHelper.pushTestData("roomFeatures", payload.features.join(", "));
+      await roomResponses.room.post._200(hardData, existingRoomNames);
     });
   },
 
@@ -40,7 +25,8 @@ const roomSteps = {
     return test.step(`Getting roomId"`, async () => {
       const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
       console.log(`Getting roomId of room "${roomName}"`);
-      const rooms = (await getRoomResponseJson()).rooms.filter(
+      const responseJson = await roomResponses.room.get._200();
+      const rooms = responseJson.rooms.filter(
         (room) => room.roomName === roomName,
       );
       expect(rooms).toHaveLength(1);
@@ -50,18 +36,11 @@ const roomSteps = {
 
   deleteRoom(tempDataIndex: number) {
     return test.step("Deleting room with roomId", async () => {
-      const roomId = +testDataHelper.getTestData("roomId", tempDataIndex);
+      const roomId = testDataHelper.getTestData("roomId", tempDataIndex);
       console.log(`Deleting room with roomId "${roomId}"`);
-      const response = await roomRequests.roomId.delete(roomId);
-      expect(response.status()).toEqual(200);
+      await roomResponses.roomId.delete._200(roomId);
     });
   },
 };
 
 export default roomSteps;
-
-async function getRoomResponseJson() {
-  const response = await roomRequests.room.get();
-  expect(response.status()).toEqual(200);
-  return (await response.json()) as GetRoomResponse;
-}

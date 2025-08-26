@@ -1,27 +1,29 @@
-# Playwright Test Automation Framework
+# Test Automation Framework for Playwright
 
-![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=for-the-badge&logo=playwright&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Playwright](https://img.shields.io/badge/Playwright-45ba4b?style=for-the-badge&logo=playwright&logoColor=white)
+![Zod](https://img.shields.io/badge/Zod-3068B7?style=for-the-badge&logoColor=white)
+![Faker.js](https://img.shields.io/badge/Faker.js-57AC70?style=for-the-badge&logoColor=white)
 ![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
 ![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black)
-![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 
 ## 📋 Overview
 
-This project demonstrates a scalable test automation framework built with Playwright and TypeScript. It showcases modern testing practices and patterns for both UI and API testing, with a focus on maintainability, readability, and extensibility.
-
-The framework employs a plethora of techniques to create a powerful yet easy-to-use testing solution.
+This project is a **Test Automation Framework** for Playwright.\
+It showcases modern testing practices and patterns for both **UI** and **API** testing.\
+With a heavy focus on **maintainability**, **readability**, and **scalability**, a plethora of techniques is employed to create a powerful yet easy-to-use testing solution.
 
 ## 🛠️ Technical Stack
 
-- **Playwright**: Core testing framework
 - **TypeScript**: Type-safe JavaScript
+- **Playwright**: Core testing framework
+- **Zod**: Schema validation
+- **Faker.js**: Test data generation
+- **Enforce Unique**: Unique test data generation
 - **dotenv**: Environment configuration
 - **Prettier**: Code formatting
 - **ESLint**: Code quality
 - **Madge**: Circular dependency detection
-- **Faker.js**: Test data generation
-- **Enforce Unique**: Unique test data generation
 - **ExcelJS**: Excel report generation
 - **GitHub Actions**: CI/CD integration
 
@@ -32,19 +34,19 @@ The framework employs a plethora of techniques to create a powerful yet easy-to-
 - **Comprehensive Reporting**: Custom reporters for Excel and Azure DevOps integration
 - **Storage State Management**: Efficient authentication handling with storage states
 - **Parameterized Tests**: Data-driven testing capabilities
-- **Error Listeners**: Detect errors happening at any point during test execution
+- **Error Listeners**: Error detections occurring at any point during test execution
 
 ## 🏗️ Key Design Patterns
 
 - **Page Object Model**: Encapsulates page interactions
 - **Service Object Model**: Encapsulates service interactions
 - **Modular Architecture**: Clear separation of concerns with dedicated modules
-- **Fluent Interface**: Enables method chaining for readable tests
-- **Observer Pattern**: Error listeners for event handling
+- **Fluent Interface**: Enables method chaining for readable and easy-to-write UI tests
+- **Observer Pattern**: Listeners for event handling
 
 ## 🔐 Best Practices Demonstrated
 
-- **Type Safety**: Extensive use of TypeScript interfaces and types
+- **Type Safety**: Extensive use of Zod, TypeScript interfaces and types
 - **Clean Code**: Consistent code style and organization
 - **Test Isolation**: Tests are independent and repeatable
 

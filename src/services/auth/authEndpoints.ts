@@ -10,9 +10,6 @@ const authEndpoints = {
   validate() {
     return `${this.auth()}validate`;
   },
-  logout() {
-    return `${this.auth()}logout`;
-  },
 };
 
 export default authEndpoints;

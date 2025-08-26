@@ -4,7 +4,7 @@ const roomEndpoints = {
   room() {
     return `${frameworkDataHelper.apiUrl}room/`;
   },
-  roomId(roomId: number) {
+  roomId(roomId: string) {
     return `${this.room()}${roomId}`;
   },
 };

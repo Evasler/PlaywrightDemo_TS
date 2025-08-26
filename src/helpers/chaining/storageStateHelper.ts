@@ -7,8 +7,9 @@
 
 import { type APIRequestContext, type Page, expect } from "@playwright/test";
 import { credentialsUtils, fileUtils } from "../../utils/index.js";
-import type { StorageState, LoginResponse } from "../../types/index.js";
+import { type StorageState } from "../../types/index.js";
 import frameworkDataHelper from "../data/frameworkDataHelper.js";
+import z from "zod";
 
 const authDirectory = ".auth";
 
@@ -42,7 +43,11 @@ async function createStorageStateFileViaAPI(
     { data: credentials },
   );
   expect(response.status()).toEqual(200);
-  const responseJson = (await response.json()) as LoginResponse;
+  const responseJson = z
+    .strictObject({
+      token: z.string().regex(/^[A-Za-z0-9]{16}$/),
+    })
+    .parse(await response.json());
   const storageStateTemplate = JSON.parse(
     fileUtils.readFile(
       "./resources/other/restfulBookerStorageStateTemplate.json",

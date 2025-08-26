@@ -1,20 +1,20 @@
-import { test, expect } from "@playwright/test";
+import { test } from "@playwright/test";
 import { credentialsUtils } from "../../utils/index.js";
-import type { LoginResponse, ValidateResponse } from "../../types/index.js";
-import authRequests from "./authRequests.js";
 import testDataHelper from "../../helpers/data/testDataHelper.js";
 import requestHelper from "../../helpers/channel/requestHelper.js";
+import authResponses from "./authResponses.js";
 
 const authSteps = {
   login(user: string) {
     return test.step(`Logging in as user "${user}"`, async () => {
       console.log(`Logging in as user "${user}"`);
-      const userCredentialsObj = credentialsUtils.getUserCredentials(user);
-      const response = await authRequests.login.post(userCredentialsObj);
-      expect(response.status()).toEqual(200);
-      const token = ((await response.json()) as LoginResponse).token;
-      testDataHelper.pushTestData("token", token);
-      requestHelper.putExtraHeader("Cookie", `token=${token}`);
+      const credentials = credentialsUtils.getUserCredentials(user);
+      const responseJson = await authResponses.login.post._200(
+        credentials.username,
+        credentials.password,
+      );
+      testDataHelper.pushTestData("token", responseJson.token);
+      requestHelper.putExtraHeader("Cookie", `token=${responseJson.token}`);
     });
   },
 
@@ -22,19 +22,7 @@ const authSteps = {
     return test.step("Validating session token", async () => {
       const token = testDataHelper.getTestData("token", tempDataIndex);
       console.log(`Validating session token "${token}"`);
-      const tokenObj = { token: token };
-      const response = await authRequests.validate.post(tokenObj);
-      const valid = ((await response.json()) as ValidateResponse).valid;
-      expect(valid).toBeTruthy();
-    });
-  },
-
-  logout(token: string) {
-    return test.step(`Logging out token "${token}"`, async () => {
-      console.log(`Logging out token "${token}"`);
-      const tokenObj = { token: token };
-      const response = await authRequests.logout.post(tokenObj);
-      expect(response.status()).toEqual(200);
+      await authResponses.validate.post._200(token);
     });
   },
 };

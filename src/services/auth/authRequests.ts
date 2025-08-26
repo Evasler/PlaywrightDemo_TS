@@ -3,30 +3,27 @@ import authEndpoints from "./authEndpoints.js";
 
 const authRequests = {
   login: {
-    post(payload: { username: string; password: string }) {
+    post(username: string, password: string) {
       return requestHelper.workingRequestContext.post(authEndpoints.login(), {
-        data: payload,
+        data: {
+          username: username,
+          password: password,
+        },
         headers: requestHelper.getExtraHeaders(),
       });
     },
   },
   validate: {
-    post(payload: { token: string }) {
+    post(token: string) {
       return requestHelper.workingRequestContext.post(
         authEndpoints.validate(),
         {
-          data: payload,
+          data: {
+            token: token,
+          },
           headers: requestHelper.getExtraHeaders(),
         },
       );
-    },
-  },
-  logout: {
-    post(payload: { token: string }) {
-      return requestHelper.workingRequestContext.post(authEndpoints.logout(), {
-        data: payload,
-        headers: requestHelper.getExtraHeaders(),
-      });
     },
   },
 };

@@ -59,7 +59,7 @@ The site is hosted at [https://automationintesting.online/](https://automationin
 ```
 PlaywrightDemo_TS/
 ├── src/
-│   ├── azureServices/      # Azure DevOps API integration
+│   ├── external/           # Interaction with external systems
 │   ├── fixtures/           # Custom test fixtures
 │   ├── helpers/            # Helper functions grouped by domain
 │   │   ├── chaining/       # Support for step chaining

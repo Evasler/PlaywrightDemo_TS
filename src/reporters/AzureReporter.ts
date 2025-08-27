@@ -6,10 +6,11 @@ import type {
   TestCase,
   TestResult,
 } from "@playwright/test/reporter";
-import type { AzureReporterOptions, RunDetails } from "../types/index.js";
 import GlobalReporter from "./GlobalReporter.js";
 import { errorHandlingUtils, testUtils } from "../utils/index.js";
 import azureReportHelper from "../helpers/reporting/azureReportHelper.js";
+import type { RunDetails } from "../external/azure/types.js";
+import type { AzureReporterOptions } from "../types/index.js";
 
 /**
  * Reporter for sending test results to Azure DevOps.

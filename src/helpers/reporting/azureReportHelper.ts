@@ -13,9 +13,8 @@ import {
   testUtils,
   errorHandlingUtils,
 } from "../../utils/index.js";
-import RunsSteps from "../../azureServices/Test/Runs/RunsSteps.js";
-import PlansSteps from "../../azureServices/Test/Plans/PlansSteps.js";
-import type { ResultDetails, RunDetails } from "../../types/index.js";
+import type { ResultDetails, RunDetails } from "../../external/azure/types.js";
+import { PlansSteps, RunsSteps } from "../../external/azure/services/index.js";
 
 /** Array of test titles that couldn't be reported to Azure */
 const unreportedTestTitles: string[] = [];

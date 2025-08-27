@@ -13,6 +13,10 @@ This project is a **Test Automation Framework** for Playwright.\
 It showcases modern testing practices and patterns for both **UI** and **API** testing.\
 With a heavy focus on **maintainability**, **readability**, and **scalability**, a plethora of techniques is employed to create a powerful yet easy-to-use testing solution.
 
+The application being tested is **restful-booker-platform**, created by Mark Winteringham.\
+This is a hotel booking application designed specifically for automation testing practice.\
+The site is hosted at [https://automationintesting.online/](https://automationintesting.online/) and the source code is available at [GitHub](https://github.com/mwinteringham/restful-booker-platform).
+
 ## 🛠️ Technical Stack
 
 - **TypeScript**: Type-safe JavaScript

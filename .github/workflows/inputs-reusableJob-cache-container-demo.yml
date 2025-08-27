@@ -75,4 +75,4 @@ jobs:
         with:
           name: PlaywrightDemo_TS
           path: excel-report/PlaywrightDemo_TS.xlsx
-          retention-days: 7
+          retention-days: 1

@@ -1,0 +1,79 @@
+name: Sharding Demo
+on:
+  workflow_dispatch:
+jobs:
+  sharded-execution:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.54.0-noble
+    strategy:
+      fail-fast: false
+      matrix:
+        shardIndex: [1, 2, 3, 4, 5]
+        shardCount: [5]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+
+      - name: Cache node modules
+        id: cache-node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Project execution
+        env:
+          GREP: "@fullScope"
+          HEADLESS: "true"
+          WORKERS: 5
+          HOME: "/root" # Necessary for the firefox browser to work correctly
+        run: npx playwright test --project=*-prod --shard=${{ matrix.shardIndex }}/${{ matrix.shardCount }} --trace=retain-on-first-failure --reporter=dot,blob --quiet
+
+      - name: Upload Blob report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: blob-report-${{ matrix.shardIndex }}
+          path: blob-report
+          retention-days: 1
+  
+  merge-blob-reports:
+    if: ${{ !cancelled() }}
+    needs: [sharded-execution]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.16.0"
+
+      - name: Cache node modules
+        id: cache-node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Download blob reports
+        uses: actions/download-artifact@v4
+        with:
+          path: merged-html-report
+          pattern: blob-report-*
+          merge-multiple: true
+      
+      - name: Merge blob reports into HTML report
+        run: npx playwright merge-reports --reporter=html ./merged-html-report
+
+      - name: Upload merged HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged-html-report
+          path: playwright-report
+          retention-days: 1

@@ -24,10 +24,25 @@ const roomSteps = {
   getRoomId(tempDataIndex: number) {
     return test.step(`Getting roomId"`, async () => {
       const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
+      const roomType = testDataHelper.getTestData("roomType", tempDataIndex);
+      const roomAccessible =
+        testDataHelper.getTestData("roomAccessible", tempDataIndex) === "true";
+      const roomPrice = Number(
+        testDataHelper.getTestData("roomPrice", tempDataIndex),
+      );
+      const roomFeatures = testDataHelper.getTestData(
+        "roomFeatures",
+        tempDataIndex,
+      );
       console.log(`Getting roomId of room "${roomName}"`);
       const responseJson = await roomResponses.room.get._200();
       const rooms = responseJson.rooms.filter(
-        (room) => room.roomName === roomName,
+        (room) =>
+          room.roomName === roomName &&
+          room.type === roomType &&
+          room.accessible === roomAccessible &&
+          room.roomPrice === roomPrice &&
+          room.features.join(", ") === roomFeatures,
       );
       expect(rooms).toHaveLength(1);
       testDataHelper.pushTestData("roomId", String(rooms[0].roomid));

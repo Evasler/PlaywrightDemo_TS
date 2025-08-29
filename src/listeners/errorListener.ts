@@ -37,9 +37,8 @@ const errorListener = {
         ).toBeUndefined();
       });
     if (frameworkDataHelper.errorListenerOptions.failOnRequestError)
-      page.on("requestfinished", async (request) => {
-        const response = await request.response();
-        if (response !== null)
+      page.on("response", (response) => {
+        if (response.status() >= 400) //Necessary to reduce the amount of logs in Trace
           expect(
             response.status(),
             `Error code: "${response.status()} ${response.statusText()}" from ${response.url()}`,

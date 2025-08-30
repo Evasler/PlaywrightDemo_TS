@@ -6,6 +6,7 @@ import {
   roomType,
   type PostRoomHardData,
 } from "../../types/index.js";
+import zodHelper from "../../helpers/data/zodHelper.js";
 
 const roomResponses = {
   room: {
@@ -13,8 +14,8 @@ const roomResponses = {
       async _200() {
         const response = await roomRequests.room.get();
         expect(response.status()).toEqual(200);
-        return z
-          .strictObject({
+        return zodHelper.prettyParse(
+          z.strictObject({
             rooms: z.array(
               z.strictObject({
                 roomid: z.number(),
@@ -30,8 +31,9 @@ const roomResponses = {
                 roomPrice: z.number(),
               }),
             ),
-          })
-          .parse(await response.json());
+          }),
+          await response.json(),
+        );
       },
     },
     post: {
@@ -41,9 +43,12 @@ const roomResponses = {
           existingRoomNames,
         );
         expect(response.status()).toEqual(200);
-        z.strictObject({
-          success: z.literal(true),
-        }).parse(await response.json());
+        zodHelper.prettyParse(
+          z.strictObject({
+            success: z.literal(true),
+          }),
+          await response.json(),
+        );
       },
     },
   },
@@ -52,9 +57,12 @@ const roomResponses = {
       async _200(roomId: string) {
         const response = await roomRequests.roomId.delete(roomId);
         expect(response.status()).toEqual(200);
-        z.strictObject({
-          success: z.literal(true),
-        }).parse(await response.json());
+        zodHelper.prettyParse(
+          z.strictObject({
+            success: z.literal(true),
+          }),
+          await response.json(),
+        );
       },
     },
   },

@@ -11,7 +11,6 @@ import dotenv from "dotenv";
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 dotenv.config({ path: ".env", quiet: true });
-process.env.REPORTER_STATUS_FILEPATH = "./resources/other/reportersStatus.json";
 
 if (!process.env.GREP)
   throw new Error(

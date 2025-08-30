@@ -28,6 +28,11 @@ jobs:
         if: steps.cache-node_modules.outputs.cache-hit != 'true'
         run: npm ci
 
+      - name: Create IPC directory with permissions
+        run: |
+          mkdir -p /tmp/PlaywrightDemo_TS
+          chmod 777 /tmp/PlaywrightDemo_TS
+
       - name: Project execution
         env:
           GREP: "@fullScope"
@@ -43,7 +48,7 @@ jobs:
           name: blob-report-${{ matrix.shardIndex }}
           path: blob-report
           retention-days: 1
-  
+
   merge-blob-reports:
     if: ${{ !cancelled() }}
     needs: [sharded-execution]
@@ -67,7 +72,7 @@ jobs:
           path: merged-html-report
           pattern: blob-report-*
           merge-multiple: true
-      
+
       - name: Merge blob reports into HTML report
         run: npx playwright merge-reports --reporter=html ./merged-html-report
 

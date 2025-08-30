@@ -7,8 +7,9 @@ import type {
 } from "@playwright/test/reporter";
 import type { ExcelReporterOptions } from "../types/index.js";
 import GlobalReporter from "./GlobalReporter.js";
-import { errorHandlingUtils, testUtils } from "../utils/index.js";
+import { errorHandlingUtils } from "../utils/index.js";
 import excelReportHelper from "../helpers/reporting/excelReportHelper.js";
+import { env } from "process";
 
 /**
  * Reporter that manages test result reporting to Excel workbooks.
@@ -22,10 +23,8 @@ export default class ExcelReporter implements Reporter {
    * @param _options Configuration options for the Excel reporter
    */
   constructor(private readonly _options: ExcelReporterOptions) {
-    testUtils.setReporterStatus({
-      excelReporterStatus: this._options.enabled ? "pending" : "ready",
-    });
     this._throwOptionErrors();
+    if (!this._options.enabled) env.EXCEL_REPORTER_STATUS = "ready";
   }
 
   /**
@@ -96,7 +95,7 @@ export default class ExcelReporter implements Reporter {
           await excelReportHelper.throwReportingErrors(rootSuite);
         });
       GlobalReporter.addReportingStep(() => {
-        testUtils.setReporterStatus({ excelReporterStatus: "ready" });
+        env.EXCEL_REPORTER_STATUS = "ready";
       });
     }
   }

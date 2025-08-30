@@ -1,7 +1,5 @@
 import type { TestCase, TestResult } from "@playwright/test/reporter";
 import type { FakerConfigArgs, SuiteTag } from "../types/index.js";
-import { expect } from "@playwright/test";
-import fileUtils from "./fileUtils.js";
 import { faker } from "@faker-js/faker";
 import terminalUtils from "./terminalUtils.js";
 import generalUtils from "./generalUtils.js";
@@ -81,47 +79,6 @@ const testUtils = {
       return "Failed";
     else if (result.status === "skipped")
       throw new Error(`Test Result should not be "skipped"`);
-  },
-
-  setReporterStatus({
-    azureReporterStatus,
-    excelReporterStatus,
-  }: {
-    azureReporterStatus?: "ready" | "pending";
-    excelReporterStatus?: "ready" | "pending";
-  }) {
-    if (!process.env.REPORTER_STATUS_FILEPATH)
-      throw new Error("REPORTER_STATUS_FILEPATH is not defined");
-    const reporterStatus = JSON.parse(
-      fileUtils.readFile(process.env.REPORTER_STATUS_FILEPATH),
-    ) as { azureReporter: string; excelReporter: string };
-    reporterStatus.azureReporter =
-      azureReporterStatus ?? reporterStatus.azureReporter;
-    reporterStatus.excelReporter =
-      excelReporterStatus ?? reporterStatus.excelReporter;
-    fileUtils.writeFile(
-      process.env.REPORTER_STATUS_FILEPATH,
-      `${JSON.stringify(reporterStatus, null, 2)}\n`,
-    );
-  },
-
-  async verifyReportersAreReady() {
-    await expect
-      .poll(
-        () => {
-          if (!process.env.REPORTER_STATUS_FILEPATH)
-            throw new Error("REPORTER_STATUS_FILEPATH is not defined");
-          const reporterStatus = JSON.parse(
-            fileUtils.readFile(process.env.REPORTER_STATUS_FILEPATH),
-          ) as { azureReporter: string; excelReporter: string };
-          return (
-            reporterStatus.azureReporter === "ready" &&
-            reporterStatus.excelReporter === "ready"
-          );
-        },
-        { timeout: 60000 },
-      )
-      .toBeTruthy();
   },
 
   fakerConfig({ seed, defaultRefDateISO }: FakerConfigArgs) {

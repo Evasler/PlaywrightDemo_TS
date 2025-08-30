@@ -7,10 +7,11 @@ import type {
   TestResult,
 } from "@playwright/test/reporter";
 import GlobalReporter from "./GlobalReporter.js";
-import { errorHandlingUtils, testUtils } from "../utils/index.js";
+import { errorHandlingUtils } from "../utils/index.js";
 import azureReportHelper from "../helpers/reporting/azureReportHelper.js";
 import type { RunDetails } from "../external/azure/types.js";
 import type { AzureReporterOptions } from "../types/index.js";
+import { env } from "process";
 
 /**
  * Reporter for sending test results to Azure DevOps.
@@ -27,10 +28,8 @@ export default class AzureReporter implements Reporter {
    * @param _options Configuration options for the Azure reporter
    */
   constructor(private readonly _options: AzureReporterOptions) {
-    testUtils.setReporterStatus({
-      azureReporterStatus: this._options.enabled ? "pending" : "ready",
-    });
     this._throwOptionTypeErrors();
+    if (!this._options.enabled) env.AZURE_REPORTER_STATUS = "ready";
   }
 
   /**
@@ -141,7 +140,7 @@ export default class AzureReporter implements Reporter {
         }
       });
       GlobalReporter.addReportingStep(() => {
-        testUtils.setReporterStatus({ azureReporterStatus: "ready" });
+        env.AZURE_REPORTER_STATUS = "ready";
       });
     }
   }

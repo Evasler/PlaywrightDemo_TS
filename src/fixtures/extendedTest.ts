@@ -8,6 +8,7 @@
 
 import {
   test as base,
+  expect,
   type APIRequest,
   type Browser,
   type TestInfo,
@@ -30,6 +31,8 @@ import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
 import extraStepsHelper from "../helpers/data/extraStepsHelper.js";
 import browserHelper from "../helpers/channel/browserHelper.js";
 import stepSequenceHelper from "../helpers/chaining/stepSequenceHelper.js";
+import { env } from "process";
+import { interProcessCommunicationHelper } from "../helpers/data/interProcessCommunicationHelper.js";
 
 /**
  * Extended test fixture that enhances Playwright's base test fixture with additional capabilities
@@ -111,7 +114,7 @@ const extendedTest = base.extend<
       use,
       testInfo,
     ) => {
-      await testUtils.verifyReportersAreReady();
+      await verifyReportersAreReady();
       skipRepeatIfTestPointTraceExists(testInfo);
       initTestData(
         baseURL,
@@ -150,6 +153,20 @@ const extendedTest = base.extend<
 });
 
 export default extendedTest;
+
+async function verifyReportersAreReady() {
+  interProcessCommunicationHelper.setupClient();
+  await expect(() => {
+    if (env.AZURE_REPORTER_STATUS !== "ready") {
+      interProcessCommunicationHelper.writeToServer("azure");
+      expect(env.AZURE_REPORTER_STATUS).toBe("ready");
+    }
+    if (env.EXCEL_REPORTER_STATUS !== "ready") {
+      interProcessCommunicationHelper.writeToServer("excel");
+      expect(env.EXCEL_REPORTER_STATUS).toBe("ready");
+    }
+  }).toPass({ timeout: 30000 });
+}
 
 /**
  * Skips test execution if a trace file already exists for the current test point.

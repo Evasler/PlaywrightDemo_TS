@@ -38,7 +38,8 @@ const errorListener = {
       });
     if (frameworkDataHelper.errorListenerOptions.failOnRequestError)
       page.on("response", (response) => {
-        if (response.status() >= 400) //Necessary to reduce the amount of logs in Trace
+        //Necessary to reduce the amount of logs in Trace
+        if (response.status() >= 400)
           expect(
             response.status(),
             `Error code: "${response.status()} ${response.statusText()}" from ${response.url()}`,

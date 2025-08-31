@@ -40,7 +40,7 @@ jobs:
   npm-script-execution:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.54.0-noble
+      image: mcr.microsoft.com/playwright:v1.55.0-noble
     needs: static-code-analysis
     steps:
       - uses: actions/checkout@v4

@@ -34,5 +34,10 @@
   },
   "dependencies": {
     "exceljs": "^4.4.0"
+  },
+  "overrides": {
+    "glob": "^11.0.3",
+    "fast-csv": "^5.0.5",
+    "unzipper": "^0.12.3"
   }
 }

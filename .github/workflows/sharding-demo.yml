@@ -5,7 +5,7 @@ jobs:
   sharded-execution:
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/playwright:v1.54.0-noble
+      image: mcr.microsoft.com/playwright:v1.55.0-noble
     strategy:
       fail-fast: false
       matrix:

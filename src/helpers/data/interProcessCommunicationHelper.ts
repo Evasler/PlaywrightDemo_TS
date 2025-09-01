@@ -54,10 +54,16 @@ function setupClient() {
     const messages = data.toString().slice(0, -1);
     messages.split(",").forEach((message) => {
       if (message === "azureValidationFinished") {
-        terminalUtils.printColoredText(`AZURE_VALIDATION: ${env.AZURE_VALIDATION}`, "red");
+        terminalUtils.printColoredText(
+          `AZURE_VALIDATION: ${env.AZURE_VALIDATION}`,
+          "red",
+        );
         env.AZURE_VALIDATION = "ok";
       } else if (message === "excelValidationFinished") {
-        terminalUtils.printColoredText(`EXCEL_VALIDATION: ${env.EXCEL_VALIDATION}`, "red");
+        terminalUtils.printColoredText(
+          `EXCEL_VALIDATION: ${env.EXCEL_VALIDATION}`,
+          "red",
+        );
         env.EXCEL_VALIDATION = "ok";
       } else
         terminalUtils.printColoredText(

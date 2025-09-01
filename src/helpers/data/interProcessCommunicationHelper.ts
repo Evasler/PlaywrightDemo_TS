@@ -25,31 +25,25 @@ function setupServer() {
     socket.on("data", (data) => {
       const messages = data.toString().slice(0, -1);
       const uniqueMessages = Array.from(new Set(messages.split(",")));
-      const reponse = uniqueMessages
-        .map((uniqueMessage) => {
-          if (
-            uniqueMessage === "azure" &&
-            (!env.AZURE_VALIDATION || env.AZURE_VALIDATION === "ok")
-          ) {
-            return "azureValidationFinished";
-          } else if (
-            uniqueMessage === "excel" &&
-            (!env.EXCEL_VALIDATION || env.EXCEL_VALIDATION === "ok")
-          ) {
-            return "excelValidationFinished";
-          } else {
-            terminalUtils.printColoredText(
-              `Unexpected request from client: ${uniqueMessage}`,
-              "red",
-            );
-          }
-        })
-        .join(",");
-      socket.write(reponse);
+      uniqueMessages.map((uniqueMessage) => {
+        if (
+          uniqueMessage === "azure" &&
+          (!env.AZURE_VALIDATION || env.AZURE_VALIDATION === "ok")
+        ) {
+          socket.write("azureValidationFinished,");
+        } else if (
+          uniqueMessage === "excel" &&
+          (!env.EXCEL_VALIDATION || env.EXCEL_VALIDATION === "ok")
+        ) {
+          socket.write("excelValidationFinished,");
+        } else {
+          terminalUtils.printColoredText(
+            `Unexpected request from client: ${uniqueMessage}`,
+            "red",
+          );
+        }
+      });
     });
-  });
-  server.on("error", (err) => {
-    throw err;
   });
   server.listen(PORT);
 }
@@ -57,11 +51,13 @@ function setupServer() {
 function setupClient() {
   socket = net.createConnection({ port: PORT });
   socket.on("data", (data) => {
-    const messages = data.toString();
+    const messages = data.toString().slice(0, -1);
     messages.split(",").forEach((message) => {
       if (message === "azureValidationFinished") {
+        terminalUtils.printColoredText(`AZURE_VALIDATION: ${env.AZURE_VALIDATION}`, "red");
         env.AZURE_VALIDATION = "ok";
       } else if (message === "excelValidationFinished") {
+        terminalUtils.printColoredText(`EXCEL_VALIDATION: ${env.EXCEL_VALIDATION}`, "red");
         env.EXCEL_VALIDATION = "ok";
       } else
         terminalUtils.printColoredText(

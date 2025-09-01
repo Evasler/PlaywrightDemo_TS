@@ -155,7 +155,6 @@ const extendedTest = base.extend<
 export default extendedTest;
 
 async function verifyReporterValidationsFinished() {
-  interProcessCommunicationHelper.setupClient();
   await Promise.all([
     expect
       .poll(

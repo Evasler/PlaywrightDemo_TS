@@ -2,71 +2,82 @@ import net from "net";
 import { terminalUtils } from "../../utils/index.js";
 import { env } from "process";
 
+/**
+ * When using PIPE_PATH instead of PORT, "Error: listen EADDRINUSE: address already in use" was thrown on GitHub Actions.
+ * Locally, the Server and the Client were exchanging messages without issues.
+ * Never understood why.
+ * Before the execution step, the following commands were run to generate the necessary directory:
+ * mkdir -p /tmp/PlaywrightDemo_TS/reporter/validations
+ * chmod 777 /tmp/PlaywrightDemo_TS/reporter/validations
 const PIPE_PATH =
   process.platform === "win32"
     ? "\\\\.\\pipe\\PlaywrightDemo_TS\\reporter\\validations"
     : "/tmp/PlaywrightDemo_TS/reporter/validations";
+**/
+
+const PORT = 3000;
 
 let server: net.Server;
 let socket: net.Socket;
 
-export const interProcessCommunicationHelper = {
-  setupServer() {
-    server = net.createServer((socket) => {
-      socket.on("data", (data) => {
-        const messages = data.toString().slice(0, -1);
-        const uniqueMessages = Array.from(new Set(messages.split(",")));
-        const reponse = uniqueMessages
-          .map((uniqueMessage) => {
-            if (
-              uniqueMessage === "azure" &&
-              (!env.AZURE_VALIDATION || env.AZURE_VALIDATION === "ok")
-            ) {
-              return "azureValidationFinished";
-            } else if (
-              uniqueMessage === "excel" &&
-              (!env.EXCEL_VALIDATION || env.EXCEL_VALIDATION === "ok")
-            ) {
-              return "excelValidationFinished";
-            } else {
-              terminalUtils.printColoredText(
-                `Unexpected request from client: ${uniqueMessage}`,
-                "red",
-              );
-            }
-          })
-          .join(",");
-        socket.write(reponse);
-      });
-    });
-    server.on("error", (err) => {
-      throw err;
-    });
-    server.listen(PIPE_PATH);
-  },
-  setupClient() {
-    socket = net.createConnection({ path: PIPE_PATH });
+function setupServer() {
+  server = net.createServer((socket) => {
     socket.on("data", (data) => {
-      const messages = data.toString();
-      messages.split(",").forEach((message) => {
-        if (message === "azureValidationFinished") {
-          env.AZURE_VALIDATION = "ok";
-        } else if (message === "excelValidationFinished") {
-          env.EXCEL_VALIDATION = "ok";
-        } else
-          terminalUtils.printColoredText(
-            `Unexpected response from server: ${message}`,
-            "red",
-          );
-      });
+      const messages = data.toString().slice(0, -1);
+      const uniqueMessages = Array.from(new Set(messages.split(",")));
+      const reponse = uniqueMessages
+        .map((uniqueMessage) => {
+          if (
+            uniqueMessage === "azure" &&
+            (!env.AZURE_VALIDATION || env.AZURE_VALIDATION === "ok")
+          ) {
+            return "azureValidationFinished";
+          } else if (
+            uniqueMessage === "excel" &&
+            (!env.EXCEL_VALIDATION || env.EXCEL_VALIDATION === "ok")
+          ) {
+            return "excelValidationFinished";
+          } else {
+            terminalUtils.printColoredText(
+              `Unexpected request from client: ${uniqueMessage}`,
+              "red",
+            );
+          }
+        })
+        .join(",");
+      socket.write(reponse);
     });
-    socket.on("error", (err) => {
-      terminalUtils.printColoredText(`Client error: ${err.message}`, "red");
-      if (err.message.includes("ENOENT")) {
+  });
+  server.on("error", (err) => {
+    throw err;
+  });
+  server.listen(PORT);
+}
+
+function setupClient() {
+  socket = net.createConnection({ port: PORT });
+  socket.on("data", (data) => {
+    const messages = data.toString();
+    messages.split(",").forEach((message) => {
+      if (message === "azureValidationFinished") {
         env.AZURE_VALIDATION = "ok";
+      } else if (message === "excelValidationFinished") {
         env.EXCEL_VALIDATION = "ok";
-      }
+      } else
+        terminalUtils.printColoredText(
+          `Unexpected response from server: ${message}`,
+          "red",
+        );
     });
+  });
+}
+
+export const interProcessCommunicationHelper = {
+  setup() {
+    if (!process.env.SERVER_STARTED_ON_MAIN_PROCESS) {
+      process.env.SERVER_STARTED_ON_MAIN_PROCESS = "true";
+      setupServer();
+    } else setupClient();
   },
   writeToServer(message: "azure" | "excel") {
     socket.write(`${message},`);

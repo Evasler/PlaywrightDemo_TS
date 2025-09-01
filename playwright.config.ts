@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import type { ErrorListenerOptions } from "./src/types/index.js";
 import dotenv from "dotenv";
+import { interProcessCommunicationHelper } from "./src/helpers/data/interProcessCommunicationHelper.js";
 
 /**
  * Read environment variables from file.
@@ -11,11 +12,12 @@ import dotenv from "dotenv";
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 dotenv.config({ path: ".env", quiet: true });
-
 if (!process.env.GREP)
   throw new Error(
     "Please set GREP in .env file to define the scope of tests to run",
   );
+
+interProcessCommunicationHelper.setup();
 
 /**
  * See https://playwright.dev/docs/test-configuration.

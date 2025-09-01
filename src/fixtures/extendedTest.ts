@@ -114,7 +114,7 @@ const extendedTest = base.extend<
       use,
       testInfo,
     ) => {
-      await verifyReportersAreReady();
+      await verifyReporterValidationsFinished();
       skipRepeatIfTestPointTraceExists(testInfo);
       initTestData(
         baseURL,
@@ -154,18 +154,30 @@ const extendedTest = base.extend<
 
 export default extendedTest;
 
-async function verifyReportersAreReady() {
+async function verifyReporterValidationsFinished() {
   interProcessCommunicationHelper.setupClient();
-  await expect(() => {
-    if (env.AZURE_REPORTER_STATUS !== "ready") {
-      interProcessCommunicationHelper.writeToServer("azure");
-      expect(env.AZURE_REPORTER_STATUS).toBe("ready");
-    }
-    if (env.EXCEL_REPORTER_STATUS !== "ready") {
-      interProcessCommunicationHelper.writeToServer("excel");
-      expect(env.EXCEL_REPORTER_STATUS).toBe("ready");
-    }
-  }).toPass({ timeout: 30000 });
+  await Promise.all([
+    expect
+      .poll(
+        () => {
+          interProcessCommunicationHelper.writeToServer("azure");
+          return env.AZURE_VALIDATION;
+        },
+        { timeout: 30000 },
+      )
+      .toBe("ok"),
+    expect
+      .poll(
+        () => {
+          interProcessCommunicationHelper.writeToServer("excel");
+          return env.EXCEL_VALIDATION;
+        },
+        { timeout: 30000 },
+      )
+      .toBe("ok"),
+  ]).finally(() => {
+    interProcessCommunicationHelper.closeConnection();
+  });
 }
 
 /**

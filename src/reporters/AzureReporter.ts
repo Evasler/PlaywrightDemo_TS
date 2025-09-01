@@ -29,7 +29,7 @@ export default class AzureReporter implements Reporter {
    */
   constructor(private readonly _options: AzureReporterOptions) {
     this._throwOptionTypeErrors();
-    if (!this._options.enabled) env.AZURE_REPORTER_STATUS = "ready";
+    env.AZURE_VALIDATION = this._options.enabled ? "initializing" : "ok";
   }
 
   /**
@@ -140,7 +140,7 @@ export default class AzureReporter implements Reporter {
         }
       });
       GlobalReporter.addReportingStep(() => {
-        env.AZURE_REPORTER_STATUS = "ready";
+        env.AZURE_VALIDATION = "ok";
       });
     }
   }

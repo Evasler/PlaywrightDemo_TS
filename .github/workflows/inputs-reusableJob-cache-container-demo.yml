@@ -61,8 +61,8 @@ jobs:
 
       - name: Create IPC directory with permissions
         run: |
-          mkdir -p /tmp/PlaywrightDemo_TS
-          chmod 777 /tmp/PlaywrightDemo_TS
+          mkdir -p /tmp/PlaywrightDemo_TS/reporter/validations
+          chmod 777 /tmp/PlaywrightDemo_TS/reporter/validations
 
       - name: Project execution
         env:

@@ -154,6 +154,16 @@ const extendedTest = base.extend<
 
 export default extendedTest;
 
+/**
+ * Verifies that both Azure and Excel reporter validations have completed successfully.
+ *
+ * This function polls both Azure and Excel validation statuses simultaneously until they both
+ * return "ok" or until the timeout period (30 seconds) is reached. The function uses
+ * interprocess communication to check the current validation status. The connection to
+ * the interprocess communication server will be closed in the end.
+ *
+ * @throws Will throw an error if either validation fails to return "ok" within the timeout period
+ */
 async function verifyReporterValidationsFinished() {
   await Promise.all([
     expect

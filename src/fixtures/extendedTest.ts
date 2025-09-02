@@ -159,7 +159,9 @@ async function verifyReporterValidationsFinished() {
     expect
       .poll(
         () => {
-          interProcessCommunicationHelper.writeToServer("azure");
+          interProcessCommunicationHelper.writeToServer(
+            "azureValidationStatus",
+          );
           return env.AZURE_VALIDATION;
         },
         { timeout: 30000 },
@@ -168,7 +170,9 @@ async function verifyReporterValidationsFinished() {
     expect
       .poll(
         () => {
-          interProcessCommunicationHelper.writeToServer("excel");
+          interProcessCommunicationHelper.writeToServer(
+            "excelValidationStatus",
+          );
           return env.EXCEL_VALIDATION;
         },
         { timeout: 30000 },

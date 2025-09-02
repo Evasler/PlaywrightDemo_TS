@@ -15,7 +15,7 @@ const PIPE_PATH =
     : "/tmp/PlaywrightDemo_TS/reporter/validations";
 **/
 
-const PORT = 3000;
+const PORT = 23195;
 
 let server: net.Server;
 let socket: net.Socket;
@@ -27,12 +27,12 @@ function setupServer() {
       const uniqueMessages = Array.from(new Set(messages.split(",")));
       uniqueMessages.map((uniqueMessage) => {
         if (
-          uniqueMessage === "azure" &&
+          uniqueMessage === "azureValidationStatus" &&
           (!env.AZURE_VALIDATION || env.AZURE_VALIDATION === "ok")
         ) {
           socket.write("azureValidationFinished,");
         } else if (
-          uniqueMessage === "excel" &&
+          uniqueMessage === "excelValidationStatus" &&
           (!env.EXCEL_VALIDATION || env.EXCEL_VALIDATION === "ok")
         ) {
           socket.write("excelValidationFinished,");
@@ -52,18 +52,11 @@ function setupClient() {
   socket = net.createConnection({ port: PORT });
   socket.on("data", (data) => {
     const messages = data.toString().slice(0, -1);
-    messages.split(",").forEach((message) => {
+    const uniqueMessages = Array.from(new Set(messages.split(",")));
+    uniqueMessages.forEach((message) => {
       if (message === "azureValidationFinished") {
-        terminalUtils.printColoredText(
-          `AZURE_VALIDATION: ${env.AZURE_VALIDATION}`,
-          "red",
-        );
         env.AZURE_VALIDATION = "ok";
       } else if (message === "excelValidationFinished") {
-        terminalUtils.printColoredText(
-          `EXCEL_VALIDATION: ${env.EXCEL_VALIDATION}`,
-          "red",
-        );
         env.EXCEL_VALIDATION = "ok";
       } else
         terminalUtils.printColoredText(
@@ -81,7 +74,7 @@ export const interProcessCommunicationHelper = {
       setupServer();
     } else setupClient();
   },
-  writeToServer(message: "azure" | "excel") {
+  writeToServer(message: "azureValidationStatus" | "excelValidationStatus") {
     socket.write(`${message},`);
   },
   closeConnection() {

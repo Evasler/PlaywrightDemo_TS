@@ -17,7 +17,7 @@ if (!process.env.GREP)
     "Please set GREP in .env file to define the scope of tests to run",
   );
 
-interProcessCommunicationHelper.setup();
+await interProcessCommunicationHelper.setup();
 
 /**
  * See https://playwright.dev/docs/test-configuration.

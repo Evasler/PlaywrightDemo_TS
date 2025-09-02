@@ -7,11 +7,9 @@
 import net from "net";
 import { terminalUtils } from "../../utils/index.js";
 import { env } from "process";
-
-/**
- * Port number used for communication between server and client processes.
- */
-const PORT = 23195;
+import { expect } from "@playwright/test";
+import zodHelper from "./zodHelper.js";
+import z from "zod";
 
 /**
  * When using PIPE_PATH instead of PORT, "Error: listen EADDRINUSE: address already in use" was thrown on GitHub Actions.
@@ -44,7 +42,7 @@ let socket: net.Socket;
  * The server handles specific validation status requests from clients
  * and responds with appropriate validation finished messages.
  */
-function setupServer() {
+async function setupServer() {
   server = net.createServer((socket) => {
     socket.on("data", (data) => {
       const messages = data.toString().slice(0, -1);
@@ -69,7 +67,19 @@ function setupServer() {
       });
     });
   });
-  server.listen(PORT);
+  server.on("listening", () => {
+    const serverAddress = zodHelper.prettyParse(
+      z.strictObject({
+        port: z.number(),
+        family: z.string(),
+        address: z.string(),
+      }),
+      server.address(),
+    );
+    env.SERVER_PORT = String(serverAddress.port);
+  });
+  server.listen(0);
+  await expect.poll(() => env.SERVER_PORT).toBeDefined();
 }
 
 /**
@@ -79,7 +89,8 @@ function setupServer() {
  * to reflect the validation status.
  */
 function setupClient() {
-  socket = net.createConnection({ port: PORT });
+  const port = Number(zodHelper.prettyParse(z.string(), env.SERVER_PORT));
+  socket = net.createConnection({ port: port });
   socket.on("data", (data) => {
     const messages = data.toString().slice(0, -1);
     const uniqueMessages = Array.from(new Set(messages.split(",")));
@@ -110,10 +121,10 @@ export const interProcessCommunicationHelper = {
    * If this is the first process to call setup, it will initialize a server.
    * Otherwise, it will initialize a client connection to the existing server.
    */
-  setup() {
+  async setup() {
     if (!process.env.SERVER_STARTED_ON_MAIN_PROCESS) {
       process.env.SERVER_STARTED_ON_MAIN_PROCESS = "true";
-      setupServer();
+      await setupServer();
     } else setupClient();
   },
 

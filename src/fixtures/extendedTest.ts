@@ -114,7 +114,7 @@ const extendedTest = base.extend<
       use,
       testInfo,
     ) => {
-      await verifyReportersAreReady();
+      await verifyReporterValidationsFinished();
       skipRepeatIfTestPointTraceExists(testInfo);
       initTestData(
         baseURL,
@@ -154,18 +154,43 @@ const extendedTest = base.extend<
 
 export default extendedTest;
 
-async function verifyReportersAreReady() {
-  interProcessCommunicationHelper.setupClient();
-  await expect(() => {
-    if (env.AZURE_REPORTER_STATUS !== "ready") {
-      interProcessCommunicationHelper.writeToServer("azure");
-      expect(env.AZURE_REPORTER_STATUS).toBe("ready");
-    }
-    if (env.EXCEL_REPORTER_STATUS !== "ready") {
-      interProcessCommunicationHelper.writeToServer("excel");
-      expect(env.EXCEL_REPORTER_STATUS).toBe("ready");
-    }
-  }).toPass({ timeout: 30000 });
+/**
+ * Verifies that both Azure and Excel reporter validations have completed successfully.
+ *
+ * This function polls both Azure and Excel validation statuses simultaneously until they both
+ * return "ok" or until the timeout period (30 seconds) is reached. The function uses
+ * interprocess communication to check the current validation status. The connection to
+ * the interprocess communication server will be closed in the end.
+ *
+ * @throws Will throw an error if either validation fails to return "ok" within the timeout period
+ */
+async function verifyReporterValidationsFinished() {
+  await Promise.all([
+    expect
+      .poll(
+        () => {
+          interProcessCommunicationHelper.writeToServer(
+            "azureValidationStatus",
+          );
+          return env.AZURE_VALIDATION;
+        },
+        { timeout: 30000 },
+      )
+      .toBe("ok"),
+    expect
+      .poll(
+        () => {
+          interProcessCommunicationHelper.writeToServer(
+            "excelValidationStatus",
+          );
+          return env.EXCEL_VALIDATION;
+        },
+        { timeout: 30000 },
+      )
+      .toBe("ok"),
+  ]).finally(() => {
+    interProcessCommunicationHelper.closeConnection();
+  });
 }
 
 /**

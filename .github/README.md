@@ -39,6 +39,7 @@ The site is hosted at [https://automationintesting.online/](https://automationin
 - **Storage State Management**: Efficient authentication handling with storage states
 - **Parameterized Tests**: Data-driven testing capabilities
 - **Error Listeners**: Error detections occurring at any point during test execution
+- **Inter-Process Communication**: Communication between Main (Reporter) and Worker (Test) processes
 
 ## 🏗️ Key Design Patterns
 

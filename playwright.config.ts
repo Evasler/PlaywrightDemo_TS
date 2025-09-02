@@ -1,6 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
 import type { ErrorListenerOptions } from "./src/types/index.js";
 import dotenv from "dotenv";
+import { interProcessCommunicationHelper } from "./src/helpers/data/interProcessCommunicationHelper.js";
 
 /**
  * Read environment variables from file.
@@ -11,11 +12,12 @@ import dotenv from "dotenv";
 // dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 dotenv.config({ path: ".env", quiet: true });
-
 if (!process.env.GREP)
   throw new Error(
     "Please set GREP in .env file to define the scope of tests to run",
   );
+
+interProcessCommunicationHelper.setup();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -30,6 +32,7 @@ export default defineConfig<{ errorListenerOptions: ErrorListenerOptions }>({
   retries: process.env.RETRIES ? +process.env.RETRIES : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.WORKERS ? +process.env.WORKERS : 1,
+  reportSlowTests: null,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: [
     ["list"],
@@ -60,6 +63,7 @@ export default defineConfig<{ errorListenerOptions: ErrorListenerOptions }>({
     ],
     //'./src/reporters/ExecOrderReporter.ts'
   ],
+  expect: { timeout: 10000 },
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */

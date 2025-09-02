@@ -1,5 +1,4 @@
 import type { Reporter } from "@playwright/test/reporter";
-import { interProcessCommunicationHelper } from "../helpers/data/interProcessCommunicationHelper.js";
 
 /**
  * Reporter that coordinates the execution order of reporting operations.
@@ -12,9 +11,7 @@ export default class GlobalReporter implements Reporter {
    * A promise chain that ensures all reporting steps are executed sequentially.
    * This static property is shared across all reporter instances.
    */
-  private static _reportingSteps = Promise.resolve().then(() => {
-    interProcessCommunicationHelper.setupServer();
-  });
+  private static _reportingSteps = Promise.resolve();
 
   /**
    * Adds a reporting step to the global promise chain.

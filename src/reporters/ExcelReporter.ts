@@ -24,7 +24,7 @@ export default class ExcelReporter implements Reporter {
    */
   constructor(private readonly _options: ExcelReporterOptions) {
     this._throwOptionErrors();
-    if (!this._options.enabled) env.EXCEL_REPORTER_STATUS = "ready";
+    env.EXCEL_VALIDATION = this._options.enabled ? "initializing" : "ok";
   }
 
   /**
@@ -95,7 +95,7 @@ export default class ExcelReporter implements Reporter {
           await excelReportHelper.throwReportingErrors(rootSuite);
         });
       GlobalReporter.addReportingStep(() => {
-        env.EXCEL_REPORTER_STATUS = "ready";
+        env.EXCEL_VALIDATION = "ok";
       });
     }
   }

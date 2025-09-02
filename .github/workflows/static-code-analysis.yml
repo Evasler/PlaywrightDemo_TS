@@ -15,13 +15,13 @@ jobs:
         run: npm ci
 
       - name: TSC analysis
-        run: npm run tscAnalysis
+        run: npm run tsc-analysis
 
       - name: Prettier analysis
-        run: npm run prettierAnalysis
+        run: npm run prettier-analysis
 
       - name: ESLint analysis
-        run: npm run eslintAnalysis
+        run: npm run eslint-analysis
 
       - name: Madge analysis
-        run: npm run madgeAnalysis
+        run: npm run madge-analysis

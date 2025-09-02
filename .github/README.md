@@ -124,16 +124,19 @@ AZURE_REPORTER_MANDATORY="false"
 
 ```bash
 # TypeScript type checking
-npm run tscAnalysis
+npm run tsc-analysis
 
 # ESLint analysis
-npm run eslintAnalysis
+npm run eslint-analysis
 
 # Prettier formatting check
-npm run prettierAnalysis
+npm run prettier-analysis
 
 # Circular dependency check
-npm run madgeAnalysis
+npm run madge-analysis
+
+# All of the above checks
+npm run code-analysis
 ```
 
 ### Running Tests

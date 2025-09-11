@@ -48,16 +48,12 @@ async function setupServer() {
       const messages = data.toString().slice(0, -1);
       const uniqueMessages = Array.from(new Set(messages.split(",")));
       uniqueMessages.map((uniqueMessage) => {
-        if (
-          uniqueMessage === "azureValidationStatus" &&
-          (!env.AZURE_VALIDATION || env.AZURE_VALIDATION === "ok")
-        ) {
-          socket.write("azureValidationFinished,");
-        } else if (
-          uniqueMessage === "excelValidationStatus" &&
-          (!env.EXCEL_VALIDATION || env.EXCEL_VALIDATION === "ok")
-        ) {
-          socket.write("excelValidationFinished,");
+        if (uniqueMessage === "azureValidationStatus") {
+          if (!env.AZURE_VALIDATION || env.AZURE_VALIDATION === "ok")
+            socket.write("azureValidationFinished,");
+        } else if (uniqueMessage === "excelValidationStatus") {
+          if (!env.EXCEL_VALIDATION || env.EXCEL_VALIDATION === "ok")
+            socket.write("excelValidationFinished,");
         } else {
           terminalUtils.printColoredText(
             `Unexpected request from client: ${uniqueMessage}`,

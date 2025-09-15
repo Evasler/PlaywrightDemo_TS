@@ -1,0 +1,54 @@
+name: Node Compatibility
+on:
+  workflow_dispatch:
+  workflow_call:
+jobs:
+  node-compatibility:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.55.0-noble
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ["lts/Iron", "lts/Jod", "24.x"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TSC analysis
+        run: npm run tsc-analysis
+
+      - name: Prettier analysis
+        run: npm run prettier-analysis
+
+      - name: ESLint analysis
+        run: npm run eslint-analysis
+
+      - name: Madge analysis
+        run: npm run madge-analysis
+
+      - name: Cache node modules
+        id: cache-node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node_modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        if: steps.cache-node_modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: Project execution
+        env:
+          GREP: "@fullScope"
+          TEST_IGNORE: "fakerConfig.spec.ts"
+          HEADLESS: "true"
+          WORKERS: "5"
+          EXCEL_REPORTER_ENABLED: "false"
+          EXCEL_REPORTER_MANDATORY: "false"
+        run: npm run chromium-prod

@@ -69,11 +69,17 @@ export default defineConfig<{ errorListenerOptions: ErrorListenerOptions }>({
       name: "chromium-prod",
       use: { ...devices["Desktop Chrome"] },
       grep: new RegExp(process.env.GREP),
+      testIgnore: process.env.TEST_IGNORE
+        ? new RegExp(process.env.TEST_IGNORE)
+        : undefined,
     },
     {
       name: "firefox-prod",
       use: { ...devices["Desktop Firefox"] },
       grep: new RegExp(process.env.GREP),
+      testIgnore: process.env.TEST_IGNORE
+        ? new RegExp(process.env.TEST_IGNORE)
+        : undefined,
     },
     {
       name: "executionOrder",

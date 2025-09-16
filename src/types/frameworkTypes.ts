@@ -1,4 +1,4 @@
-export type ComponentType = "Blank" | "Login" | "AdminPanel" | "Error";
+export type PageType = "Blank" | "Login" | "AdminPanel" | "Error";
 export type TestDataKeys =
   | "token"
   | "roomId"

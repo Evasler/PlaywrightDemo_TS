@@ -5,7 +5,7 @@
  */
 
 import { type Page, expect } from "@playwright/test";
-import type { ComponentType } from "../../types/index.js";
+import type { PageType } from "../../types/index.js";
 import errorListener from "../../listeners/errorListener.js";
 import frameworkDataHelper from "../data/frameworkDataHelper.js";
 import stepSequenceHelper from "../chaining/stepSequenceHelper.js";
@@ -86,7 +86,7 @@ const browserHelper = {
    * This method:
    * - Creates a new page in the same context as the current working tab
    * - Attaches the error listener to the new page
-   * - Initializes component tracking for the new tab
+   * - Initializes page type for the new tab
    * - Sets the new tab as the working tab
    */
   openNewTabInCurrentContext() {
@@ -96,7 +96,7 @@ const browserHelper = {
         console.log("Opening new Tab in current Context");
         const newPage = await workingContext().newPage();
         errorListener.attachTo(newPage);
-        tabDataHelper.initializeComponentType(
+        tabDataHelper.initializePageType(
           workingContextIndex(),
           latestTabIndex(workingContextIndex()),
         );
@@ -117,7 +117,7 @@ const browserHelper = {
    * - Optionally applies authentication state for a specific user
    * - Regenerates storage state via API if needed
    * - Attaches error listener to the new page
-   * - Initializes component tracking for the new context and tab
+   * - Initializes page type for the new context and tab
    * - Sets the new tab as the working tab
    *
    * @param authenticatedUser Optional username to load storage state for,
@@ -147,39 +147,39 @@ const browserHelper = {
         }
       }
       errorListener.attachTo(newTab);
-      tabDataHelper.initializeContextComponentTypes();
-      tabDataHelper.initializeComponentType(latestContextIndex(), 0);
+      tabDataHelper.initializeContextPageTypes();
+      tabDataHelper.initializePageType(latestContextIndex(), 0);
       updateWorkingTab(latestContextIndex(), 0);
     });
   },
 
   /**
-   * Switches the working tab to a different tab and performs component validation
+   * Switches the working tab to a different tab and performs page type validation
    *
    * This method:
    * - Verifies the target context and tab indices are valid
    * - Ensures we're not already on the requested tab
-   * - Verifies the target tab has the expected component type
-   * - Updates the component type of the previous working tab
+   * - Verifies the target tab has the expected page type
+   * - Updates the page type of the previous working tab
    * - Sets the target tab as the working tab
    *
    * @param contextIndex - The index of the target context
    * @param tabIndex - The index of the target tab within its context
-   * @param currentComponent - Component type to set on the current working tab before switching
-   * @param nextComponent - Expected component type of the target tab
-   * @throws Will throw an error if target indices are invalid or component type doesn't match
+   * @param currentPageType - Page type to set on the current working tab before switching
+   * @param nextPageType - Expected page type of the target tab
+   * @throws Will throw an error if target indices are invalid or page type doesn't match
    */
   switchWorkingTab(
     contextIndex: number,
     tabIndex: number,
-    currentComponent: ComponentType,
-    nextComponent: ComponentType,
+    currentPageType: PageType,
+    nextPageType: PageType,
   ) {
     stepSequenceHelper.addStep(
-      `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Component is ${nextComponent}`,
+      `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Page is ${nextPageType}`,
       () => {
         console.log(
-          `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Component is ${nextComponent}`,
+          `Switching working Tab to [${contextIndex},${tabIndex}] and verifying Page is ${nextPageType}`,
         );
         expect(
           contextIndex,
@@ -196,15 +196,12 @@ const browserHelper = {
           alreadyWorkingOnTheTab,
           `Already working on tab [${contextIndex},${tabIndex}]`,
         ).toBeFalsy();
-        const actualPageType = tabDataHelper.componentType(
-          contextIndex,
-          tabIndex,
-        );
-        expect(actualPageType).toBe(nextComponent);
-        tabDataHelper.updateComponentType(
+        const actualPageType = tabDataHelper.pageType(contextIndex, tabIndex);
+        expect(actualPageType).toBe(nextPageType);
+        tabDataHelper.updatePageType(
           workingContextIndex(),
           workingTabIndex(),
-          currentComponent,
+          currentPageType,
         );
         updateWorkingTab(contextIndex, tabIndex);
       },
@@ -242,7 +239,7 @@ const browserHelper = {
           [contextIndex].pages())
           await page.close();
         await frameworkDataHelper.browser.contexts()[contextIndex].close();
-        tabDataHelper.removeContextComponentTypes(contextIndex);
+        tabDataHelper.removeContextPageTypes(contextIndex);
       },
     );
   },
@@ -284,7 +281,7 @@ const browserHelper = {
           .contexts()
           [contextIndex].pages()
           [tabIndex].close();
-        tabDataHelper.removeContextComponentTypes(contextIndex);
+        tabDataHelper.removeContextPageTypes(contextIndex);
       },
     );
   },

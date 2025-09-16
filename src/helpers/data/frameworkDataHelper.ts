@@ -1,6 +1,6 @@
 /**
  * @description This module provides a centralized data store for sharing essential objects
- * across various components of the test framework.
+ * across various modules of the test framework.
  */
 
 import type { APIRequest, Browser } from "@playwright/test";
@@ -65,7 +65,7 @@ const frameworkDataHelper = {
   /**
    * Initializes the framework data with required objects and configuration
    *
-   * @param frameworkData - Object containing the required framework components
+   * @param frameworkData - Object containing the required framework data
    * @param frameworkData.apiRequest - Playwright's API request context
    * @param frameworkData.baseUrl - Base URL of the application under test
    * @param frameworkData.browser - Playwright's Browser instance

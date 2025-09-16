@@ -215,7 +215,7 @@ function skipRepeatIfTestPointTraceExists(testInfo: TestInfo) {
 }
 
 /**
- * Initializes test data and framework components for a test run
+ * Initializes test data and framework data for a test run
  *
  * @param baseUrl - Base URL for the application under test
  * @param apiRequest - Playwright APIRequest object for making API calls
@@ -232,7 +232,7 @@ function initTestData(
   fakerConfigArgs: FakerConfigArgs,
 ) {
   if (!baseUrl) throw new Error("baseURL not defined in playwright.config.ts");
-  tabDataHelper.resetComponentTypes();
+  tabDataHelper.resetPageTypes();
   testDataHelper.resetTestData();
   stepSequenceHelper.resetStepSequence();
   frameworkDataHelper.init({

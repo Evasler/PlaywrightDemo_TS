@@ -26,12 +26,12 @@ export default abstract class BaseSteps {
     page: T,
     authenticatedUser?: string,
   ): T {
-    browserHelper.openNewTabInNewContext(authenticatedUser);
+    browserHelper.openNewTabInNewContext(this._pageType, authenticatedUser);
     return page;
   }
 
   _openNewTabInCurrentContext<T extends BaseSteps>(page: T): T {
-    browserHelper.openNewTabInCurrentContext();
+    browserHelper.openNewTabInCurrentContext(this._pageType);
     return page;
   }
 

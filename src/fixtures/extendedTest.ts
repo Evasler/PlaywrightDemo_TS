@@ -144,7 +144,7 @@ const extendedTest = base.extend<
   openNewTabInNewContext: [
     async ({}, use) => {
       await use((page, authenticatedUser) => {
-        browserHelper.openNewTabInNewContext(authenticatedUser);
+        browserHelper.openNewTabInNewContext(undefined, authenticatedUser);
         return page;
       });
     },

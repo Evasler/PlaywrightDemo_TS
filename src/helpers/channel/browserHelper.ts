@@ -89,11 +89,16 @@ const browserHelper = {
    * - Initializes page type for the new tab
    * - Sets the new tab as the working tab
    */
-  openNewTabInCurrentContext() {
+  openNewTabInCurrentContext(currentPageType: PageType) {
     stepSequenceHelper.addStep(
       "Opening new Tab in current Context",
       async () => {
         console.log("Opening new Tab in current Context");
+        tabDataHelper.updatePageType(
+          workingContextIndex(),
+          workingTabIndex(),
+          currentPageType,
+        );
         const newPage = await workingContext().newPage();
         errorListener.attachTo(newPage);
         tabDataHelper.initializePageType(
@@ -123,9 +128,18 @@ const browserHelper = {
    * @param authenticatedUser Optional username to load storage state for,
    * allowing tests to skip login processes
    */
-  openNewTabInNewContext(authenticatedUser?: string) {
+  openNewTabInNewContext(
+    currentPageType?: PageType,
+    authenticatedUser?: string,
+  ) {
     stepSequenceHelper.addStep("Opening new Tab in new Context", async () => {
       console.log("Opening new Tab in new Context");
+      if (currentPageType)
+        tabDataHelper.updatePageType(
+          workingContextIndex(),
+          workingTabIndex(),
+          currentPageType,
+        );
       let newContext = await frameworkDataHelper.browser.newContext({
         storageState: storageStateHelper.storageStatePath(authenticatedUser),
       });

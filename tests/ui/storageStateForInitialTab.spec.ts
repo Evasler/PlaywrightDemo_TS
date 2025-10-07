@@ -1,9 +1,5 @@
 import extendedTest from "../../src/fixtures/extendedTest.js";
-import {
-  adminPanelSteps,
-  blankSteps,
-  loginSteps,
-} from "../../src/pages/index.js";
+import { roomsSteps, blankSteps, loginSteps } from "../../src/pages/index.js";
 import { testUtils } from "../../src/utils/index.js";
 
 extendedTest.use({
@@ -38,7 +34,7 @@ extendedTest.describe("Initial Tab with storageState", () => {
     ),
     async ({ openNewTabInNewContext }) => {
       await openNewTabInNewContext(blankSteps, "administrator")
-        .goToRestfulBookerAdminPage(adminPanelSteps)
+        .goToRestfulBookerAdminPage(roomsSteps)
         .verifyLinkIsVisible("Rooms")
         ._execute();
     },

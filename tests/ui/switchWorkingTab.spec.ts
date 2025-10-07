@@ -1,9 +1,5 @@
 import extendedTest from "../../src/fixtures/extendedTest.js";
-import {
-  adminPanelSteps,
-  blankSteps,
-  loginSteps,
-} from "../../src/pages/index.js";
+import { roomsSteps, blankSteps, loginSteps } from "../../src/pages/index.js";
 import { testUtils } from "../../src/utils/index.js";
 
 extendedTest(
@@ -13,12 +9,12 @@ extendedTest(
       ._openNewTabInNewContext(blankSteps)
       .goToRestfulBookerAdminPage(loginSteps)
       .populateCredentials("administrator")
-      .clickLogin(adminPanelSteps)
+      .clickLogin(roomsSteps)
       .verifyLinkIsVisible("Rooms")
       ._switchWorkingTab(0, 0, blankSteps)
       .goToRestfulBookerAdminPage(loginSteps)
       .verifyLoginIsVisible()
-      ._switchWorkingTab(1, 0, adminPanelSteps)
+      ._switchWorkingTab(1, 0, roomsSteps)
       ._execute();
   },
 );

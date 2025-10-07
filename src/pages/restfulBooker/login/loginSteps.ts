@@ -2,7 +2,7 @@ import { expect } from "@playwright/test";
 import { credentialsUtils } from "../../../utils/index.js";
 import loginLocators from "./loginLocators.js";
 import BaseSteps from "../../base/baseSteps.js";
-import type { AdminPanelSteps } from "../adminPanel/adminPanelSteps.js";
+import type { RoomsSteps } from "../admin/rooms/roomsSteps.js";
 
 class LoginSteps extends BaseSteps {
   constructor() {
@@ -27,12 +27,12 @@ class LoginSteps extends BaseSteps {
     return this;
   }
 
-  clickLogin(adminPanelSteps: AdminPanelSteps) {
+  clickLogin(roomsSteps: RoomsSteps) {
     this.addStep("Clicking Login", async () => {
       console.log("Clicking Login");
       await loginLocators.loginButton().click();
     });
-    return adminPanelSteps;
+    return roomsSteps;
   }
 }
 

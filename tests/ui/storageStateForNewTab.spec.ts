@@ -1,9 +1,5 @@
 import extendedTest from "../../src/fixtures/extendedTest.js";
-import {
-  adminPanelSteps,
-  blankSteps,
-  loginSteps,
-} from "../../src/pages/index.js";
+import { roomsSteps, blankSteps, loginSteps } from "../../src/pages/index.js";
 import { testUtils } from "../../src/utils/index.js";
 
 extendedTest.use({
@@ -57,7 +53,7 @@ extendedTest.describe("Initial Page without storageState", () => {
         .goToRestfulBookerAdminPage(loginSteps)
         .verifyLoginIsVisible()
         ._openNewTabInNewContext(blankSteps, "administrator")
-        .goToRestfulBookerAdminPage(adminPanelSteps)
+        .goToRestfulBookerAdminPage(roomsSteps)
         .verifyLinkIsVisible("Rooms")
         ._execute();
     },
@@ -73,10 +69,10 @@ extendedTest.describe("Starting Page with storageState", () => {
     ),
     async ({ openNewTabInNewContext }) => {
       await openNewTabInNewContext(blankSteps, "administrator")
-        .goToRestfulBookerAdminPage(adminPanelSteps)
+        .goToRestfulBookerAdminPage(roomsSteps)
         .verifyLinkIsVisible("Rooms")
         ._openNewTabInCurrentContext(blankSteps)
-        .goToRestfulBookerAdminPage(adminPanelSteps)
+        .goToRestfulBookerAdminPage(roomsSteps)
         .verifyLinkIsVisible("Rooms")
         ._execute();
     },
@@ -89,7 +85,7 @@ extendedTest.describe("Starting Page with storageState", () => {
     ),
     async ({ openNewTabInNewContext }) => {
       await openNewTabInNewContext(blankSteps, "administrator")
-        .goToRestfulBookerAdminPage(adminPanelSteps)
+        .goToRestfulBookerAdminPage(roomsSteps)
         .verifyLinkIsVisible("Rooms")
         ._openNewTabInNewContext(blankSteps)
         .goToRestfulBookerAdminPage(loginSteps)
@@ -105,10 +101,10 @@ extendedTest.describe("Starting Page with storageState", () => {
     ),
     async ({ openNewTabInNewContext }) => {
       await openNewTabInNewContext(blankSteps, "administrator")
-        .goToRestfulBookerAdminPage(adminPanelSteps)
+        .goToRestfulBookerAdminPage(roomsSteps)
         .verifyLinkIsVisible("Rooms")
         ._openNewTabInNewContext(blankSteps, "administrator")
-        .goToRestfulBookerAdminPage(adminPanelSteps)
+        .goToRestfulBookerAdminPage(roomsSteps)
         .verifyLinkIsVisible("Rooms")
         ._execute();
     },

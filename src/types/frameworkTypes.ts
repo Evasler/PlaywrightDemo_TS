@@ -1,4 +1,4 @@
-export type PageType = "Blank" | "Login" | "AdminPanel" | "Error";
+export type PageType = "Blank" | "Login" | "Rooms" | "Report" | "Error";
 export type TestDataKeys =
   | "token"
   | "roomId"

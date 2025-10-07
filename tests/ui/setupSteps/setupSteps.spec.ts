@@ -1,6 +1,6 @@
 import extendedTest from "../../../src/fixtures/extendedTest.js";
 import {
-  adminPanelSteps,
+  roomsSteps,
   blankSteps,
   loginSteps,
 } from "../../../src/pages/index.js";
@@ -20,7 +20,7 @@ extendedTest(
     await openNewTabInNewContext(blankSteps)
       .goToRestfulBookerAdminPage(loginSteps)
       .populateCredentials("administrator")
-      .clickLogin(adminPanelSteps)
+      .clickLogin(roomsSteps)
       .verifyRoomVisibility(
         setupStepsDataset.stepData.verifyRoomVisibilityArgs[0],
       )

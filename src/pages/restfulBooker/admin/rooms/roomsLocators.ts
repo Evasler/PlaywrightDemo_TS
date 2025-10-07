@@ -1,6 +1,6 @@
-import browserHelper from "../../../helpers/channel/browserHelper.js";
+import browserHelper from "../../../../helpers/channel/browserHelper.js";
 
-const adminPanelLocators = {
+const roomsLocators = {
   link(name: string) {
     return browserHelper.workingTab.getByRole("link", {
       name: name,
@@ -33,4 +33,4 @@ const adminPanelLocators = {
   },
 };
 
-export default adminPanelLocators;
+export default roomsLocators;

@@ -1,5 +1,5 @@
 import type { ErrorSteps } from "../error/errorSteps.js";
-import type { AdminPanelSteps } from "../restfulBooker/adminPanel/adminPanelSteps.js";
+import type { RoomsSteps } from "../restfulBooker/admin/rooms/roomsSteps.js";
 import type { LoginSteps } from "../restfulBooker/login/loginSteps.js";
 import BaseSteps from "../base/baseSteps.js";
 import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
@@ -9,7 +9,7 @@ class BlankSteps extends BaseSteps {
     super("Blank");
   }
 
-  goToRestfulBookerAdminPage<T extends LoginSteps | AdminPanelSteps>(
+  goToRestfulBookerAdminPage<T extends LoginSteps | RoomsSteps>(
     landingPage: T,
   ) {
     this.addStep("Going to Restful Booker Admin Page", async () => {

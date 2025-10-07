@@ -15,3 +15,14 @@ export const roomFeature = [
   "Views",
 ] as const;
 export type RoomFeature = (typeof roomFeature)[number];
+export const adminHeaderLink = [
+  "Restful Booker Platform Demo",
+  "Rooms",
+  "Report",
+  "Branding",
+  "Messages",
+  "Front Page",
+] as const;
+export type AdminHeaderLink = (typeof adminHeaderLink)[number];
+export const reportCalendarButtons = ["Today", "Back", "Next"] as const;
+export type ReportCalendarButton = (typeof reportCalendarButtons)[number];

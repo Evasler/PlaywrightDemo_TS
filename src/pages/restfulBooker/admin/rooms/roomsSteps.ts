@@ -1,17 +1,17 @@
 import { expect } from "@playwright/test";
-import adminPanelLocators from "./adminPanelLocators.js";
-import BaseSteps from "../../base/baseSteps.js";
-import testDataHelper from "../../../helpers/data/testDataHelper.js";
+import roomsLocators from "./roomsLocators.js";
+import testDataHelper from "../../../../helpers/data/testDataHelper.js";
+import { AdminHeaderSteps } from "../header/adminHeaderSteps.js";
 
-class AdminPanelSteps extends BaseSteps {
+class RoomsSteps extends AdminHeaderSteps {
   constructor() {
-    super("AdminPanel");
+    super("Rooms");
   }
 
   verifyLinkIsVisible(name: string) {
     this.addStep(`Verifying "${name}" link is visible`, async () => {
       console.log(`Verifying "${name}" link is visible`);
-      await expect(adminPanelLocators.link(name)).toBeVisible();
+      await expect(roomsLocators.link(name)).toBeVisible();
     });
     return this;
   }
@@ -30,7 +30,7 @@ class AdminPanelSteps extends BaseSteps {
         tempDataIndex,
       );
       console.log(`Deleting Room "${roomName}"`);
-      await adminPanelLocators
+      await roomsLocators
         .deleteButton(roomName, type, accessible, price, features)
         .click();
     });
@@ -61,16 +61,16 @@ class AdminPanelSteps extends BaseSteps {
       );
       if (shouldBeVisible)
         await expect(
-          adminPanelLocators.row(roomName, type, accessible, price, features),
+          roomsLocators.row(roomName, type, accessible, price, features),
         ).toBeVisible();
       else
         await expect(
-          adminPanelLocators.row(roomName, type, accessible, price, features),
+          roomsLocators.row(roomName, type, accessible, price, features),
         ).toBeHidden();
     });
     return this;
   }
 }
 
-export default new AdminPanelSteps();
-export type { AdminPanelSteps };
+export default new RoomsSteps();
+export type { RoomsSteps };

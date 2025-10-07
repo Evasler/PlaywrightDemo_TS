@@ -31,7 +31,7 @@ export default class PlansSteps {
           const responseJson = (await response.json()) as { message: string };
           return responseJson.message;
         } catch {
-          return await response.text();
+          return "Received 404 response";
         }
       }
     } catch {

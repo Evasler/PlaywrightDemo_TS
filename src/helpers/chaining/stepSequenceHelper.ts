@@ -5,15 +5,12 @@
  */
 
 import { test } from "@playwright/test";
-import config from "../../../playwright.config.js";
 
 /**
  * Regular expression that matches stack trace lines pointing to spec files.
  * Uses the testDir from Playwright config and accounts for different path separators.
  */
-const testFilePath = new RegExp(
-  `${(config.testDir ?? "").replaceAll(/\./g, "").replaceAll(/\\|\//g, "(\\\\|/)")}(\\\\|/).+.spec.ts:[0-9]+:[0-9]+`,
-);
+const testFilePath = /(\\|\/).+.spec.ts:[0-9]+:[0-9]+/;
 
 /**
  * A Promise chain that ensures test steps execute sequentially.
@@ -104,7 +101,7 @@ const stepSequenceHelper = {
       if (error instanceof Error) {
         if (error.stack && myError.stack)
           if (
-            error.stack.includes(import.meta.filename) &&
+            error.stack.includes(import.meta.url) &&
             testFilePath.test(myError.stack)
           ) {
             const stepCallRow = getTestCallRowInStack(myError.stack);
@@ -112,7 +109,7 @@ const stepSequenceHelper = {
             error.stack = error.stack
               .replace(promiseAwaitRow, stepCallRow)
               .split("\n")
-              .filter((row) => !row.includes(import.meta.filename))
+              .filter((row) => !row.includes(import.meta.url))
               .join("\n");
           }
         throw error;

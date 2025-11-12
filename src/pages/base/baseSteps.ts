@@ -4,7 +4,11 @@ import testDataHelper from "../../helpers/data/testDataHelper.js";
 import type { PageType, TestDataKeys } from "../../types/index.js";
 
 export default abstract class BaseSteps {
-  constructor(protected readonly _pageType: PageType) {}
+  protected readonly _pageType: PageType;
+
+  constructor(pageType: PageType) {
+    this._pageType = pageType;
+  }
 
   protected get workingTab() {
     return browserHelper.workingTab;

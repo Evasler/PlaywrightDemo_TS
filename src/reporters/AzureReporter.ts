@@ -22,12 +22,14 @@ export default class AzureReporter implements Reporter {
   private _runId?: number;
   /** Details of the test run in Azure DevOps */
   private _runDetails!: RunDetails;
+  private readonly _options: AzureReporterOptions;
 
   /**
    * Initialize the Azure reporter with the provided options from playwright.config
    * @param _options Configuration options for the Azure reporter
    */
-  constructor(private readonly _options: AzureReporterOptions) {
+  constructor(options: AzureReporterOptions) {
+    this._options = options;
     this._throwOptionTypeErrors();
     env.AZURE_VALIDATION = this._options.enabled ? "initializing" : "ok";
   }

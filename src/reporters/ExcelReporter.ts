@@ -18,11 +18,14 @@ import { env } from "process";
  * validating configuration options and ensuring proper worksheet setup.
  */
 export default class ExcelReporter implements Reporter {
+  private readonly _options: ExcelReporterOptions;
+
   /**
    * Initialize the Excel reporter with the provided options from playwright.config
    * @param _options Configuration options for the Excel reporter
    */
-  constructor(private readonly _options: ExcelReporterOptions) {
+  constructor(options: ExcelReporterOptions) {
+    this._options = options;
     this._throwOptionErrors();
     env.EXCEL_VALIDATION = this._options.enabled ? "initializing" : "ok";
   }

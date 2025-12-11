@@ -1,7 +1,8 @@
-import { expect } from "@playwright/test";
 import roomsLocators from "./roomsLocators.js";
-import testDataHelper from "../../../../helpers/data/testDataHelper.js";
 import { AdminHeaderSteps } from "../header/adminHeaderSteps.js";
+import { addStep, getTestData } from "playwrap";
+import type { TestDataKeys } from "../../../../types/index.js";
+import { expect } from "@playwright/test";
 
 class RoomsSteps extends AdminHeaderSteps {
   constructor() {
@@ -9,7 +10,7 @@ class RoomsSteps extends AdminHeaderSteps {
   }
 
   verifyLinkIsVisible(name: string) {
-    this.addStep(`Verifying "${name}" link is visible`, async () => {
+    addStep(`Verifying "${name}" link is visible`, async () => {
       console.log(`Verifying "${name}" link is visible`);
       await expect(roomsLocators.link(name)).toBeVisible();
     });
@@ -17,18 +18,15 @@ class RoomsSteps extends AdminHeaderSteps {
   }
 
   deleteRoom(tempDataIndex: number) {
-    this.addStep(`Deleting Room`, async () => {
-      const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
-      const type = testDataHelper.getTestData("roomType", tempDataIndex);
-      const accessible = testDataHelper.getTestData(
+    addStep(`Deleting Room`, async () => {
+      const roomName = getTestData<TestDataKeys>("roomName", tempDataIndex);
+      const type = getTestData<TestDataKeys>("roomType", tempDataIndex);
+      const accessible = getTestData<TestDataKeys>(
         "roomAccessible",
         tempDataIndex,
       );
-      const price = testDataHelper.getTestData("roomPrice", tempDataIndex);
-      const features = testDataHelper.getTestData(
-        "roomFeatures",
-        tempDataIndex,
-      );
+      const price = getTestData<TestDataKeys>("roomPrice", tempDataIndex);
+      const features = getTestData<TestDataKeys>("roomFeatures", tempDataIndex);
       console.log(`Deleting Room "${roomName}"`);
       await roomsLocators
         .deleteButton(roomName, type, accessible, price, features)
@@ -44,18 +42,15 @@ class RoomsSteps extends AdminHeaderSteps {
     tempDataIndex: number;
     shouldBeVisible: boolean;
   }) {
-    this.addStep(`Verifying Room visibility`, async () => {
-      const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
-      const type = testDataHelper.getTestData("roomType", tempDataIndex);
-      const accessible = testDataHelper.getTestData(
+    addStep(`Verifying Room visibility`, async () => {
+      const roomName = getTestData<TestDataKeys>("roomName", tempDataIndex);
+      const type = getTestData<TestDataKeys>("roomType", tempDataIndex);
+      const accessible = getTestData<TestDataKeys>(
         "roomAccessible",
         tempDataIndex,
       );
-      const price = testDataHelper.getTestData("roomPrice", tempDataIndex);
-      const features = testDataHelper.getTestData(
-        "roomFeatures",
-        tempDataIndex,
-      );
+      const price = getTestData<TestDataKeys>("roomPrice", tempDataIndex);
+      const features = getTestData<TestDataKeys>("roomFeatures", tempDataIndex);
       console.log(
         `Verifying Room "${roomName}" is ${shouldBeVisible ? "" : "not "}visible`,
       );

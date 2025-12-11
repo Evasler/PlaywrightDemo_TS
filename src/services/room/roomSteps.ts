@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
-import type { PostRoomHardData } from "../../types/index.js";
-import testDataHelper from "../../helpers/data/testDataHelper.js";
+import type { PostRoomHardData, TestDataKeys } from "../../types/index.js";
 import roomResponses from "./roomResponses.js";
+import { getTestData, pushTestData } from "playwrap";
 
 const roomSteps = {
   getAllRooms() {
@@ -23,17 +23,12 @@ const roomSteps = {
 
   getRoomId(tempDataIndex: number) {
     return test.step(`Getting roomId"`, async () => {
-      const roomName = testDataHelper.getTestData("roomName", tempDataIndex);
-      const roomType = testDataHelper.getTestData("roomType", tempDataIndex);
+      const roomName = getTestData("roomName", tempDataIndex);
+      const roomType = getTestData("roomType", tempDataIndex);
       const roomAccessible =
-        testDataHelper.getTestData("roomAccessible", tempDataIndex) === "true";
-      const roomPrice = Number(
-        testDataHelper.getTestData("roomPrice", tempDataIndex),
-      );
-      const roomFeatures = testDataHelper.getTestData(
-        "roomFeatures",
-        tempDataIndex,
-      );
+        getTestData("roomAccessible", tempDataIndex) === "true";
+      const roomPrice = Number(getTestData("roomPrice", tempDataIndex));
+      const roomFeatures = getTestData("roomFeatures", tempDataIndex);
       console.log(`Getting roomId of room "${roomName}"`);
       const responseJson = await roomResponses.room.get._200();
       const rooms = responseJson.rooms.filter(
@@ -45,13 +40,13 @@ const roomSteps = {
           room.features.join(", ") === roomFeatures,
       );
       expect(rooms).toHaveLength(1);
-      testDataHelper.pushTestData("roomId", String(rooms[0].roomid));
+      pushTestData("roomId", String(rooms[0].roomid));
     });
   },
 
   deleteRoom(tempDataIndex: number) {
     return test.step("Deleting room with roomId", async () => {
-      const roomId = testDataHelper.getTestData("roomId", tempDataIndex);
+      const roomId = getTestData<TestDataKeys>("roomId", tempDataIndex);
       console.log(`Deleting room with roomId "${roomId}"`);
       await roomResponses.roomId.delete._200(roomId);
     });

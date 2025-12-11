@@ -1,7 +1,11 @@
-import stepSequenceHelper from "../../helpers/chaining/stepSequenceHelper.js";
-import browserHelper from "../../helpers/channel/browserHelper.js";
-import testDataHelper from "../../helpers/data/testDataHelper.js";
-import type { PageType, TestDataKeys } from "../../types/index.js";
+import {
+  openNewTabInCurrentContext,
+  openNewTabInNewContext,
+  stepSequence,
+  switchWorkingTab,
+} from "playwrap";
+import type { PageType } from "../../types/index.js";
+import { openAuthorizedContext } from "../../helpers/auth/authenticationHelper.js";
 
 export default abstract class BaseSteps {
   protected readonly _pageType: PageType;
@@ -10,32 +14,19 @@ export default abstract class BaseSteps {
     this._pageType = pageType;
   }
 
-  protected get workingTab() {
-    return browserHelper.workingTab;
-  }
-
-  protected addStep(stepName: string, stepFunction: () => Promise<void>) {
-    stepSequenceHelper.addStep(stepName, stepFunction);
-  }
-
-  protected pushTestData(key: TestDataKeys, value: string) {
-    testDataHelper.pushTestData(key, value);
-  }
-
-  protected getTestData(key: TestDataKeys, index: number) {
-    testDataHelper.getTestData(key, index);
-  }
-
   _openNewTabInNewContext<T extends BaseSteps>(
     page: T,
     authenticatedUser?: string,
   ): T {
-    browserHelper.openNewTabInNewContext(this._pageType, authenticatedUser);
+    openNewTabInNewContext(
+      async () => await openAuthorizedContext(authenticatedUser),
+      this._pageType,
+    );
     return page;
   }
 
   _openNewTabInCurrentContext<T extends BaseSteps>(page: T): T {
-    browserHelper.openNewTabInCurrentContext(this._pageType);
+    openNewTabInCurrentContext(this._pageType);
     return page;
   }
 
@@ -44,17 +35,12 @@ export default abstract class BaseSteps {
     pageIndex: number,
     page: T,
   ): T {
-    browserHelper.switchWorkingTab(
-      contextIndex,
-      pageIndex,
-      this._pageType,
-      page._pageType,
-    );
+    switchWorkingTab(contextIndex, pageIndex, this._pageType, page._pageType);
     return page;
   }
 
   _execute() {
-    return stepSequenceHelper.stepSequence;
+    return stepSequence();
   }
 }
 

@@ -3,6 +3,7 @@ import { credentialsUtils } from "../../../utils/index.js";
 import loginLocators from "./loginLocators.js";
 import BaseSteps from "../../base/baseSteps.js";
 import type { RoomsSteps } from "../admin/rooms/roomsSteps.js";
+import { addStep } from "playwrap";
 
 class LoginSteps extends BaseSteps {
   constructor() {
@@ -10,7 +11,7 @@ class LoginSteps extends BaseSteps {
   }
 
   verifyLoginIsVisible() {
-    this.addStep(`Verifying "Login" is visible`, async () => {
+    addStep(`Verifying "Login" is visible`, async () => {
       console.log(`Verifying "Login" is visible`);
       await expect(loginLocators.loginHeading()).toBeVisible();
     });
@@ -18,7 +19,7 @@ class LoginSteps extends BaseSteps {
   }
 
   populateCredentials(user: string) {
-    this.addStep(`Populating Credentials for user "${user}"`, async () => {
+    addStep(`Populating Credentials for user "${user}"`, async () => {
       console.log(`Populating Credentials for user "${user}"`);
       const userCredentials = credentialsUtils.getUserCredentials(user);
       await loginLocators.textbox("Username").fill(userCredentials.username);
@@ -28,7 +29,7 @@ class LoginSteps extends BaseSteps {
   }
 
   clickLogin(roomsSteps: RoomsSteps) {
-    this.addStep("Clicking Login", async () => {
+    addStep("Clicking Login", async () => {
       console.log("Clicking Login");
       await loginLocators.loginButton().click();
     });

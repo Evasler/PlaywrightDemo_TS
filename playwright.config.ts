@@ -1,5 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
-import type { ErrorListenerOptions } from "./src/types/index.js";
+import type { ErrorListenerOptions } from "playwrap";
 import dotenv from "dotenv";
 import { interProcessCommunicationHelper } from "./src/helpers/data/interProcessCommunicationHelper.js";
 

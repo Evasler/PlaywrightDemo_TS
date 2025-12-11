@@ -1,23 +1,11 @@
-/* eslint @typescript-eslint/no-invalid-void-type: 0 */
-
 /**
  * @description This module extends Playwright's base test fixture with custom fixtures for
  * error handling, data preparation, browser context management, and test lifecycle hooks.
  * It provides a foundation for creating more maintainable and feature-rich tests.
  */
 
-import {
-  test as base,
-  expect,
-  type APIRequest,
-  type Browser,
-  type TestInfo,
-} from "@playwright/test";
-import type {
-  ErrorListenerOptions,
-  ExtraStepsArgs,
-  FakerConfigArgs,
-} from "../types/index.js";
+import { expect, type TestInfo } from "@playwright/test";
+import type { ExtraStepsArgs, FakerConfigArgs } from "../types/index.js";
 import type { BaseSteps } from "../pages/index.js";
 import {
   fileUtils,
@@ -25,19 +13,20 @@ import {
   terminalUtils,
   testUtils,
 } from "../utils/index.js";
-import tabDataHelper from "../helpers/data/tabDataHelper.js";
-import testDataHelper from "../helpers/data/testDataHelper.js";
-import frameworkDataHelper from "../helpers/data/frameworkDataHelper.js";
 import extraStepsHelper from "../helpers/data/extraStepsHelper.js";
-import browserHelper from "../helpers/channel/browserHelper.js";
-import stepSequenceHelper from "../helpers/chaining/stepSequenceHelper.js";
+import { openAuthorizedContext } from "../helpers/auth/authenticationHelper.js";
 import { env } from "process";
 import { interProcessCommunicationHelper } from "../helpers/data/interProcessCommunicationHelper.js";
+import {
+  baseFixture,
+  openNewTabInNewContext,
+  type ErrorListenerOptions,
+} from "playwrap";
 
 /**
  * Extended test fixture that enhances Playwright's base test fixture with additional capabilities
  */
-const extendedTest = base.extend<
+const extendedTest = baseFixture.extend<
   {
     /**
      * Configuration options for error listener behavior.
@@ -60,6 +49,7 @@ const extendedTest = base.extend<
      */
     teardownData?: ExtraStepsArgs[];
 
+    /* eslint @typescript-eslint/no-invalid-void-type: 0 */
     /**
      * Automatic fixture that handles test initialization, execution, and cleanup
      */
@@ -78,14 +68,6 @@ const extendedTest = base.extend<
   },
   object
 >({
-  errorListenerOptions: [
-    {
-      failOnJsError: false,
-      failOnConnectionError: false,
-      failOnRequestError: false,
-    },
-    { option: true },
-  ],
   fakerConfigArgs: [{}, { option: true }],
   setupData: [undefined, { option: true }],
   teardownData: [undefined, { option: true }],
@@ -102,27 +84,14 @@ const extendedTest = base.extend<
    */
   autoFixture: [
     async (
-      {
-        playwright,
-        browser,
-        baseURL,
-        errorListenerOptions,
-        fakerConfigArgs,
-        setupData,
-        teardownData,
-      },
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      { auto, fakerConfigArgs, setupData, teardownData },
       use,
       testInfo,
     ) => {
       await verifyReporterValidationsFinished();
       skipRepeatIfTestPointTraceExists(testInfo);
-      initTestData(
-        baseURL,
-        playwright.request,
-        browser,
-        errorListenerOptions,
-        fakerConfigArgs,
-      );
+      testUtils.fakerConfig(fakerConfigArgs);
       if (setupData) await extraStepsHelper.execute("setup", setupData);
       terminalUtils.printColoredText(
         generalUtils.padCenteredString("TEST", 80),
@@ -133,7 +102,6 @@ const extendedTest = base.extend<
 
       if (teardownData)
         await extraStepsHelper.execute("teardown", teardownData);
-      await browserHelper.closeAllContexts();
     },
     { auto: true },
   ],
@@ -144,7 +112,9 @@ const extendedTest = base.extend<
   openNewTabInNewContext: [
     async ({}, use) => {
       await use((page, authenticatedUser) => {
-        browserHelper.openNewTabInNewContext(undefined, authenticatedUser);
+        openNewTabInNewContext(
+          async () => await openAuthorizedContext(authenticatedUser),
+        );
         return page;
       });
     },
@@ -212,34 +182,4 @@ function skipRepeatIfTestPointTraceExists(testInfo: TestInfo) {
     traceForTestPointExists,
     `Skipping test point, because trace file already exists: ${repeatMutedOutputDir}/trace.zip`,
   );
-}
-
-/**
- * Initializes test data and framework data for a test run
- *
- * @param baseUrl - Base URL for the application under test
- * @param apiRequest - Playwright APIRequest object for making API calls
- * @param browser - Playwright Browser instance
- * @param errorListenerOptions - Configuration for error handling behavior
- * @param fakerConfigArgs - Configuration for fake data generation
- * @throws Error if baseURL is not defined in the configuration
- */
-function initTestData(
-  baseUrl: string | undefined,
-  apiRequest: APIRequest,
-  browser: Browser,
-  errorListenerOptions: ErrorListenerOptions,
-  fakerConfigArgs: FakerConfigArgs,
-) {
-  if (!baseUrl) throw new Error("baseURL not defined in playwright.config.ts");
-  tabDataHelper.resetPageTypes();
-  testDataHelper.resetTestData();
-  stepSequenceHelper.resetStepSequence();
-  frameworkDataHelper.init({
-    apiRequest: apiRequest,
-    baseUrl: baseUrl,
-    browser: browser,
-    errorListenerOptions: errorListenerOptions,
-  });
-  testUtils.fakerConfig(fakerConfigArgs);
 }

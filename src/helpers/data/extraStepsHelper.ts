@@ -6,8 +6,8 @@
 import { test } from "@playwright/test";
 import type { ExtraStepsArgs } from "../../types/index.js";
 import { authSteps, roomSteps } from "../../services/index.js";
-import requestHelper from "../channel/requestHelper.js";
 import { generalUtils, terminalUtils } from "../../utils/index.js";
+import { openNewThrowAwayContext } from "playwrap";
 
 /**
  * Helper module for managing test setup and teardown actions via API.
@@ -34,7 +34,7 @@ const extraStepsHelper = {
           "blue",
         );
       for (const extraStepsArgs of extraStepsArgsArray) {
-        await requestHelper.openNewThrowAwayContext();
+        await openNewThrowAwayContext();
         if (extraStepsArgs.loginArgs)
           await authSteps.login(extraStepsArgs.loginArgs);
         if (extraStepsArgs.createRoomArgsArray)

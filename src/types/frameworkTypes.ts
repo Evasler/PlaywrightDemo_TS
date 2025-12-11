@@ -21,11 +21,6 @@ export interface StorageState {
   }[];
   origins: [];
 }
-export interface ErrorListenerOptions {
-  failOnJsError: boolean;
-  failOnConnectionError: boolean;
-  failOnRequestError: boolean;
-}
 export interface FakerConfigArgs {
   seed?: number;
   defaultRefDateISO?: string;

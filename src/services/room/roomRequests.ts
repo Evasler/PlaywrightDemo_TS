@@ -1,36 +1,34 @@
 import postRoomPayload from "./payloads/postRoomPayload.js";
-import requestHelper from "../../helpers/channel/requestHelper.js";
-import testDataHelper from "../../helpers/data/testDataHelper.js";
 import type { PostRoomHardData } from "../../types/index.js";
 import roomEndpoints from "./roomEndpoints.js";
+import { getExtraHeaders, pushTestData, workingRequestContext } from "playwrap";
 
 const roomRequests = {
   room: {
     get() {
-      return requestHelper.workingRequestContext.get(roomEndpoints.room(), {
-        headers: requestHelper.getExtraHeaders(),
+      return workingRequestContext().get(roomEndpoints.room(), {
+        headers: getExtraHeaders(),
       });
     },
     post(hardData: PostRoomHardData, existingRoomNames: string[]) {
       const payload = postRoomPayload(hardData, existingRoomNames);
       console.log(`Creating room "${payload.roomName}"`);
-      testDataHelper.pushTestData("roomName", payload.roomName);
-      testDataHelper.pushTestData("roomType", payload.type);
-      testDataHelper.pushTestData("roomAccessible", String(payload.accessible));
-      testDataHelper.pushTestData("roomPrice", String(payload.roomPrice));
-      testDataHelper.pushTestData("roomFeatures", payload.features.join(", "));
-      return requestHelper.workingRequestContext.post(roomEndpoints.room(), {
+      pushTestData("roomName", payload.roomName);
+      pushTestData("roomType", payload.type);
+      pushTestData("roomAccessible", String(payload.accessible));
+      pushTestData("roomPrice", String(payload.roomPrice));
+      pushTestData("roomFeatures", payload.features.join(", "));
+      return workingRequestContext().post(roomEndpoints.room(), {
         data: payload,
-        headers: requestHelper.getExtraHeaders(),
+        headers: getExtraHeaders(),
       });
     },
   },
   roomId: {
     delete(roomId: string) {
-      return requestHelper.workingRequestContext.delete(
-        roomEndpoints.roomId(roomId),
-        { headers: requestHelper.getExtraHeaders() },
-      );
+      return workingRequestContext().delete(roomEndpoints.roomId(roomId), {
+        headers: getExtraHeaders(),
+      });
     },
   },
 };

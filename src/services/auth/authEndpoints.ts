@@ -1,8 +1,8 @@
-import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
+import { baseUrl } from "playwrap";
 
 const authEndpoints = {
   auth() {
-    return `${frameworkDataHelper.apiUrl}auth/`;
+    return `${baseUrl()}api/auth/`;
   },
   login() {
     return `${this.auth()}login`;

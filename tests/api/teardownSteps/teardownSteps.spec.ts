@@ -1,5 +1,5 @@
+import { openNewContext } from "playwrap";
 import extendedTest from "../../../src/fixtures/extendedTest.js";
-import requestHelper from "../../../src/helpers/channel/requestHelper.js";
 import { authSteps, roomSteps } from "../../../src/services/index.js";
 import { testUtils } from "../../../src/utils/index.js";
 import teardownStepsDataset from "./teardownSteps.data.js";
@@ -14,7 +14,7 @@ extendedTest(
     teardownStepsDataset.testDetails.suiteTags,
   ),
   async () => {
-    await requestHelper.openNewContext();
+    await openNewContext();
     await authSteps.login(teardownStepsDataset.stepData.loginArgs);
     await roomSteps.createRoom();
     await roomSteps.createRoom();

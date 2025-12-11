@@ -2,7 +2,7 @@ import type { ErrorSteps } from "../error/errorSteps.js";
 import type { RoomsSteps } from "../restfulBooker/admin/rooms/roomsSteps.js";
 import type { LoginSteps } from "../restfulBooker/login/loginSteps.js";
 import BaseSteps from "../base/baseSteps.js";
-import frameworkDataHelper from "../../helpers/data/frameworkDataHelper.js";
+import { addStep, baseUrl, workingTab } from "playwrap";
 
 class BlankSteps extends BaseSteps {
   constructor() {
@@ -12,17 +12,17 @@ class BlankSteps extends BaseSteps {
   goToRestfulBookerAdminPage<T extends LoginSteps | RoomsSteps>(
     landingPage: T,
   ) {
-    this.addStep("Going to Restful Booker Admin Page", async () => {
+    addStep("Going to Restful Booker Admin Page", async () => {
       console.log("Going to Restful Booker Admin Page");
-      await this.workingTab.goto(`${frameworkDataHelper.baseUrl}admin`);
+      await workingTab().goto(`${baseUrl()}admin`);
     });
     return landingPage;
   }
 
   goToJsErrorPage(errorSteps: ErrorSteps) {
-    this.addStep("Going to JavaScript Error Page", async () => {
+    addStep("Going to JavaScript Error Page", async () => {
       console.log("Going to JavaScript Error Page");
-      await this.workingTab.goto(
+      await workingTab().goto(
         `data:text/html,<script>throw new Error("myJavaScriptError")</script>`,
       );
     });
@@ -30,33 +30,27 @@ class BlankSteps extends BaseSteps {
   }
 
   goToInternalServerErrorPage(errorSteps: ErrorSteps) {
-    this.addStep("Going to Internal Server Error Page", async () => {
+    addStep("Going to Internal Server Error Page", async () => {
       console.log("Going to Internal Server Error Page");
-      await this.workingTab.route(
-        frameworkDataHelper.baseUrl,
-        async (route) => {
-          const response = await route.fetch();
-          await route.fulfill({
-            response: response,
-            status: 500,
-          });
-        },
-      );
-      await this.workingTab.goto(frameworkDataHelper.baseUrl);
+      await workingTab().route(baseUrl(), async (route) => {
+        const response = await route.fetch();
+        await route.fulfill({
+          response: response,
+          status: 500,
+        });
+      });
+      await workingTab().goto(baseUrl());
     });
     return errorSteps;
   }
 
   goToConnectionErrorPage(errorSteps: ErrorSteps) {
-    this.addStep("Going to Connection Error Page", async () => {
+    addStep("Going to Connection Error Page", async () => {
       console.log("Going to Connection Error Page");
-      await this.workingTab.route(
-        frameworkDataHelper.baseUrl,
-        async (route) => {
-          await route.abort();
-        },
-      );
-      await this.workingTab.goto(frameworkDataHelper.baseUrl);
+      await workingTab().route(baseUrl(), async (route) => {
+        await route.abort();
+      });
+      await workingTab().goto(baseUrl());
     });
     return errorSteps;
   }

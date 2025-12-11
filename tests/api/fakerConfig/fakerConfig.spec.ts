@@ -1,5 +1,5 @@
+import { openNewContext } from "playwrap";
 import extendedTest from "../../../src/fixtures/extendedTest.js";
-import requestHelper from "../../../src/helpers/channel/requestHelper.js";
 import { authSteps, roomSteps } from "../../../src/services/index.js";
 import { testUtils } from "../../../src/utils/index.js";
 import fakerConfigDataset from "./fakerConfig.data.js";
@@ -16,7 +16,7 @@ extendedTest(
     fakerConfigDataset.testDetails.suiteTags,
   ),
   async () => {
-    await requestHelper.openNewContext();
+    await openNewContext();
     await authSteps.login("administrator");
     await roomSteps.getRoomId(fakerConfigDataset.stepData.getRoomIdArgs);
     await roomSteps.deleteRoom(fakerConfigDataset.stepData.deleteRoomArgs);
